@@ -1,9 +1,14 @@
+#include "Game/Character.h"
+#include "UtilityAI.h"
 #include <iostream>
-#include "UtilityAI/Math/Curves.h"
+#include <string>
+#include <unordered_map>
 
 using namespace UtilityAI;
+using namespace Game;
 
 int main()
 {
-    std::cout << Curves::Smoothstep(0.7f) << std::endl;
+	Character MyCharacter;
+
 }
