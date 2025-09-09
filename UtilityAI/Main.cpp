@@ -3,9 +3,7 @@
 #include "Game/StatTypes.h"
 #include "UtilityAI.h"
 #include <Core/UTAction.h>
-#include <iostream>
 #include <string>
-#include <vector>
 
 using namespace UtilityAI;
 using namespace Game;

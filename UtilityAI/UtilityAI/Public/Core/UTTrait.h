@@ -1,6 +1,5 @@
 #pragma once
 #include "UTAction.h"
-#include <memory>
 #include <string>
 #include <UtilityAI.h>
 #include <vector>
@@ -11,7 +10,7 @@ namespace UtilityAI
 struct UTBias
 {
 	std::vector<std::string> RequiredTags;
-	std::vector<std::unique_ptr<UTEffect>> Effects;
+	std::vector<UTEffect> Effects;
 	std::vector<UTConsideration> Considerations;
 
 	bool AppliesTo(const UTAction& Action) const
@@ -45,7 +44,7 @@ inline void ApplyBiases(UTAction& Action, const std::vector<UTTrait>& Traits)
 
 			for (const auto& BiasEffect : Bias.Effects)
 			{
-				if (BiasEffect) Action.AddEffect(BiasEffect->Clone());
+				Action.AddEffect(BiasEffect);
 			}
 		}
 	}

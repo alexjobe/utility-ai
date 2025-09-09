@@ -3,7 +3,7 @@
 #include "Math/Math.h"
 #include <algorithm>
 #include <functional>
-#include <memory>
+#include <iostream>
 #include <string>
 #include <unordered_map>
 
@@ -63,54 +63,53 @@ struct UTConsideration
 	}
 };
 
+inline float ScoreNeedChange(const UTAgentContext& Context, const UTEvaluationData& Data)
+{
+	const float Before = Context.GetNeed(Data.Target);
+
+	const float After = std::clamp(Before - Data.Magnitude, Data.MinRaw, Data.MaxRaw);
+	const float PercentChange = (After - Before) / (Data.MaxRaw - Data.MinRaw);
+
+	const float BeforeNorm = Normalize(Before, Data.MinRaw, Data.MaxRaw);
+	const float RawScore = BeforeNorm * -PercentChange; // Favor smaller values
+
+	return std::clamp(RawScore, 0.0f, 1.0f);
+}
+
+inline void ApplyNeedChange(UTAgentContext& Context, const UTEvaluationData& Data)
+{
+	Context.Needs[Data.Target] -= Data.Magnitude;
+	Context.Needs[Data.Target] = std::clamp(Context.Needs[Data.Target], Data.MinRaw, Data.MaxRaw);
+}
+
 class UTEffect
 {
 public:
 	std::string Name;
+	std::string ConsiderationKey;
 	UTEvaluationData Data;
 	ScoreFn EvalRawScore = nullptr;
 	CurveFn ScoreCurve = nullptr;
 
 	bool bIsConsideration = true;
 
-	// For custom effects
-	std::function<void(const UTAgentContext&, const UTEvaluationData&)> CustomFn;
+	std::function<void(UTAgentContext&, const UTEvaluationData&)> EffectFn = nullptr;
 
-	virtual void Apply(UTAgentContext& Context) const = 0;
-	virtual UTConsideration AsConsideration() const = 0;
-	virtual std::unique_ptr<UTEffect> Clone() const = 0;
-};
-
-class UTEffect_Need : public UTEffect
-{
-public:
-	static float ScoreNeedChange(const UTAgentContext& Context, const UTEvaluationData& Data)
+	void Apply(UTAgentContext& Context) const
 	{
-		const float Before = Context.GetNeed(Data.Target);
-
-		const float After = std::clamp(Before - Data.Magnitude, Data.MinRaw, Data.MaxRaw);
-		const float PercentChange = (After - Before) / (Data.MaxRaw - Data.MinRaw);
-
-		const float BeforeNorm = Normalize(Before, Data.MinRaw, Data.MaxRaw);
-		const float RawScore = BeforeNorm * -PercentChange; // Favor smaller values
-
-		return std::clamp(RawScore, 0.0f, 1.0f);
+		if(EffectFn)
+		{
+			EffectFn(Context, Data);
+		}
+		else
+		{
+			std::cout << "UTEffect: " + Name + " - EffectFn not set!" << std::endl;
+		}
 	}
 
-	virtual void Apply(UTAgentContext& Context) const override
+	virtual UTConsideration AsConsideration() const
 	{
-		Context.Needs[Data.Target] -= Data.Magnitude;
-		Context.Needs[Data.Target] = std::clamp(Context.Needs[Data.Target], Data.MinRaw, Data.MaxRaw);
-	}
-
-	virtual UTConsideration AsConsideration() const override
-	{
-		return { "Need_" + Data.Target, Data, UTEffect_Need::ScoreNeedChange, ScoreCurve };
-	}
-
-	virtual std::unique_ptr<UTEffect> Clone() const override 
-	{
-		return std::make_unique<UTEffect_Need>(*this);
+		return { ConsiderationKey, Data, EvalRawScore, ScoreCurve };
 	}
 };
 }

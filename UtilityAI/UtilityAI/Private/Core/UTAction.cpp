@@ -4,8 +4,14 @@
 
 using namespace UtilityAI;
 
-const UTConsideration& UTAction::AddConsideration(const UTConsideration& NewCons)
+const bool UTAction::AddConsideration(const UTConsideration& NewCons)
 {
+	if (NewCons.Key.empty())
+	{
+		std::cout << "Invalid Consideration! Check Key: " << NewCons.Key << std::endl;
+		return false;
+	}
+
 	auto It = Considerations.find(NewCons.Key);
 	if (It != Considerations.end())
 	{
@@ -22,15 +28,19 @@ const UTConsideration& UTAction::AddConsideration(const UTConsideration& NewCons
 		Considerations[NewCons.Key] = NewCons;
 	}
 
-	return Considerations[NewCons.Key];
+	return true;
 }
 
-const void UTAction::AddEffect(std::unique_ptr<UTEffect> NewEffect)
+const bool UTAction::AddEffect(const UTEffect& NewEffect)
 {
-	if (NewEffect)
+	if (NewEffect.Name.empty() || Effects.contains(NewEffect.Name))
 	{
-		Effects[NewEffect->Name] = std::move(NewEffect);
+		std::cout << "Invalid Effect! Check Key: " << NewEffect.Name << std::endl;
+		return false;
 	}
+
+	Effects[NewEffect.Name] = NewEffect;
+	return true;
 }
 
 // Generate considerations from effects
@@ -39,10 +49,9 @@ void UTAction::GenerateConsiderations()
 	std::cout << "Action: " + Name + " - Generating Considerations..." << std::endl;
 	for (auto& [Key, Effect] : Effects)
 	{
-		if (Effect && Effect->bIsConsideration)
+		if (Effect.bIsConsideration && AddConsideration(Effect.AsConsideration()))
 		{
-			const UTConsideration& NewCons = AddConsideration(Effect->AsConsideration());
-			std::cout << "Effect " + Effect->Name + " added Consideration " + NewCons.Key << std::endl;
+			std::cout << "Effect " + Effect.Name + " added Consideration " + Effect.ConsiderationKey << std::endl;
 		}
 	}
 }
@@ -69,6 +78,6 @@ void UTAction::Execute(UTAgentContext& Context)
 {
 	for (auto& [Key, Effect] : Effects)
 	{
-		if (Effect) Effect->Apply(Context);
+		Effect.Apply(Context);
 	}
 }

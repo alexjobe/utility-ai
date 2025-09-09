@@ -1,5 +1,4 @@
 #pragma once
-#include <memory>
 #include <string>
 #include <unordered_map>
 #include <UtilityAI.h>
@@ -13,8 +12,8 @@ public:
 	std::string Name;
 	std::vector<std::string> Tags;
 
-	const UTConsideration& AddConsideration(const UTConsideration& NewCons);
-	const void AddEffect(std::unique_ptr<UTEffect> NewEffect);
+	const bool AddConsideration(const UTConsideration& NewCons);
+	const bool AddEffect(const UTEffect& NewEffect);
 
 	// Generate considerations from effects
 	void GenerateConsiderations();
@@ -25,7 +24,7 @@ public:
 	void Execute(UTAgentContext& Context);
 
 private:
-	std::unordered_map<std::string, std::unique_ptr<UTEffect>> Effects;
+	std::unordered_map<std::string, UTEffect> Effects;
 	std::unordered_map<std::string, UTConsideration> Considerations;
 };
 }
