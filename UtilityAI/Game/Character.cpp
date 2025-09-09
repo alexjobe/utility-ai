@@ -22,16 +22,16 @@ Character::Character()
 	CoreStats[ECoreStatType::Charisma] = MidCoreStat;
 }
 
-UtCharacterContext Character::CreateUtilityContext() const
+UTAgentContext Character::CreateUtilityContext() const
 {
-	UtCharacterContext Context;
+	UTAgentContext Context;
 	for (const auto& [NeedType, Value] : Needs)
 	{
-		Context.Needs[ToString(NeedType)] = Normalize(Value, MIN_NEED, MAX_NEED);
+		Context.Needs[ToString(NeedType)] = Value;
 	}
 	for (const auto& [StatType, Value] : CoreStats)
 	{
-		Context.Needs[ToString(StatType)] = Normalize(Value, MIN_CORE_STAT, MAX_CORE_STAT);
+		Context.Needs[ToString(StatType)] = Value;
 	}
 	return Context;
 }

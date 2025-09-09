@@ -73,25 +73,25 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)Include;$(ProjectDir)UtilityAI;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Include;$(ProjectDir)UtilityAI\Public;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)Include;$(ProjectDir)UtilityAI;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Include;$(ProjectDir)UtilityAI\Public;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)Include;$(ProjectDir)UtilityAI;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Include;$(ProjectDir)UtilityAI\Public;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)Include;$(ProjectDir)UtilityAI;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Include;$(ProjectDir)UtilityAI\Public;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -156,10 +156,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Character.h" />
+    <ClInclude Include="Game\GameHelpers.h" />
+    <ClInclude Include="Game\Helpers.h" />
     <ClInclude Include="Game\StatTypes.h" />
-    <ClInclude Include="UtilityAI\Math\Curves.h" />
-    <ClInclude Include="UtilityAI\Math\Math.h" />
-    <ClInclude Include="UtilityAI\UtilityAI.h" />
+    <ClInclude Include="UtilityAI\Public\Math\Curves.h" />
+    <ClInclude Include="UtilityAI\Public\Math\Math.h" />
+    <ClInclude Include="UtilityAI\Public\UtilityAI.h" />
     <ClInclude Include="UtilityCore\Math\Curves.h" />
     <ClInclude Include="UtilityCore\Math\Math.h" />
     <ClInclude Include="UtilityCore\UtilityCore.h" />

@@ -32,19 +32,25 @@
     <ClInclude Include="UtilityCore\Math\Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\UtilityAI.h">
+    <ClInclude Include="UtilityAI\Public\UtilityAI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Math\Curves.h">
+    <ClInclude Include="UtilityAI\Public\Math\Curves.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Math\Math.h">
+    <ClInclude Include="UtilityAI\Public\Math\Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\StatTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Helpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

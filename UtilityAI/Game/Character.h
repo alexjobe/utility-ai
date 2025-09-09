@@ -13,6 +13,6 @@ namespace Game
 		Character();
 		std::unordered_map<ENeedType, float> Needs;
 		std::unordered_map<ECoreStatType, float> CoreStats;
-		UtCharacterContext CreateUtilityContext() const;
+		UTAgentContext CreateUtilityContext() const;
 	};
 }
