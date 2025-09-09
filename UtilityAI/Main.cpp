@@ -2,6 +2,7 @@
 #include "Game/GameHelpers.h"
 #include "Game/StatTypes.h"
 #include "UtilityAI.h"
+#include <Core/UTAction.h>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -15,20 +16,30 @@ int main()
 
 	UTAction RaidAction;
 	RaidAction.Name = "Raid";
-	RaidAction.Effects.push_back(MakeNeedEffect(ENeedType::Wealth, 30.f));
-	RaidAction.Effects.push_back(MakeNeedEffect(ENeedType::Survival, -10.f));
+	RaidAction.AddEffect(MakeNeedEffect(ENeedType::Wealth, 30.f));
+	RaidAction.AddEffect(MakeNeedEffect(ENeedType::Survival, -10.f));
 
-	UTConsideration SuccessChance;
-	SuccessChance.Key = "SuccessChance";
-	SuccessChance.EvalRawScore = [](const UTAgentContext& Ctx, const UTEvaluationParams&)
+	UTConsideration SuccessChanceCons;
+	SuccessChanceCons.Key = "SuccessChance";
+	SuccessChanceCons.EvalRawScore = [](const UTAgentContext& Ctx, const UTEvaluationData&)
 		{
 			const float Strength = Ctx.GetStat(ToString(ECoreStatType::Strength));
 			const float Endurance = Ctx.GetStat(ToString(ECoreStatType::Endurance));
 			return (0.6f * Strength + 0.4f * Endurance);
 		};
 
-	SuccessChance.Params.Weight = 1.5f;
+	SuccessChanceCons.Data.Weight = 1.5f;
+	RaidAction.AddConsideration(SuccessChanceCons);
 
-	RaidAction.AddConsideration(SuccessChance);
+	UTConsideration TimeCostCons;
+	TimeCostCons.Key = "TimeCost";
+	TimeCostCons.Data.Magnitude = 4; // Example: 4 turns, out of a max 5 
+	TimeCostCons.Data.MinRaw = 1;
+	TimeCostCons.Data.MaxRaw = 5;
+	TimeCostCons.ScoreCurve = [](float x) { return 1.f - x; }; // Lower time = better
+	TimeCostCons.Data.Weight = 0.5f;
+	RaidAction.AddConsideration(TimeCostCons);
 
+	// Generates need considerations from effects
+	RaidAction.GenerateConsiderations();
 }

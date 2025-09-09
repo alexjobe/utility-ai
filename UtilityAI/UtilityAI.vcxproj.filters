@@ -21,6 +21,9 @@
     <ClCompile Include="Game\Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UtilityAI\Private\Core\UTAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UtilityCore\UtilityCore.h">
@@ -51,6 +54,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\GameHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilityAI\Public\Core\UTAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilityAI\Public\Core\UTTrait.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

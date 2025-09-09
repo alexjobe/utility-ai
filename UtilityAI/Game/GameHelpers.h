@@ -1,16 +1,18 @@
 #pragma once
 #include "StatTypes.h"
 #include <UtilityAI.h>
+#include <memory>
 
 namespace Game
 {
-	UTEffect_Need MakeNeedEffect(ENeedType Need, float Magnitude)
+	std::unique_ptr<UTEffect> MakeNeedEffect(ENeedType Need, float Magnitude)
 	{
-		UTEffect_Need NewEffect;
-		NewEffect.Params.Target = ToString(Need);
-		NewEffect.Params.Magnitude = Magnitude;
-		NewEffect.Params.MinRaw = MIN_NEED;
-		NewEffect.Params.MaxRaw = MAX_NEED;
+		auto NewEffect = std::make_unique<UTEffect_Need>();
+		NewEffect->Name = "Effect_" + ToString(Need);
+		NewEffect->Data.Target = ToString(Need);
+		NewEffect->Data.Magnitude = Magnitude;
+		NewEffect->Data.MinRaw = MIN_NEED;
+		NewEffect->Data.MaxRaw = MAX_NEED;
 		return NewEffect;
 	}
 }
