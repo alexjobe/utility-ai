@@ -62,5 +62,8 @@
     <ClInclude Include="UtilityAI\Public\Core\UTTrait.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UtilityAI\Public\Logging\Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

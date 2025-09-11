@@ -2,8 +2,9 @@
 #include "Math/Curves.h"
 #include "Math/Math.h"
 #include <algorithm>
+#include <format>
 #include <functional>
-#include <iostream>
+#include <Logging/Logger.h>
 #include <string>
 #include <unordered_map>
 
@@ -103,7 +104,7 @@ public:
 		}
 		else
 		{
-			std::cout << "UTEffect: " + Name + " - EffectFn not set!" << std::endl;
+			LOG_WARN(std::format("Effect: {} - EffectFn not set!", Name))
 		}
 	}
 

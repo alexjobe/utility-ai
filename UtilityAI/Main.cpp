@@ -3,6 +3,8 @@
 #include "Game/StatTypes.h"
 #include "UtilityAI.h"
 #include <Core/UTAction.h>
+#include <Logging/Logger.h>
+#include <memory>
 #include <string>
 
 using namespace UtilityAI;
@@ -10,6 +12,8 @@ using namespace Game;
 
 int main()
 {
+	Logger::Instance().AddSink(std::make_shared<ConsoleSink>());
+
 	Character MyCharacter;
 
 	UTAction RaidAction;

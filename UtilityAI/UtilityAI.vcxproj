@@ -162,6 +162,7 @@
     <ClInclude Include="Game\StatTypes.h" />
     <ClInclude Include="UtilityAI\Public\Core\UTAction.h" />
     <ClInclude Include="UtilityAI\Public\Core\UTTrait.h" />
+    <ClInclude Include="UtilityAI\Public\Logging\Logger.h" />
     <ClInclude Include="UtilityAI\Public\Math\Curves.h" />
     <ClInclude Include="UtilityAI\Public\Math\Math.h" />
     <ClInclude Include="UtilityAI\Public\UtilityAI.h" />

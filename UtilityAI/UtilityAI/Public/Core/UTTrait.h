@@ -19,7 +19,9 @@ struct UTBias
 		for (auto& Tag : RequiredTags)
 		{
 			if (std::find(Action.Tags.begin(), Action.Tags.end(), Tag) != Action.Tags.end())
+			{
 				return true;
+			}
 		}
 		return false;
 	}

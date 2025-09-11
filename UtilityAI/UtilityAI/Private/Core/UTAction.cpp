@@ -1,6 +1,8 @@
 #include "Core/UTAction.h"
 #include <cmath>
-#include <iostream>
+#include <format>
+#include <Logging/Logger.h>
+#include <string>
 
 using namespace UtilityAI;
 
@@ -8,7 +10,7 @@ const bool UTAction::AddConsideration(const UTConsideration& NewCons)
 {
 	if (NewCons.Key.empty())
 	{
-		std::cout << "Invalid Consideration! Check Key: " << NewCons.Key << std::endl;
+		LOG_ERROR(std::format("Invalid Consideration! Check Key: {}", NewCons.Key))
 		return false;
 	}
 
@@ -35,7 +37,7 @@ const bool UTAction::AddEffect(const UTEffect& NewEffect)
 {
 	if (NewEffect.Name.empty() || Effects.contains(NewEffect.Name))
 	{
-		std::cout << "Invalid Effect! Check Key: " << NewEffect.Name << std::endl;
+		LOG_ERROR(std::format("Invalid Effect! Check Key: {}", NewEffect.Name))
 		return false;
 	}
 
@@ -46,12 +48,13 @@ const bool UTAction::AddEffect(const UTEffect& NewEffect)
 // Generate considerations from effects
 void UTAction::GenerateConsiderations()
 {
-	std::cout << "Action: " + Name + " - Generating Considerations..." << std::endl;
+	LOG_INFO(std::format("Action: {} - Generating Considerations...", Name))
+
 	for (auto& [Key, Effect] : Effects)
 	{
 		if (Effect.bIsConsideration && AddConsideration(Effect.AsConsideration()))
 		{
-			std::cout << "Effect " + Effect.Name + " added Consideration " + Effect.ConsiderationKey << std::endl;
+			LOG_INFO(std::format("Effect: {} - Added Consideration: {}", Effect.Name, Effect.ConsiderationKey))
 		}
 	}
 }
