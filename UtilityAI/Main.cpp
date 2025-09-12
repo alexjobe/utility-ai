@@ -9,10 +9,11 @@
 
 using namespace UtilityAI;
 using namespace Game;
+using namespace Log;
 
 int main()
 {
-	Logger::Instance().AddSink(std::make_shared<ConsoleSink>());
+	Logger::Instance().AddSink(std::make_shared<ConsoleSink>(EVerbosity::Minimal));
 
 	Character MyCharacter;
 

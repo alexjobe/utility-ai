@@ -11,8 +11,9 @@
 #include <thread>
 #include <vector>
 
-
-enum class LogLevel 
+namespace Log
+{
+enum class ELogLevel 
 {
 	Debug,
 	Info,
@@ -21,63 +22,109 @@ enum class LogLevel
 	Critical
 };
 
-inline const char* ToString(LogLevel InLevel) 
+enum class EVerbosity {
+	Minimal,   // Just the message
+	Normal,    // Timestamp + message
+	Detailed   // Timestamp + file:line + message
+};
+
+inline const char* ToString(ELogLevel InLevel) 
 {
 	switch (InLevel) 
 	{
-	case LogLevel::Debug:    return "DEBUG";
-	case LogLevel::Info:     return "INFO";
-	case LogLevel::Warning:  return "WARN";
-	case LogLevel::Error:    return "ERROR";
-	case LogLevel::Critical: return "CRIT";
+	case ELogLevel::Debug:    return "DEBUG";
+	case ELogLevel::Info:     return "INFO";
+	case ELogLevel::Warning:  return "WARN";
+	case ELogLevel::Error:    return "ERROR";
+	case ELogLevel::Critical: return "CRIT";
 	}
 	return "UNKNOWN";
+}
+
+struct LogMessage 
+{
+	ELogLevel Level;
+	std::string Message;
+	const char* File;
+	int Line;
+	std::chrono::system_clock::time_point Timestamp;
+};
+
+inline std::string FormatTimestamp(const std::chrono::system_clock::time_point& TP)
+{
+	return std::format("{:%Y-%m-%d %H:%M:%S}", TP);
+}
+
+inline std::string FormatMessage(const LogMessage& InMsg, EVerbosity InVerbosity = EVerbosity::Normal)
+{
+	std::ostringstream OSS;
+	switch (InVerbosity)
+	{
+	case EVerbosity::Minimal:
+		OSS << InMsg.Message;
+		break;
+
+	case EVerbosity::Normal:
+		OSS << FormatTimestamp(InMsg.Timestamp)
+			<< " [" << ToString(InMsg.Level) << "] "
+			<< InMsg.Message;
+		break;
+
+	case EVerbosity::Detailed:
+		OSS << FormatTimestamp(InMsg.Timestamp)
+			<< " [" << ToString(InMsg.Level) << "] "
+			<< InMsg.File << ":" << InMsg.Line << " | "
+			<< InMsg.Message;
+		break;
+	}
+	return OSS.str();
 }
 
 class ILogSink 
 {
 public:
 	virtual ~ILogSink() = default;
-	virtual void Log(LogLevel InLevel, const std::string& InMessage) = 0;
+	virtual void Log(const LogMessage& InMsg) = 0;
 };
 
 class ConsoleSink : public ILogSink 
 {
 public:
-	virtual void Log(LogLevel InLevel, const std::string& InMessage) 
+	explicit ConsoleSink(EVerbosity InVerbosity = EVerbosity::Normal) 
+		: Verbosity(InVerbosity) 
+	{}
+
+	virtual void Log(const LogMessage& InMsg) override
 	{
 		std::lock_guard<std::mutex> LogLock(LogMutex);
-		std::cout << "[" << ToString(InLevel) << "] " << InMessage << std::endl;
+		std::cout << FormatMessage(InMsg, Verbosity) << std::endl;
 	}
 private:
+	EVerbosity Verbosity;
 	std::mutex LogMutex;
 };
 
 class FileSink : public ILogSink 
 {
 public:
-	explicit FileSink(const std::string& InFileName) 
-		: File(InFileName, std::ios::app) 
-	{
-	}
+	explicit FileSink(const std::string& InFileName, EVerbosity InVerbosity = EVerbosity::Normal)
+		: File(InFileName, std::ios::app)
+		, Verbosity(InVerbosity)
+	{}
 
-	void Log(LogLevel InLevel, const std::string& InMessage) override 
+	void Log(const LogMessage& InMsg) override
 	{
 		std::lock_guard<std::mutex> LogLock(LogMutex);
-		File << "[" << Timestamp() << "][" << ToString(InLevel) << "] " << InMessage << std::endl;
+		File << FormatMessage(InMsg, Verbosity) << std::endl;
 	}
 private:
+	EVerbosity Verbosity;
 	std::ofstream File;
 	std::mutex LogMutex;
-
-	std::string Timestamp() 
-	{
-		auto Now = std::chrono::system_clock::now();
-		return std::format("{:%Y-%m-%d %H:%M:%S}", Now);
-	}
 };
 
-class Logger {
+class Logger 
+{
 public:
 	static Logger& Instance() 
 	{
@@ -91,14 +138,20 @@ public:
 		Sinks.push_back(InSink);
 	}
 
-	void Log(LogLevel InLevel, const std::string& InMessage, const char* InFile, int InLine) 
+	void Log(ELogLevel InLevel, const std::string& InMessage, const char* InFile, int InLine) 
 	{
-		std::ostringstream OSS;
-		OSS << InFile << ":" << InLine << " | " << InMessage;
+		LogMessage Msg
+		{
+			InLevel,
+			InMessage,
+			InFile,
+			InLine,
+			std::chrono::system_clock::now()
+		};
 
 		{
 			std::lock_guard<std::mutex> QueueLock(QueueMutex);
-			LogQueue.push({ InLevel, OSS.str() });
+			LogQueue.push(std::move(Msg));
 		}
 
 		CondVar.notify_one();
@@ -117,12 +170,6 @@ public:
 private:
 	Logger() : bIsRunning(true), WorkerThread(&Logger::WorkerLoop, this) {}
 	~Logger() { Shutdown(); }
-
-	struct LogMessage 
-	{
-		LogLevel Level;
-		std::string Text;
-	};
 
 	std::vector<std::shared_ptr<ILogSink>> Sinks;
 	std::mutex SinksMutex;
@@ -143,14 +190,14 @@ private:
 
 			while (!LogQueue.empty()) 
 			{
-				auto Message = LogQueue.front();
+				LogMessage Message = LogQueue.front();
 				LogQueue.pop();
 				QueueLock.unlock();
 
 				std::lock_guard<std::mutex> SinksLock(SinksMutex);
 				for (auto& Sink : Sinks) 
 				{
-					Sink->Log(Message.Level, Message.Text);
+					Sink->Log(Message);
 				}
 
 				QueueLock.lock();
@@ -158,10 +205,11 @@ private:
 		}
 	}
 };
+}
 
 // Macros
-#define LOG_DEBUG(Msg)    Logger::Instance().Log(LogLevel::Debug,    Msg, __FILE__, __LINE__);
-#define LOG_INFO(Msg)     Logger::Instance().Log(LogLevel::Info,     Msg, __FILE__, __LINE__);
-#define LOG_WARN(Msg)     Logger::Instance().Log(LogLevel::Warning,  Msg, __FILE__, __LINE__);
-#define LOG_ERROR(Msg)    Logger::Instance().Log(LogLevel::Error,    Msg, __FILE__, __LINE__);
-#define LOG_CRITICAL(Msg) Logger::Instance().Log(LogLevel::Critical, Msg, __FILE__, __LINE__);
+#define LOG_DEBUG(Msg)    Log::Logger::Instance().Log(Log::ELogLevel::Debug,    Msg, __FILE__, __LINE__);
+#define LOG_INFO(Msg)     Log::Logger::Instance().Log(Log::ELogLevel::Info,     Msg, __FILE__, __LINE__);
+#define LOG_WARN(Msg)     Log::Logger::Instance().Log(Log::ELogLevel::Warning,  Msg, __FILE__, __LINE__);
+#define LOG_ERROR(Msg)    Log::Logger::Instance().Log(Log::ELogLevel::Error,    Msg, __FILE__, __LINE__);
+#define LOG_CRITICAL(Msg) Log::Logger::Instance().Log(Log::ELogLevel::Critical, Msg, __FILE__, __LINE__);
