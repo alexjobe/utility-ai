@@ -1,31 +1,25 @@
 #pragma once
-#include "UTEffect.h"
 #include "UtilityAI.h"
+#include <functional>
 #include <set>
 #include <string>
-#include <unordered_map>
 
 namespace UtilityAI
 {
-class UTAction
+class UTGoal
 {
 public:
 	std::string Name;
-	std::set<std::string> Tags;
+	std::set<std::string> RequiredTags; // Only actions with the required tags will be considered
 
 	const bool AddConsideration(const UTConsideration& NewCons);
-	const bool AddEffect(const UTEffect& NewEffect);
-
-	// Generate considerations from effects
-	void GenerateConsiderations();
 
 	// Weighted geometric mean (log-sum)
 	float Evaluate(const UTAgentContext& Context) const;
 
-	void Execute(UTAgentContext& Context);
-
+	// Preconditions are quick "is this even possible?"
+	std::function<bool(const UTAgentContext&)> PreconditionFn = nullptr;
 private:
-	std::unordered_map<std::string, UTEffect> Effects;
 	std::unordered_map<std::string, UTConsideration> Considerations;
 };
 }

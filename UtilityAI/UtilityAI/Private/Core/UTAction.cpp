@@ -1,7 +1,7 @@
 #include "Core/UTAction.h"
+#include "Logging/Logger.h"
 #include <cmath>
 #include <format>
-#include <Logging/Logger.h>
 #include <string>
 
 using namespace UtilityAI;
@@ -10,7 +10,7 @@ const bool UTAction::AddConsideration(const UTConsideration& NewCons)
 {
 	if (NewCons.Key.empty())
 	{
-		LOG_ERROR(std::format("Invalid Consideration! Check Key: {}", NewCons.Key))
+		LOG_ERROR(std::format("Action: {} - Invalid Consideration! Check Key: {}", Name, NewCons.Key))
 		return false;
 	}
 
@@ -37,7 +37,7 @@ const bool UTAction::AddEffect(const UTEffect& NewEffect)
 {
 	if (NewEffect.Name.empty() || Effects.contains(NewEffect.Name))
 	{
-		LOG_ERROR(std::format("Invalid Effect! Check Key: {}", NewEffect.Name))
+		LOG_ERROR(std::format("Action: {} - Invalid Effect! Check Key: {}", Name, NewEffect.Name))
 		return false;
 	}
 
@@ -60,9 +60,15 @@ void UTAction::GenerateConsiderations()
 }
 
 // Weighted geometric mean (log-sum)
-float UTAction::Score(const UTAgentContext& Context) const
+float UTAction::Evaluate(const UTAgentContext& Context) const
 {
-	if (Considerations.empty()) return 0.0f;
+	if (Considerations.empty())
+	{
+		LOG_WARN(std::format("Action: {} - No Considerations!", Name))
+		return 0.0f;
+	}
+
+	LOG_INFO(std::format("Action: {} - Evaluating...", Name))
 
 	float WeightedLogSum = 0.0f;
 	float WeightSum = 0.0f;
@@ -72,9 +78,13 @@ float UTAction::Score(const UTAgentContext& Context) const
 		const float ConScore = std::clamp(Consideration.Score(Context), 0.001f, 1.0f); // avoid log(0)
 		WeightedLogSum += Consideration.Data.Weight * std::log(ConScore);
 		WeightSum += Consideration.Data.Weight;
+		LOG_INFO(std::format("Action: {} - {} - Score: {} - Weight: {}", Name, Consideration.Key, ConScore, Consideration.Data.Weight))
 	}
 
-	return std::exp(WeightedLogSum / WeightSum);
+	const float FinalScore = std::exp(WeightedLogSum / WeightSum);
+	LOG_INFO(std::format("Action: {} - Final Score: {}", Name, FinalScore))
+
+	return FinalScore;
 }
 
 void UTAction::Execute(UTAgentContext& Context)

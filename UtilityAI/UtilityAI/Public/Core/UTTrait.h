@@ -1,7 +1,8 @@
 #pragma once
 #include "UTAction.h"
+#include "UtilityAI.h"
+#include <set>
 #include <string>
-#include <UtilityAI.h>
 #include <vector>
 
 namespace UtilityAI
@@ -9,7 +10,7 @@ namespace UtilityAI
 // Biases add their effects and considerations to actions with the required tags
 struct UTBias
 {
-	std::vector<std::string> RequiredTags;
+	std::set<std::string> RequiredTags;
 	std::vector<UTEffect> Effects;
 	std::vector<UTConsideration> Considerations;
 
@@ -25,6 +26,21 @@ struct UTBias
 		}
 		return false;
 	}
+
+	void ApplyToAction(UTAction& Action) const
+	{
+		if (!AppliesTo(Action)) return;
+		
+		for (const auto& Cons : Considerations)
+		{
+			Action.AddConsideration(Cons);
+		}
+
+		for (const auto& Effect : Effects)
+		{
+			Action.AddEffect(Effect);
+		}
+	}
 };
 
 struct UTTrait
@@ -39,15 +55,7 @@ inline void ApplyBiases(UTAction& Action, const std::vector<UTTrait>& Traits)
 	{
 		for (const auto& Bias : Trait.Biases)
 		{
-			for (const auto& BiasCons : Bias.Considerations)
-			{
-				Action.AddConsideration(BiasCons);
-			}
-
-			for (const auto& BiasEffect : Bias.Effects)
-			{
-				Action.AddEffect(BiasEffect);
-			}
+			Bias.ApplyToAction(Action);
 		}
 	}
 }

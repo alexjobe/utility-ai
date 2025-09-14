@@ -1,9 +1,9 @@
+#include "Core/UTAction.h"
 #include "Game/Character.h"
 #include "Game/GameHelpers.h"
 #include "Game/StatTypes.h"
+#include "Logging/Logger.h"
 #include "UtilityAI.h"
-#include <Core/UTAction.h>
-#include <Logging/Logger.h>
 #include <memory>
 #include <string>
 
@@ -36,7 +36,7 @@ int main()
 
 	UTConsideration TimeCostCons;
 	TimeCostCons.Key = "TimeCost";
-	TimeCostCons.Data.Magnitude = 4; // Example: 4 turns, out of a max 5 
+	TimeCostCons.Data.Raw = 4; // Example: 4 turns, out of a max 5 
 	TimeCostCons.Data.MinRaw = 1;
 	TimeCostCons.Data.MaxRaw = 5;
 	TimeCostCons.ScoreCurve = [](float x) { return 1.f - x; }; // Lower time = better
@@ -45,4 +45,10 @@ int main()
 
 	// Generates need considerations from effects
 	RaidAction.GenerateConsiderations();
+
+	UTAgentContext MyContext = MyCharacter.CreateUtilityContext();
+
+	RaidAction.Evaluate(MyContext);
+
+	RaidAction.Execute(MyContext);
 }

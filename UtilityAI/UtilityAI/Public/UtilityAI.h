@@ -2,9 +2,7 @@
 #include "Math/Curves.h"
 #include "Math/Math.h"
 #include <algorithm>
-#include <format>
 #include <functional>
-#include <Logging/Logger.h>
 #include <string>
 #include <unordered_map>
 
@@ -37,7 +35,7 @@ struct UTAgentContext
 struct UTEvaluationData
 {
 	std::string Target; // e.g. "Wealth", "Survival"
-	float Magnitude = 0.0f;
+	float Raw = 0.0f;
 	float MinRaw = 0.0f;
 	float MaxRaw = 1.0f;
 	float Weight = 1.0f;
@@ -57,60 +55,10 @@ struct UTConsideration
 	{
 		float RawScore = EvalRawScore 
 			? EvalRawScore(Context, Data) 
-			: Normalize(Data.Magnitude, Data.MinRaw, Data.MaxRaw);
+			: Normalize(Data.Raw, Data.MinRaw, Data.MaxRaw);
 
 		RawScore = std::clamp(RawScore, 0.f, 1.f);
 		return ScoreCurve ? ScoreCurve(RawScore) : RawScore;
-	}
-};
-
-inline float ScoreNeedChange(const UTAgentContext& Context, const UTEvaluationData& Data)
-{
-	const float Before = Context.GetNeed(Data.Target);
-
-	const float After = std::clamp(Before - Data.Magnitude, Data.MinRaw, Data.MaxRaw);
-	const float PercentChange = (After - Before) / (Data.MaxRaw - Data.MinRaw);
-
-	const float BeforeNorm = Normalize(Before, Data.MinRaw, Data.MaxRaw);
-	const float RawScore = BeforeNorm * -PercentChange; // Favor smaller values
-
-	return std::clamp(RawScore, 0.0f, 1.0f);
-}
-
-inline void ApplyNeedChange(UTAgentContext& Context, const UTEvaluationData& Data)
-{
-	Context.Needs[Data.Target] -= Data.Magnitude;
-	Context.Needs[Data.Target] = std::clamp(Context.Needs[Data.Target], Data.MinRaw, Data.MaxRaw);
-}
-
-class UTEffect
-{
-public:
-	std::string Name;
-	std::string ConsiderationKey;
-	UTEvaluationData Data;
-	ScoreFn EvalRawScore = nullptr;
-	CurveFn ScoreCurve = nullptr;
-
-	bool bIsConsideration = true;
-
-	std::function<void(UTAgentContext&, const UTEvaluationData&)> EffectFn = nullptr;
-
-	void Apply(UTAgentContext& Context) const
-	{
-		if(EffectFn)
-		{
-			EffectFn(Context, Data);
-		}
-		else
-		{
-			LOG_WARN(std::format("Effect: {} - EffectFn not set!", Name))
-		}
-	}
-
-	virtual UTConsideration AsConsideration() const
-	{
-		return { ConsiderationKey, Data, EvalRawScore, ScoreCurve };
 	}
 };
 }

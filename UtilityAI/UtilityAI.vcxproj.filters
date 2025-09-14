@@ -24,6 +24,9 @@
     <ClCompile Include="UtilityAI\Private\Core\UTAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UtilityAI\Private\Core\UTGoal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UtilityCore\UtilityCore.h">
@@ -63,6 +66,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UtilityAI\Public\Logging\Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilityAI\Public\Core\UTEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilityAI\Public\Core\UTGoal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
