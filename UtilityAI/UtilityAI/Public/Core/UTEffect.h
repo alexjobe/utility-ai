@@ -1,7 +1,12 @@
 #pragma once
 #include "Logging/Logger.h"
 #include "Math/Curves.h"
+#include "Math/Math.h"
+#include "UTConsideration.h"
 #include "UtilityAI.h"
+#include <algorithm>
+#include <format>
+#include <functional>
 #include <string>
 
 namespace UtilityAI

@@ -1,6 +1,7 @@
 #pragma once
 #include "UTEffect.h"
 #include "UtilityAI.h"
+#include "UTScorer.h"
 #include <set>
 #include <string>
 #include <unordered_map>
@@ -10,22 +11,22 @@ namespace UtilityAI
 class UTAction
 {
 public:
-	std::string Name;
 	std::set<std::string> Tags;
+	UTScorer Scorer;
 
-	const bool AddConsideration(const UTConsideration& NewCons);
+	UTAction(const std::string& InKey);
+
+	std::string GetKey() const { return Key; }
+
 	const bool AddEffect(const UTEffect& NewEffect);
 
 	// Generate considerations from effects
 	void GenerateConsiderations();
 
-	// Weighted geometric mean (log-sum)
-	float Evaluate(const UTAgentContext& Context) const;
-
 	void Execute(UTAgentContext& Context);
 
 private:
+	std::string Key;
 	std::unordered_map<std::string, UTEffect> Effects;
-	std::unordered_map<std::string, UTConsideration> Considerations;
 };
 }

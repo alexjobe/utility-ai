@@ -24,6 +24,9 @@
     <ClCompile Include="UtilityAI\Private\Core\UTAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UtilityAI\Private\Core\UTScorer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="UtilityAI\Private\Core\UTGoal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -72,6 +75,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UtilityAI\Public\Core\UTGoal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilityAI\Public\Core\UTScorer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilityAI\Public\Core\UTConsideration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

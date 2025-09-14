@@ -1,4 +1,5 @@
 #include "Core/UTAction.h"
+#include "Core/UTScorer.h"
 #include "Game/Character.h"
 #include "Game/GameHelpers.h"
 #include "Game/StatTypes.h"
@@ -17,8 +18,7 @@ int main()
 
 	Character MyCharacter;
 
-	UTAction RaidAction;
-	RaidAction.Name = "Raid";
+	UTAction RaidAction("Action.Raid");
 	RaidAction.AddEffect(MakeNeedEffect(ENeedType::Wealth, 30.f));
 	RaidAction.AddEffect(MakeNeedEffect(ENeedType::Survival, -10.f));
 
@@ -32,7 +32,7 @@ int main()
 		};
 
 	SuccessChanceCons.Data.Weight = 1.5f;
-	RaidAction.AddConsideration(SuccessChanceCons);
+	RaidAction.Scorer.AddConsideration(SuccessChanceCons);
 
 	UTConsideration TimeCostCons;
 	TimeCostCons.Key = "TimeCost";
@@ -41,14 +41,14 @@ int main()
 	TimeCostCons.Data.MaxRaw = 5;
 	TimeCostCons.ScoreCurve = [](float x) { return 1.f - x; }; // Lower time = better
 	TimeCostCons.Data.Weight = 0.5f;
-	RaidAction.AddConsideration(TimeCostCons);
+	RaidAction.Scorer.AddConsideration(TimeCostCons);
 
 	// Generates need considerations from effects
 	RaidAction.GenerateConsiderations();
 
 	UTAgentContext MyContext = MyCharacter.CreateUtilityContext();
 
-	RaidAction.Evaluate(MyContext);
+	RaidAction.Scorer.Score(MyContext);
 
 	RaidAction.Execute(MyContext);
 }

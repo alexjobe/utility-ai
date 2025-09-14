@@ -155,6 +155,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="UtilityAI\Private\Core\UTAction.cpp" />
     <ClCompile Include="UtilityAI\Private\Core\UTGoal.cpp" />
+    <ClCompile Include="UtilityAI\Private\Core\UTScorer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Character.h" />
@@ -162,6 +163,8 @@
     <ClInclude Include="Game\Helpers.h" />
     <ClInclude Include="Game\StatTypes.h" />
     <ClInclude Include="UtilityAI\Public\Core\UTAction.h" />
+    <ClInclude Include="UtilityAI\Public\Core\UTConsideration.h" />
+    <ClInclude Include="UtilityAI\Public\Core\UTScorer.h" />
     <ClInclude Include="UtilityAI\Public\Core\UTEffect.h" />
     <ClInclude Include="UtilityAI\Public\Core\UTGoal.h" />
     <ClInclude Include="UtilityAI\Public\Core\UTTrait.h" />
