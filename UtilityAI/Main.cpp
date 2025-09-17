@@ -8,6 +8,9 @@
 #include <memory>
 #include <string>
 
+#define SOL_ALL_SAFETIES_ON 1
+#include <sol.hpp>
+
 using namespace UtilityAI;
 using namespace Game;
 using namespace Log;
@@ -15,6 +18,11 @@ using namespace Log;
 int main()
 {
 	Logger::Instance().AddSink(std::make_shared<ConsoleSink>(EVerbosity::Minimal));
+
+	sol::state lua;
+	lua.open_libraries(sol::lib::base);
+
+	lua.script("print('bark bark bark!')");
 
 	Character MyCharacter;
 
