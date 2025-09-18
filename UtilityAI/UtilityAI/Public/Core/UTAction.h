@@ -1,12 +1,12 @@
 #pragma once
+#include "UTAgentContext.h"
 #include "UTEffect.h"
-#include "UtilityAI.h"
 #include "UTScorer.h"
 #include <set>
 #include <string>
 #include <unordered_map>
 
-namespace UtilityAI
+namespace UAI
 {
 class UTAction
 {
@@ -14,9 +14,11 @@ public:
 	std::set<std::string> Tags;
 	UTScorer Scorer;
 
+	UTAction() = default;
 	UTAction(const std::string& InKey);
 
 	std::string GetKey() const { return Key; }
+	void SetKey(const std::string& InKey) { Key = InKey; }
 
 	const bool AddEffect(const UTEffect& NewEffect);
 

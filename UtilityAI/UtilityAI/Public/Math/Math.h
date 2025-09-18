@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>
 
-namespace UtilityAI
+namespace UAI
 {
 	inline float Clamp01(float Value) { return std::max(0.0f, std::min(1.0f, Value)); }
 

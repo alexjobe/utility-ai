@@ -5,7 +5,7 @@
 
 using CurveFn = std::function<float(float)>;
 
-namespace UtilityAI
+namespace UAI
 {
 	struct Curves
 	{

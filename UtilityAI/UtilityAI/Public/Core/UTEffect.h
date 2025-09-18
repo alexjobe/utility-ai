@@ -2,22 +2,22 @@
 #include "Logging/Logger.h"
 #include "Math/Curves.h"
 #include "Math/Math.h"
+#include "UTAgentContext.h"
 #include "UTConsideration.h"
-#include "UtilityAI.h"
 #include <algorithm>
 #include <format>
 #include <functional>
 #include <string>
 
-namespace UtilityAI
+namespace UAI
 {
 class UTEffect
 {
 public:
-	std::string Name;
+	std::string Key;
 	std::string ConsiderationKey;
 	UTEvaluationData Data;
-	ScoreFn EvalRawScore = nullptr;
+	ScoreFn EvalRawScoreFn = nullptr;
 	CurveFn ScoreCurve = nullptr;
 
 	bool bIsConsideration = true;
@@ -32,13 +32,13 @@ public:
 		}
 		else
 		{
-			LOG_WARN(std::format("Effect: {} - EffectFn not set!", Name))
+			LOG_WARN(std::format("Effect: {} - EffectFn not set!", Key))
 		}
 	}
 
 	virtual UTConsideration AsConsideration() const
 	{
-		return { ConsiderationKey, Data, EvalRawScore, ScoreCurve };
+		return { ConsiderationKey, Data, EvalRawScoreFn, ScoreCurve };
 	}
 };
 
@@ -65,10 +65,10 @@ inline void ApplyNeedChange(UTAgentContext& Context, const UTEvaluationData& Dat
 inline UTEffect NeedEffect(const std::string& Need, float Magnitude, float MinNeed = 0.f, float MaxNeed = 1.f)
 {
 	UTEffect NewEffect;
-	NewEffect.Name = "Effect_" + Need;
+	NewEffect.Key = "Effect_" + Need;
 	NewEffect.ConsiderationKey = "Need_" + Need;
-	NewEffect.EvalRawScore = UtilityAI::ScoreNeedChange;
-	NewEffect.EffectFn = UtilityAI::ApplyNeedChange;
+	NewEffect.EvalRawScoreFn = UAI::ScoreNeedChange;
+	NewEffect.EffectFn = UAI::ApplyNeedChange;
 	NewEffect.Data.Target = Need;
 	NewEffect.Data.Raw = Magnitude;
 	NewEffect.Data.MinRaw = MinNeed;

@@ -3,7 +3,7 @@
 #include <format>
 #include <string>
 
-using namespace UtilityAI;
+using namespace UAI;
 
 UTAction::UTAction(const std::string& InKey)
 {
@@ -13,13 +13,13 @@ UTAction::UTAction(const std::string& InKey)
 
 const bool UTAction::AddEffect(const UTEffect& NewEffect)
 {
-	if (NewEffect.Name.empty() || Effects.contains(NewEffect.Name))
+	if (NewEffect.Key.empty() || Effects.contains(NewEffect.Key))
 	{
-		LOG_ERROR(std::format("Action: {} - Invalid Effect! Check Key: {}", Key, NewEffect.Name))
+		LOG_ERROR(std::format("Action: {} - Invalid Effect! Check Key: {}", Key, NewEffect.Key))
 		return false;
 	}
 
-	Effects[NewEffect.Name] = NewEffect;
+	Effects[NewEffect.Key] = NewEffect;
 	return true;
 }
 
@@ -32,7 +32,7 @@ void UTAction::GenerateConsiderations()
 	{
 		if (Effect.bIsConsideration && Scorer.AddConsideration(Effect.AsConsideration()))
 		{
-			LOG_INFO(std::format("Effect: {} - Added Consideration: {}", Effect.Name, Effect.ConsiderationKey))
+			LOG_INFO(std::format("Effect: {} - Added Consideration: {}", Effect.Key, Effect.ConsiderationKey))
 		}
 	}
 }

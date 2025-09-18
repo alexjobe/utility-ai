@@ -167,6 +167,8 @@
     <ClInclude Include="Game\Helpers.h" />
     <ClInclude Include="Game\StatTypes.h" />
     <ClInclude Include="UtilityAI\Public\Core\UTAction.h" />
+    <ClInclude Include="UtilityAI\Public\Core\UTActionRegistry.h" />
+    <ClInclude Include="UtilityAI\Public\Core\UTAgentContext.h" />
     <ClInclude Include="UtilityAI\Public\Core\UTConsideration.h" />
     <ClInclude Include="UtilityAI\Public\Core\UTScorer.h" />
     <ClInclude Include="UtilityAI\Public\Core\UTEffect.h" />
@@ -175,10 +177,14 @@
     <ClInclude Include="UtilityAI\Public\Logging\Logger.h" />
     <ClInclude Include="UtilityAI\Public\Math\Curves.h" />
     <ClInclude Include="UtilityAI\Public\Math\Math.h" />
-    <ClInclude Include="UtilityAI\Public\UtilityAI.h" />
+    <ClInclude Include="UtilityAI\Public\Scripting\UTLoader.h" />
+    <ClInclude Include="UtilityAI\Public\Scripting\UTLuaUtils.h" />
     <ClInclude Include="UtilityCore\Math\Curves.h" />
     <ClInclude Include="UtilityCore\Math\Math.h" />
     <ClInclude Include="UtilityCore\UtilityCore.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Actions\Test\TestAction.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

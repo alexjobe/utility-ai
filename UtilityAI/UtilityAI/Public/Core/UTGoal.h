@@ -1,11 +1,11 @@
 #pragma once
-#include "UtilityAI.h"
+#include "UTAgentContext.h"
 #include "UTScorer.h"
 #include <functional>
 #include <set>
 #include <string>
 
-namespace UtilityAI
+namespace UAI
 {
 class UTGoal
 {

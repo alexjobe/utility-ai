@@ -1,17 +1,20 @@
+#define SOL_ALL_SAFETIES_ON 1
+
 #include "Core/UTAction.h"
+#include "Core/UTAgentContext.h"
 #include "Core/UTScorer.h"
 #include "Game/Character.h"
 #include "Game/GameHelpers.h"
 #include "Game/StatTypes.h"
 #include "Logging/Logger.h"
-#include "UtilityAI.h"
 #include <memory>
+#include <Scripting/UTLoader.h>
+#include <Scripting/UTLuaUtils.h>
+#include <sol/sol.hpp>
 #include <string>
+#include <Core/UTActionRegistry.h>
 
-#define SOL_ALL_SAFETIES_ON 1
-#include <sol.hpp>
-
-using namespace UtilityAI;
+using namespace UAI;
 using namespace Game;
 using namespace Log;
 
@@ -19,12 +22,19 @@ int main()
 {
 	Logger::Instance().AddSink(std::make_shared<ConsoleSink>(EVerbosity::Minimal));
 
-	sol::state lua;
-	lua.open_libraries(sol::lib::base);
+	sol::state Lua;
+	Lua.open_libraries(sol::lib::base);
 
-	lua.script("print('bark bark bark!')");
+	LoadActionsRecursive("Scripts/Actions", Lua);
 
 	Character MyCharacter;
+
+	UTAgentContext MyContext = MyCharacter.CreateUtilityContext();
+
+	if (UTAction* TestAction = UTActionRegistry::Instance().Get("ChopWood"))
+	{
+		TestAction->Execute(MyContext);
+	}
 
 	UTAction RaidAction("Action.Raid");
 	RaidAction.AddEffect(MakeNeedEffect(ENeedType::Wealth, 30.f));
@@ -53,8 +63,6 @@ int main()
 
 	// Generates need considerations from effects
 	RaidAction.GenerateConsiderations();
-
-	UTAgentContext MyContext = MyCharacter.CreateUtilityContext();
 
 	RaidAction.Scorer.Score(MyContext);
 

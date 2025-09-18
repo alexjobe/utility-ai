@@ -1,10 +1,10 @@
 #pragma once
+#include "UTAgentContext.h"
 #include "UTConsideration.h"
-#include "UtilityAI.h"
 #include <string>
 #include <unordered_map>
 
-namespace UtilityAI
+namespace UAI
 {
 class UTScorer
 {

@@ -1,12 +1,12 @@
 #pragma once
 #include "Math/Curves.h"
 #include "Math/Math.h"
-#include "UtilityAI.h"
+#include "UTAgentContext.h"
 #include <algorithm>
 #include <functional>
 #include <string>
 
-namespace UtilityAI
+namespace UAI
 {
 struct UTEvaluationData
 {

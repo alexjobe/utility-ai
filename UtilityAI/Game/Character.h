@@ -1,9 +1,9 @@
 #pragma once
+#include "Core/UTAgentContext.h"
 #include "StatTypes.h"
-#include "UtilityAI.h"
 #include <unordered_map>
 
-using namespace UtilityAI;
+using namespace UAI;
 
 namespace Game
 {

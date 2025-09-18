@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-namespace UtilityAI
+namespace UAI
 { 
 // Biases add their effects and considerations to goals and actions with the required tags
 struct UTBias

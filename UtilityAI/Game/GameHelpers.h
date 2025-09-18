@@ -6,6 +6,6 @@ namespace Game
 {
 	UTEffect MakeNeedEffect(ENeedType Need, float Magnitude)
 	{
-		return UtilityAI::NeedEffect(ToString(Need), Magnitude, MIN_NEED, MAX_NEED);
+		return UAI::NeedEffect(ToString(Need), Magnitude, MIN_NEED, MAX_NEED);
 	}
 }

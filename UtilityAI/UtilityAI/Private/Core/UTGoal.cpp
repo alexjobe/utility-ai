@@ -1,6 +1,6 @@
 #include "Core/UTGoal.h"
 
-using namespace UtilityAI;
+using namespace UAI;
 
 UTGoal::UTGoal(const std::string& InKey)
 {

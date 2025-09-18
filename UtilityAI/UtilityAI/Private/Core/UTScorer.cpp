@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cmath>
 
-using namespace UtilityAI;
+using namespace UAI;
 
 bool UTScorer::AddConsideration(const UTConsideration& NewCons)
 {
