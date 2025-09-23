@@ -1,7 +1,7 @@
 #pragma once
+#include <optional>
 #include <sol.hpp>
 #include <string>
-#include <optional>
 #include <vector>
 
 namespace LuaUtils

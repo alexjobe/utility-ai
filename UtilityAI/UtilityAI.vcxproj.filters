@@ -86,10 +86,13 @@
     <ClInclude Include="UtilityAI\Public\Core\UTAgentContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Scripting\UTLoader.h">
+    <ClInclude Include="UtilityAI\Public\Scripting\UTLuaLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UtilityAI\Public\Scripting\UTLuaUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilityAI\Public\Scripting\UTLuaLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

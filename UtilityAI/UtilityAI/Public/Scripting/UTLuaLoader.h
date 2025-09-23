@@ -88,6 +88,7 @@ namespace UAI
 
 	void LoadActionsRecursive(const std::string& BaseDir, sol::state& Lua) 
 	{
+		UTValidationResult ValidationResult;
 		try 
 		{
 			for (auto& Entry : std::filesystem::recursive_directory_iterator(BaseDir)) 
@@ -107,7 +108,6 @@ namespace UAI
 					if (!Result.valid()) continue;
 
 					sol::table ActionTable = Result;
-					UTValidationResult ValidationResult;
 					UTAction Action = LoadAction(ActionTable, ValidationResult);
 					UTActionRegistry::Instance().Register(Action, Category);
 
@@ -115,13 +115,13 @@ namespace UAI
 				}
 				catch (const std::exception& Error) 
 				{
-					LOG_ERROR(std::format("Failed to load action: {} Error: {}", Entry.path().string(), Error.what()))
+					ValidationResult.AddError(std::format("Failed to load action: {} Error: {}", Entry.path().string(), Error.what()));
 				}
 			}
 		}
 		catch (const std::exception& Error)
 		{
-			LOG_ERROR(std::format("Filesystem Error: {}", Error.what()))
+			ValidationResult.AddError(std::format("Filesystem Error: {}", Error.what()));
 		}
 	}
 

@@ -177,7 +177,8 @@
     <ClInclude Include="UtilityAI\Public\Logging\Logger.h" />
     <ClInclude Include="UtilityAI\Public\Math\Curves.h" />
     <ClInclude Include="UtilityAI\Public\Math\Math.h" />
-    <ClInclude Include="UtilityAI\Public\Scripting\UTLoader.h" />
+    <ClInclude Include="UtilityAI\Public\Scripting\UTLuaLoader.h" />
+    <ClInclude Include="UtilityAI\Public\Scripting\UTLuaLogger.h" />
     <ClInclude Include="UtilityAI\Public\Scripting\UTLuaUtils.h" />
     <ClInclude Include="UtilityCore\Math\Curves.h" />
     <ClInclude Include="UtilityCore\Math\Math.h" />

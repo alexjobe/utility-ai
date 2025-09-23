@@ -7,12 +7,12 @@
 #include "Game/GameHelpers.h"
 #include "Game/StatTypes.h"
 #include "Logging/Logger.h"
+#include <Core/UTActionRegistry.h>
 #include <memory>
-#include <Scripting/UTLoader.h>
-#include <Scripting/UTLuaUtils.h>
+#include <Scripting/UTLuaLoader.h>
+#include <Scripting/UTLuaLogger.h>
 #include <sol/sol.hpp>
 #include <string>
-#include <Core/UTActionRegistry.h>
 
 using namespace UAI;
 using namespace Game;
@@ -24,17 +24,13 @@ int main()
 
 	sol::state Lua;
 	Lua.open_libraries(sol::lib::base);
+	LuaLog::RegisterLogger(Lua);
 
 	LoadActionsRecursive("Scripts/Actions", Lua);
 
 	Character MyCharacter;
 
 	UTAgentContext MyContext = MyCharacter.CreateUtilityContext();
-
-	if (UTAction* TestAction = UTActionRegistry::Instance().Get("ChopWood"))
-	{
-		TestAction->Execute(MyContext);
-	}
 
 	UTAction RaidAction("Action.Raid");
 	RaidAction.AddEffect(MakeNeedEffect(ENeedType::Wealth, 30.f));
@@ -67,4 +63,9 @@ int main()
 	RaidAction.Scorer.Score(MyContext);
 
 	RaidAction.Execute(MyContext);
+
+	if (UTAction* TestAction = UTActionRegistry::Instance().Get("ChopWood"))
+	{
+		TestAction->Execute(MyContext);
+	}
 }
