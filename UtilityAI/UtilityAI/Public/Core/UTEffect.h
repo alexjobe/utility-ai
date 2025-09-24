@@ -18,7 +18,7 @@ public:
 	std::string ConsiderationKey;
 	UTEvaluationData Data;
 	ScoreFn EvalRawScoreFn = nullptr;
-	CurveFn ScoreCurve = nullptr;
+	CurveFn ScoreCurveFn = nullptr;
 
 	bool bIsConsideration = true;
 
@@ -38,7 +38,7 @@ public:
 
 	virtual UTConsideration AsConsideration() const
 	{
-		return { ConsiderationKey, Data, EvalRawScoreFn, ScoreCurve };
+		return { ConsiderationKey, Data, EvalRawScoreFn, ScoreCurveFn };
 	}
 };
 

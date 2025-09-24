@@ -18,7 +18,7 @@ public:
 	UTAction(const std::string& InKey);
 
 	std::string GetKey() const { return Key; }
-	void SetKey(const std::string& InKey) { Key = InKey; }
+	void SetKey(const std::string& InKey);
 
 	const bool AddEffect(const UTEffect& NewEffect);
 

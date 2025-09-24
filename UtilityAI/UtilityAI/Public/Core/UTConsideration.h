@@ -24,17 +24,17 @@ struct UTConsideration
 {
 	std::string Key;
 	UTEvaluationData Data;
-	ScoreFn EvalRawScore = nullptr;
-	CurveFn ScoreCurve = nullptr;
+	ScoreFn EvalRawScoreFn = nullptr;
+	CurveFn ScoreCurveFn = nullptr;
 
 	float Score(const UTAgentContext& Context) const
 	{
-		float RawScore = EvalRawScore
-			? EvalRawScore(Context, Data)
+		float RawScore = EvalRawScoreFn
+			? EvalRawScoreFn(Context, Data)
 			: Normalize(Data.Raw, Data.MinRaw, Data.MaxRaw);
 
 		RawScore = std::clamp(RawScore, 0.f, 1.f);
-		return ScoreCurve ? ScoreCurve(RawScore) : RawScore;
+		return ScoreCurveFn ? ScoreCurveFn(RawScore) : RawScore;
 	}
 };
 }

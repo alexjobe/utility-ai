@@ -36,15 +36,36 @@ namespace UAI
 		return Data;
 	}
 
+	UTConsideration LoadConsideration(const sol::table& Table, UTValidationResult& Result)
+	{
+		UTConsideration Consideration;
+		LOAD_FIELD(Consideration, Key, Table, Result, true);
+		LOAD_FIELD(Consideration, EvalRawScoreFn, Table, Result, false);
+		LOAD_FIELD(Consideration, ScoreCurveFn, Table, Result, false);
+
+		if (const auto Data = ValidateField<sol::table>(Table, "Data", Result))
+		{
+			Consideration.Data = LoadEvaluationData(*Data, Result);
+		}
+
+		return Consideration;
+	}
+
 	UTEffect LoadEffect(const sol::table& Table, UTValidationResult& Result)
 	{
 		UTEffect Effect;
 		LOAD_FIELD(Effect, Key, Table, Result, true);
 		LOAD_FIELD(Effect, ConsiderationKey, Table, Result, false);
 		LOAD_FIELD(Effect, EvalRawScoreFn, Table, Result, false);
+		LOAD_FIELD(Effect, ScoreCurveFn, Table, Result, false);
 		LOAD_FIELD(Effect, bIsConsideration, Table, Result, false);
-		LOAD_FIELD(Effect, ScoreCurve, Table, Result, false);
 		LOAD_FIELD(Effect, EffectFn, Table, Result, false);
+
+		if (const auto Data = ValidateField<sol::table>(Table, "Data", Result))
+		{
+			Effect.Data = LoadEvaluationData(*Data, Result);
+		}
+
 		return Effect;
 	}
 
@@ -78,6 +99,17 @@ namespace UAI
 				if (Effect.get_type() == sol::type::table)
 				{
 					Action.AddEffect(LoadEffect(Effect, Result));
+				}
+			}
+		}
+
+		if (const auto Considerations = ValidateField<sol::table>(Table, "Considerations", Result))
+		{
+			for (auto& [_, Consideration] : *Considerations)
+			{
+				if (Consideration.get_type() == sol::type::table)
+				{
+					Action.Scorer.AddConsideration(LoadConsideration(Consideration, Result));
 				}
 			}
 		}

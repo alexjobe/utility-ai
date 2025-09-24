@@ -38,7 +38,7 @@ int main()
 
 	UTConsideration SuccessChanceCons;
 	SuccessChanceCons.Key = "SuccessChance";
-	SuccessChanceCons.EvalRawScore = [](const UTAgentContext& Ctx, const UTEvaluationData&)
+	SuccessChanceCons.EvalRawScoreFn = [](const UTAgentContext& Ctx, const UTEvaluationData&)
 		{
 			const float Strength = Ctx.GetStat(ToString(ECoreStatType::Strength));
 			const float Endurance = Ctx.GetStat(ToString(ECoreStatType::Endurance));
@@ -53,7 +53,7 @@ int main()
 	TimeCostCons.Data.Raw = 4; // Example: 4 turns, out of a max 5 
 	TimeCostCons.Data.MinRaw = 1;
 	TimeCostCons.Data.MaxRaw = 5;
-	TimeCostCons.ScoreCurve = [](float x) { return 1.f - x; }; // Lower time = better
+	TimeCostCons.ScoreCurveFn = [](float x) { return 1.f - x; }; // Lower time = better
 	TimeCostCons.Data.Weight = 0.5f;
 	RaidAction.Scorer.AddConsideration(TimeCostCons);
 

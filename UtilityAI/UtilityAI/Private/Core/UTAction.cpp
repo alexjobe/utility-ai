@@ -7,6 +7,11 @@ using namespace UAI;
 
 UTAction::UTAction(const std::string& InKey)
 {
+	SetKey(InKey);
+}
+
+void UTAction::SetKey(const std::string& InKey)
+{
 	Key = InKey;
 	Scorer.SetOwnerKey(InKey);
 }

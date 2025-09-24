@@ -18,9 +18,9 @@ bool UTScorer::AddConsideration(const UTConsideration& NewCons)
 	{
 		// Merge into existing consideration
 		It->second.Data.Weight *= NewCons.Data.Weight;
-		if (NewCons.ScoreCurve && NewCons.Data.Priority >= It->second.Data.Priority)
+		if (NewCons.ScoreCurveFn && NewCons.Data.Priority >= It->second.Data.Priority)
 		{
-			It->second.ScoreCurve = NewCons.ScoreCurve;
+			It->second.ScoreCurveFn = NewCons.ScoreCurveFn;
 			It->second.Data.Priority = NewCons.Data.Priority;
 		}
 	}
