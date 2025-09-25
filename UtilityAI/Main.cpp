@@ -25,8 +25,18 @@ int main()
 	sol::state Lua;
 	Lua.open_libraries(sol::lib::base);
 	LuaLog::RegisterLogger(Lua);
+	UAI::RegisterLuaTypes(Lua);
+	Game::RegisterLuaTypes(Lua);
 
-	LoadActionsRecursive("Scripts/Actions", Lua);
+	UTValidationResult Result;
+	LoadActionsRecursive("Scripts/Actions", Lua, Result);
+	if (!Result.bValid)
+	{
+		for (const auto& Error : Result.Errors)
+		{
+			LOG_ERROR(Error)
+		}
+	}
 
 	Character MyCharacter;
 

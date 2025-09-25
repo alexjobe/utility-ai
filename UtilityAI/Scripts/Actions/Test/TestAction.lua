@@ -9,7 +9,7 @@ function ChopWoodEffect(ctx, data)
 end
 
 Action.Key = "ChopWood"
-Action.Tags = {"Gathering"}
+Action.Tags = { "Wealth", "Aggressive" }
 
 Action.Considerations = {
     {
@@ -26,7 +26,8 @@ Action.Effects = {
         Data = { Target="Wood", Raw=2, MinRaw=0, MaxRaw=10, Weight=1.0, Priority=1 },
         bIsConsideration = true,
         EffectFn = ChopWoodEffect
-    }
+    },
+    _MakeNeedEffect(ENeedType.Wealth, 30)
 }
 
 return Action

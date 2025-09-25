@@ -3,6 +3,7 @@
 #include <Core/UTAction.h>
 #include <Core/UTActionRegistry.h>
 #include <Core/UTAgentContext.h>
+#include <Core/UTEffect.h>
 #include <filesystem>
 #include <Logging/Logger.h>
 #include <optional>
@@ -13,7 +14,7 @@ using namespace LuaUtils;
 
 namespace UAI
 {
-	void BindAgentContext(sol::state& Lua) 
+	void RegisterLuaTypes(sol::state& Lua) 
 	{
 		Lua.new_usertype<UTAgentContext>(
 			"UTAgentContext",
@@ -22,6 +23,8 @@ namespace UAI
 			"GetStat", &UTAgentContext::GetStat,
 			"SetStat", &UTAgentContext::SetStat
 		);
+
+		Lua.new_usertype<UTEffect>("UTEffect", sol::no_constructor);
 	}
 
 	UTEvaluationData LoadEvaluationData(const sol::table& Table, UTValidationResult& Result)
@@ -100,6 +103,14 @@ namespace UAI
 				{
 					Action.AddEffect(LoadEffect(Effect, Result));
 				}
+				else if (Effect.is<UTEffect>())
+				{
+					Action.AddEffect(Effect.as<UTEffect>());
+				}
+				else
+				{
+					Result.AddError("Unexpected effect type in Effects array");
+				}
 			}
 		}
 
@@ -118,9 +129,8 @@ namespace UAI
 		return Action;
 	}
 
-	void LoadActionsRecursive(const std::string& BaseDir, sol::state& Lua) 
+	void LoadActionsRecursive(const std::string& BaseDir, sol::state& Lua, UTValidationResult& Result)
 	{
-		UTValidationResult ValidationResult;
 		try 
 		{
 			for (auto& Entry : std::filesystem::recursive_directory_iterator(BaseDir)) 
@@ -136,24 +146,24 @@ namespace UAI
 					sol::load_result Script = Lua.load_file(Entry.path().string());
 					if (!Script.valid()) continue;
 
-					sol::protected_function_result Result = Script();
-					if (!Result.valid()) continue;
+					sol::protected_function_result ScriptResult = Script();
+					if (!ScriptResult.valid()) continue;
 
-					sol::table ActionTable = Result;
-					UTAction Action = LoadAction(ActionTable, ValidationResult);
+					sol::table ActionTable = ScriptResult;
+					UTAction Action = LoadAction(ActionTable, Result);
 					UTActionRegistry::Instance().Register(Action, Category);
 
 					LOG_INFO(std::format("Loaded action: {} (Category: {})", Action.GetKey(), Category))
 				}
 				catch (const std::exception& Error) 
 				{
-					ValidationResult.AddError(std::format("Failed to load action: {} Error: {}", Entry.path().string(), Error.what()));
+					Result.AddError(std::format("Failed to load action: {} Error: {}", Entry.path().string(), Error.what()));
 				}
 			}
 		}
 		catch (const std::exception& Error)
 		{
-			ValidationResult.AddError(std::format("Filesystem Error: {}", Error.what()));
+			Result.AddError(std::format("Filesystem Error: {}", Error.what()));
 		}
 	}
 

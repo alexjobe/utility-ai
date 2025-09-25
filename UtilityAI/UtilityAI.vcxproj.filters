@@ -30,6 +30,15 @@
     <ClCompile Include="UtilityAI\Private\Core\UTGoal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UtilityAI\Private\Core\UTConsideration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilityAI\Private\Core\UTFunctionRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilityAI\Private\Core\UTActionRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UtilityCore\UtilityCore.h">
@@ -93,6 +102,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UtilityAI\Public\Scripting\UTLuaLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UtilityAI\Public\Core\UTFunctionRegistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

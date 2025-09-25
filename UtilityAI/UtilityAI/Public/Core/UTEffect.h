@@ -65,8 +65,8 @@ inline void ApplyNeedChange(UTAgentContext& Context, const UTEvaluationData& Dat
 inline UTEffect NeedEffect(const std::string& Need, float Magnitude, float MinNeed = 0.f, float MaxNeed = 1.f)
 {
 	UTEffect NewEffect;
-	NewEffect.Key = "Effect_" + Need;
-	NewEffect.ConsiderationKey = "Need_" + Need;
+	NewEffect.Key = "Effect." + Need;
+	NewEffect.ConsiderationKey = "Need." + Need;
 	NewEffect.EvalRawScoreFn = UAI::ScoreNeedChange;
 	NewEffect.EffectFn = UAI::ApplyNeedChange;
 	NewEffect.Data.Target = Need;
