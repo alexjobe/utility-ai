@@ -39,42 +39,10 @@ int main()
 	}
 
 	Character MyCharacter;
+	MyCharacter.CoreStats[ECoreStatType::Strength] = 11.f;
+	MyCharacter.CoreStats[ECoreStatType::Endurance] = 7.f;
 
 	UTAgentContext MyContext = MyCharacter.CreateUtilityContext();
-
-	#if 0
-	UTAction RaidAction("Action.Raid");
-	RaidAction.AddEffect(MakeNeedEffect(ENeedType::Wealth, 30.f));
-	RaidAction.AddEffect(MakeNeedEffect(ENeedType::Survival, -10.f));
-
-	UTConsideration SuccessChanceCons;
-	SuccessChanceCons.Key = "SuccessChance";
-	SuccessChanceCons.EvalRawScoreFn = [](const UTAgentContext& Ctx, const UTEvaluationData&)
-		{
-			const float Strength = Ctx.GetStat(ToString(ECoreStatType::Strength));
-			const float Endurance = Ctx.GetStat(ToString(ECoreStatType::Endurance));
-			return (0.6f * Strength + 0.4f * Endurance);
-		};
-
-	SuccessChanceCons.Data.Weight = 1.5f;
-	RaidAction.Scorer.AddConsideration(SuccessChanceCons);
-
-	UTConsideration TimeCostCons;
-	TimeCostCons.Key = "TimeCost";
-	TimeCostCons.Data.Raw = 4; // Example: 4 turns, out of a max 5 
-	TimeCostCons.Data.MinRaw = 1;
-	TimeCostCons.Data.MaxRaw = 5;
-	TimeCostCons.ScoreCurveFn = [](float x) { return 1.f - x; }; // Lower time = better
-	TimeCostCons.Data.Weight = 0.5f;
-	RaidAction.Scorer.AddConsideration(TimeCostCons);
-
-	// Generates need considerations from effects
-	RaidAction.GenerateConsiderations();
-
-	RaidAction.Scorer.Score(MyContext);
-
-	RaidAction.Execute(MyContext);
-	#endif
 
 	if (UTAction* TestAction = UTActionRegistry::Instance().Get("Action.Raid"))
 	{

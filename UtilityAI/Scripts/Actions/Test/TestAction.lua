@@ -12,14 +12,23 @@ function SuccessChanceScore(Ctx, Data)
     return Chance
 end
 
+function TimeScoreCurve(X)
+    return 1.0 - X
+end
+
 Action.Key = "Action.Raid"
 Action.Tags = { "Wealth", "Aggressive" }
 
 Action.Considerations = {
     {
         Key = "SuccessChance",
-        Data = { Target="", Raw=0, MinRaw=0, MaxRaw=0, Weight=1.5, Priority=1 },
+        Data = { Weight=1.5 },
         EvalRawScoreFn = SuccessChanceScore
+    },
+    {
+        Key = "TimeCost",
+        Data = { Raw=4, MinRaw=1, MaxRaw=5, Weight=0.5 },
+        ScoreCurveFn = TimeScoreCurve
     }
 }
 

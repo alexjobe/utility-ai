@@ -31,7 +31,7 @@ UTAgentContext Character::CreateUtilityContext() const
 	}
 	for (const auto& [StatType, Value] : CoreStats)
 	{
-		Context.Needs[ToString(StatType)] = Value;
+		Context.Stats[ToString(StatType)] = Value;
 	}
 	return Context;
 }
