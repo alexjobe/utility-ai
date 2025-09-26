@@ -20,7 +20,7 @@ public:
 	ScoreFn EvalRawScoreFn = nullptr;
 	CurveFn ScoreCurveFn = nullptr;
 
-	bool bIsConsideration = true;
+	bool bIsConsideration = false;
 
 	std::function<void(UTAgentContext&, const UTEvaluationData&)> EffectFn = nullptr;
 
@@ -68,6 +68,7 @@ inline UTEffect NeedEffect(const std::string& Need, float Magnitude, float MinNe
 	NewEffect.Key = "Effect." + Need;
 	NewEffect.ConsiderationKey = "Need." + Need;
 	NewEffect.EvalRawScoreFn = UAI::ScoreNeedChange;
+	NewEffect.bIsConsideration = true;
 	NewEffect.EffectFn = UAI::ApplyNeedChange;
 	NewEffect.Data.Target = Need;
 	NewEffect.Data.Raw = Magnitude;

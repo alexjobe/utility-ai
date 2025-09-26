@@ -21,6 +21,15 @@ namespace Game
 			{ ToString(ENeedType::Faith), ENeedType::Faith }
 		});
 
+		Lua.new_enum<ECoreStatType>("ECoreStatType", {
+			{ ToString(ECoreStatType::Strength), ECoreStatType::Strength },
+			{ ToString(ECoreStatType::Agility), ECoreStatType::Agility },
+			{ ToString(ECoreStatType::Endurance), ECoreStatType::Endurance },
+			{ ToString(ECoreStatType::Intellect), ECoreStatType::Intellect },
+			{ ToString(ECoreStatType::Willpower), ECoreStatType::Willpower },
+			{ ToString(ECoreStatType::Charisma), ECoreStatType::Charisma },
+			});
+
 		Lua.set_function("_MakeNeedEffect", &MakeNeedEffect);
 	}
 }

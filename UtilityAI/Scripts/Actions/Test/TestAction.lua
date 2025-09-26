@@ -1,33 +1,36 @@
 local Action = {}
 
-function WoodScore(ctx, data)
-    return math.min(ctx:GetNeed("Survival"), 1.0)
+function RaidVillage(Ctx, Data)
+   print("Village was raided!")
 end
 
-function ChopWoodEffect(ctx, data)
-   print("Has wood!")
+function SuccessChanceScore(Ctx, Data)
+    local Strength = Ctx:GetStat("Strength")
+    local Endurance = Ctx:GetStat("Endurance")
+    local Chance = (0.6 * Strength + 0.4 * Endurance)
+    print("Success Chance: " .. Chance)
+    return Chance
 end
 
-Action.Key = "ChopWood"
+Action.Key = "Action.Raid"
 Action.Tags = { "Wealth", "Aggressive" }
 
 Action.Considerations = {
     {
-        Key = "WoodLow",
-        Data = { Target="Wood", Raw=0, MinRaw=0, MaxRaw=10, Weight=0.5, Priority=1 },
-        EvalRawScoreFn = WoodScore
+        Key = "SuccessChance",
+        Data = { Target="", Raw=0, MinRaw=0, MaxRaw=0, Weight=1.5, Priority=1 },
+        EvalRawScoreFn = SuccessChanceScore
     }
 }
 
 Action.Effects = {
+    _MakeNeedEffect(ENeedType.Wealth, 30),
+    _MakeNeedEffect(ENeedType.Survival, -10),
     {
-        Key = "HasWood",
-        ConsiderationKey = "Wood",
-        Data = { Target="Wood", Raw=2, MinRaw=0, MaxRaw=10, Weight=1.0, Priority=1 },
-        bIsConsideration = true,
-        EffectFn = ChopWoodEffect
+        Key = "Effect.RaidVillage",
+        EffectFn = RaidVillage,
+        bIsConsideration = false
     },
-    _MakeNeedEffect(ENeedType.Wealth, 30)
 }
 
 return Action

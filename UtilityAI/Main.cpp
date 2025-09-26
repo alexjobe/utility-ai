@@ -42,6 +42,7 @@ int main()
 
 	UTAgentContext MyContext = MyCharacter.CreateUtilityContext();
 
+	#if 0
 	UTAction RaidAction("Action.Raid");
 	RaidAction.AddEffect(MakeNeedEffect(ENeedType::Wealth, 30.f));
 	RaidAction.AddEffect(MakeNeedEffect(ENeedType::Survival, -10.f));
@@ -73,9 +74,11 @@ int main()
 	RaidAction.Scorer.Score(MyContext);
 
 	RaidAction.Execute(MyContext);
+	#endif
 
-	if (UTAction* TestAction = UTActionRegistry::Instance().Get("ChopWood"))
+	if (UTAction* TestAction = UTActionRegistry::Instance().Get("Action.Raid"))
 	{
+		TestAction->Scorer.Score(MyContext);
 		TestAction->Execute(MyContext);
 	}
 }

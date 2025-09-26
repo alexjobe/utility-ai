@@ -43,8 +43,8 @@ namespace UAI
 	{
 		UTConsideration Consideration;
 		LOAD_FIELD(Consideration, Key, Table, Result, true);
-		LOAD_FIELD(Consideration, EvalRawScoreFn, Table, Result, false);
-		LOAD_FIELD(Consideration, ScoreCurveFn, Table, Result, false);
+		LOAD_FUNCTION(Consideration, EvalRawScoreFn, Table, Result, false);
+		LOAD_FUNCTION(Consideration, ScoreCurveFn, Table, Result, false);
 
 		if (const auto Data = ValidateField<sol::table>(Table, "Data", Result))
 		{
@@ -59,10 +59,10 @@ namespace UAI
 		UTEffect Effect;
 		LOAD_FIELD(Effect, Key, Table, Result, true);
 		LOAD_FIELD(Effect, ConsiderationKey, Table, Result, false);
-		LOAD_FIELD(Effect, EvalRawScoreFn, Table, Result, false);
-		LOAD_FIELD(Effect, ScoreCurveFn, Table, Result, false);
 		LOAD_FIELD(Effect, bIsConsideration, Table, Result, false);
-		LOAD_FIELD(Effect, EffectFn, Table, Result, false);
+		LOAD_FUNCTION(Effect, EvalRawScoreFn, Table, Result, false);
+		LOAD_FUNCTION(Effect, ScoreCurveFn, Table, Result, false);
+		LOAD_FUNCTION(Effect, EffectFn, Table, Result, false);
 
 		if (const auto Data = ValidateField<sol::table>(Table, "Data", Result))
 		{
@@ -144,10 +144,21 @@ namespace UAI
 				try 
 				{
 					sol::load_result Script = Lua.load_file(Entry.path().string());
-					if (!Script.valid()) continue;
+					if (!Script.valid())
+					{
+						Result.AddError(std::format("Failed to load script: {} Error: {}",
+							Entry.path().string(), Script.get<sol::error>().what()));
+						continue;
+					}
 
 					sol::protected_function_result ScriptResult = Script();
-					if (!ScriptResult.valid()) continue;
+					if (!ScriptResult.valid())
+					{
+						sol::error Err = ScriptResult;
+						Result.AddError(std::format("Failed to execute script: {} Error: {}", 
+							Entry.path().string(), Err.what()));
+						continue;
+					}
 
 					sol::table ActionTable = ScriptResult;
 					UTAction Action = LoadAction(ActionTable, Result);
@@ -157,7 +168,8 @@ namespace UAI
 				}
 				catch (const std::exception& Error) 
 				{
-					Result.AddError(std::format("Failed to load action: {} Error: {}", Entry.path().string(), Error.what()));
+					Result.AddError(std::format("Failed to load action: {} Error: {}", 
+						Entry.path().string(), Error.what()));
 				}
 			}
 		}
@@ -166,5 +178,4 @@ namespace UAI
 			Result.AddError(std::format("Filesystem Error: {}", Error.what()));
 		}
 	}
-
 }
