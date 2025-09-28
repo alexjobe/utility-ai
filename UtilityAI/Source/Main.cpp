@@ -1,18 +1,12 @@
-#define SOL_ALL_SAFETIES_ON 1
-
 #include "Core/UTAction.h"
-#include "Core/UTAgentContext.h"
-#include "Core/UTScorer.h"
 #include "Game/Character.h"
 #include "Game/GameHelpers.h"
-#include "Game/StatTypes.h"
-#include "Logging/Logger.h"
-#include <Core/UTActionRegistry.h>
-#include <memory>
+#include <EditorApp.h>
+#include <Logging/Logger.h>
 #include <Scripting/UTLuaLoader.h>
 #include <Scripting/UTLuaLogger.h>
-#include <sol/sol.hpp>
-#include <string>
+#include <sol.hpp>
+#define SOL_ALL_SAFETIES_ON 1
 
 using namespace UAI;
 using namespace Game;
@@ -49,4 +43,14 @@ int main()
 		TestAction->Scorer.Score(MyContext);
 		TestAction->Execute(MyContext);
 	}
+
+	EditorApp App;
+	if (!App.Init())
+	{
+		return -1;
+	}
+
+	App.Run();
+
+	return 0;
 }

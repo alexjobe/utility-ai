@@ -73,25 +73,25 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include;$(ProjectDir)UtilityAI\Public;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Include;$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include\SDL3;$(ProjectDir)Extern\imgui;$(ProjectDir)Extern\imgui\backends;$(ProjectDir)Source\UtilityAI\Public;$(ProjectDir)Source\Editor\Public;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include;$(ProjectDir)UtilityAI\Public;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Include;$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include\SDL3;$(ProjectDir)Extern\imgui;$(ProjectDir)Extern\imgui\backends;$(ProjectDir)Source\UtilityAI\Public;$(ProjectDir)Source\Editor\Public;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include;$(ProjectDir)UtilityAI\Public;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Include;$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include\SDL3;$(ProjectDir)Extern\imgui;$(ProjectDir)Extern\imgui\backends;$(ProjectDir)Source\UtilityAI\Public;$(ProjectDir)Source\Editor\Public;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include;$(ProjectDir)UtilityAI\Public;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Include;$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include\SDL3;$(ProjectDir)Extern\imgui;$(ProjectDir)Extern\imgui\backends;$(ProjectDir)Source\UtilityAI\Public;$(ProjectDir)Source\Editor\Public;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -105,7 +105,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua54.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -121,7 +121,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua54.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -135,7 +135,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua54.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,39 +151,58 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lua54.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Game\Character.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="UtilityAI\Private\Core\UTAction.cpp" />
-    <ClCompile Include="UtilityAI\Private\Core\UTActionRegistry.cpp" />
-    <ClCompile Include="UtilityAI\Private\Core\UTConsideration.cpp" />
-    <ClCompile Include="UtilityAI\Private\Core\UTFunctionRegistry.cpp" />
-    <ClCompile Include="UtilityAI\Private\Core\UTGoal.cpp" />
-    <ClCompile Include="UtilityAI\Private\Core\UTScorer.cpp" />
+    <ClCompile Include="Extern\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Extern\imgui\backends\imgui_impl_sdl3.cpp" />
+    <ClCompile Include="Extern\imgui\imgui.cpp" />
+    <ClCompile Include="Extern\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Extern\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Extern\imgui\imgui_tables.cpp" />
+    <ClCompile Include="Extern\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Editor\Private\EditorApp.cpp" />
+    <ClCompile Include="Source\Game\Character.cpp" />
+    <ClCompile Include="Source\glad.c" />
+    <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTAction.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTActionRegistry.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTConsideration.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTFunctionRegistry.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTGoal.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTScorer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game\Character.h" />
-    <ClInclude Include="Game\GameHelpers.h" />
+    <ClInclude Include="Extern\imgui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="Extern\imgui\backends\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Extern\imgui\backends\imgui_impl_sdl3.h" />
+    <ClInclude Include="Extern\imgui\imconfig.h" />
+    <ClInclude Include="Extern\imgui\imgui.h" />
+    <ClInclude Include="Extern\imgui\imgui_internal.h" />
+    <ClInclude Include="Extern\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Extern\imgui\imstb_textedit.h" />
+    <ClInclude Include="Extern\imgui\imstb_truetype.h" />
+    <ClInclude Include="Source\Editor\Public\EditorApp.h" />
+    <ClInclude Include="Source\Game\Character.h" />
+    <ClInclude Include="Source\Game\GameHelpers.h" />
     <ClInclude Include="Game\Helpers.h" />
-    <ClInclude Include="Game\StatTypes.h" />
-    <ClInclude Include="UtilityAI\Public\Core\UTAction.h" />
-    <ClInclude Include="UtilityAI\Public\Core\UTActionRegistry.h" />
-    <ClInclude Include="UtilityAI\Public\Core\UTAgentContext.h" />
-    <ClInclude Include="UtilityAI\Public\Core\UTConsideration.h" />
-    <ClInclude Include="UtilityAI\Public\Core\UTFunctionRegistry.h" />
-    <ClInclude Include="UtilityAI\Public\Core\UTScorer.h" />
-    <ClInclude Include="UtilityAI\Public\Core\UTEffect.h" />
-    <ClInclude Include="UtilityAI\Public\Core\UTGoal.h" />
-    <ClInclude Include="UtilityAI\Public\Core\UTTrait.h" />
-    <ClInclude Include="UtilityAI\Public\Logging\Logger.h" />
-    <ClInclude Include="UtilityAI\Public\Math\Curves.h" />
-    <ClInclude Include="UtilityAI\Public\Math\Math.h" />
-    <ClInclude Include="UtilityAI\Public\Scripting\UTLuaLoader.h" />
-    <ClInclude Include="UtilityAI\Public\Scripting\UTLuaLogger.h" />
-    <ClInclude Include="UtilityAI\Public\Scripting\UTLuaUtils.h" />
+    <ClInclude Include="Source\Game\StatTypes.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTAction.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTActionRegistry.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTAgentContext.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTConsideration.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTFunctionRegistry.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTScorer.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTEffect.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTGoal.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTTrait.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Logging\Logger.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Math\Curves.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Math\Math.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Scripting\UTLuaLoader.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Scripting\UTLuaLogger.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Scripting\UTLuaUtils.h" />
     <ClInclude Include="UtilityCore\Math\Curves.h" />
     <ClInclude Include="UtilityCore\Math\Math.h" />
     <ClInclude Include="UtilityCore\UtilityCore.h" />

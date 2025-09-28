@@ -15,28 +15,55 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="Source\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Character.cpp">
+    <ClCompile Include="Source\Game\Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UtilityAI\Private\Core\UTAction.cpp">
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UtilityAI\Private\Core\UTScorer.cpp">
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTScorer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UtilityAI\Private\Core\UTGoal.cpp">
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTGoal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UtilityAI\Private\Core\UTConsideration.cpp">
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTConsideration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UtilityAI\Private\Core\UTFunctionRegistry.cpp">
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTFunctionRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UtilityAI\Private\Core\UTActionRegistry.cpp">
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTActionRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Extern\imgui\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Extern\imgui\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Extern\imgui\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Extern\imgui\imgui_tables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Extern\imgui\imgui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Extern\imgui\backends\imgui_impl_opengl3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Extern\imgui\backends\imgui_impl_sdl3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\Private\EditorApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,61 +77,91 @@
     <ClInclude Include="UtilityCore\Math\Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Math\Curves.h">
+    <ClInclude Include="Source\UtilityAI\Public\Math\Curves.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Math\Math.h">
+    <ClInclude Include="Source\UtilityAI\Public\Math\Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Character.h">
+    <ClInclude Include="Source\Game\Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\StatTypes.h">
+    <ClInclude Include="Source\Game\StatTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\Helpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameHelpers.h">
+    <ClInclude Include="Source\Game\GameHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Core\UTAction.h">
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Core\UTTrait.h">
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTTrait.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Logging\Logger.h">
+    <ClInclude Include="Source\UtilityAI\Public\Logging\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Core\UTEffect.h">
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTEffect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Core\UTGoal.h">
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTGoal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Core\UTScorer.h">
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTScorer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Core\UTConsideration.h">
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTConsideration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Core\UTActionRegistry.h">
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTActionRegistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Core\UTAgentContext.h">
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTAgentContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Scripting\UTLuaLoader.h">
+    <ClInclude Include="Source\UtilityAI\Public\Scripting\UTLuaLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Scripting\UTLuaUtils.h">
+    <ClInclude Include="Source\UtilityAI\Public\Scripting\UTLuaUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Scripting\UTLuaLogger.h">
+    <ClInclude Include="Source\UtilityAI\Public\Scripting\UTLuaLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityAI\Public\Core\UTFunctionRegistry.h">
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTFunctionRegistry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\imgui\imstb_truetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\imgui\imconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\imgui\imgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\imgui\imgui_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\imgui\imstb_rectpack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\imgui\imstb_textedit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\imgui\backends\imgui_impl_opengl3_loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\imgui\backends\imgui_impl_opengl3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern\imgui\backends\imgui_impl_sdl3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Public\EditorApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
