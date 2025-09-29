@@ -1,7 +1,7 @@
 #include "Core/UTAction.h"
 #include "Game/Character.h"
 #include "Game/GameHelpers.h"
-#include <EditorApp.h>
+#include <UTEditorApp.h>
 #include <Logging/Logger.h>
 #include <Scripting/UTLuaLoader.h>
 #include <Scripting/UTLuaLogger.h>
@@ -11,6 +11,7 @@
 using namespace UAI;
 using namespace Game;
 using namespace Log;
+using namespace UTEditor;
 
 int main()
 {
@@ -44,7 +45,7 @@ int main()
 		TestAction->Execute(MyContext);
 	}
 
-	EditorApp App;
+	UTEditorApp App;
 	if (!App.Init())
 	{
 		return -1;

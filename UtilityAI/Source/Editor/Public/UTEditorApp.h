@@ -1,16 +1,20 @@
 #pragma once
 #include <SDL3/SDL.h>
+#include <UTWindowManager.h>
 
-class EditorApp {
+namespace UTEditor
+{
+class UTEditorApp {
 public:
-	EditorApp();
-	~EditorApp();
+	UTEditorApp();
+	~UTEditorApp();
 
 	bool Init();
 	void Run();
 	void Shutdown();
 
 private:
+	bool HandleEvent(const SDL_Event& Event);
 	void BeginFrame();
 	void EndFrame();
 	void RenderUI();
@@ -19,4 +23,8 @@ private:
 	SDL_Window* Window_ = nullptr;
 	SDL_GLContext GLContext_ = nullptr;
 	bool bRunning_ = false;
+	float FontScale_ = 2.0f;
+
+	UTWindowManager WindowManager;
 };
+}

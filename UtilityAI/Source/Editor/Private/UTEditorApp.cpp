@@ -1,4 +1,4 @@
-#include "EditorApp.h"
+#include "UTEditorApp.h"
 
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_sdl3.h>
@@ -6,10 +6,12 @@
 #include <imgui.h>
 #include <Logging/Logger.h>
 
-EditorApp::EditorApp() = default;
-EditorApp::~EditorApp() { Shutdown(); }
+using namespace UTEditor;
 
-bool EditorApp::Init()
+UTEditorApp::UTEditorApp() = default;
+UTEditorApp::~UTEditorApp() { Shutdown(); }
+
+bool UTEditorApp::Init()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) == false)
 	{
@@ -57,6 +59,8 @@ bool EditorApp::Init()
 	IO.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	IO.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
+	IO.FontGlobalScale = FontScale_;
+
 	ImGui::StyleColorsDark();
 
 	// Adjust style for viewports (makes extra windows look like main window)
@@ -70,24 +74,24 @@ bool EditorApp::Init()
 	ImGui_ImplSDL3_InitForOpenGL(Window_, GLContext_);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
+	WindowManager.Add("Demo", [] { ImGui::ShowDemoWindow(); });
+	WindowManager.Add("Inspector", [] { ImGui::Text("Inspector panel coming soon!"); });
+	WindowManager.Add("Log", [] { ImGui::Text("Log messages..."); });
+
 	SDL_ShowWindow(Window_);
 
 	bRunning_ = true;
 	return true;
 }
 
-void EditorApp::Run()
+void UTEditorApp::Run()
 {
 	while (bRunning_) 
 	{
 		SDL_Event Event;
 		while (SDL_PollEvent(&Event)) 
 		{
-			ImGui_ImplSDL3_ProcessEvent(&Event);
-			if (Event.type == SDL_EVENT_QUIT)
-			{
-				bRunning_ = false;
-			}
+			HandleEvent(Event);
 		}
 
 		BeginFrame();
@@ -96,20 +100,47 @@ void EditorApp::Run()
 	}
 }
 
-void EditorApp::BeginFrame()
+bool UTEditorApp::HandleEvent(const SDL_Event& Event)
+{
+	// Always let ImGui process events first
+	ImGui_ImplSDL3_ProcessEvent(&Event);
+
+	switch (Event.type)
+	{
+	case SDL_EVENT_QUIT:
+		bRunning_ = false;
+		return true;
+
+	case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
+		// Quit only if it's the main SDL window
+		if (Event.window.windowID == SDL_GetWindowID(Window_))
+		{
+			bRunning_ = false;
+			return true;
+		}
+		break;
+
+	default:
+		break;
+	}
+
+	return false; // not consumed
+}
+
+void UTEditorApp::BeginFrame()
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL3_NewFrame();
 	ImGui::NewFrame();
 }
 
-void EditorApp::RenderUI()
+void UTEditorApp::RenderUI()
 {
 	RenderDockSpace();
-	ImGui::ShowDemoWindow();
+	WindowManager.RenderWindows();
 }
 
-void EditorApp::EndFrame()
+void UTEditorApp::EndFrame()
 {
 	ImGuiIO& IO = ImGui::GetIO();
 
@@ -133,7 +164,7 @@ void EditorApp::EndFrame()
 	SDL_GL_SwapWindow(Window_);
 }
 
-void EditorApp::RenderDockSpace()
+void UTEditorApp::RenderDockSpace()
 {
 	static ImGuiDockNodeFlags DockspaceFlags = ImGuiDockNodeFlags_None;
 	ImGuiWindowFlags WindowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -150,12 +181,26 @@ void EditorApp::RenderDockSpace()
 	ImGui::Begin("DockSpace Demo", nullptr, WindowFlags);
 	ImGui::PopStyleVar(2);
 
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Exit", "Alt+F4")) // show hotkey hint
+			{
+				bRunning_ = false;
+			}
+			ImGui::EndMenu();
+		}
+		WindowManager.RenderMenu();
+		ImGui::EndMenuBar();
+	}
+
 	ImGuiID DockspaceId = ImGui::GetID("MyDockSpace");
 	ImGui::DockSpace(DockspaceId, ImVec2(0.0f, 0.0f), DockspaceFlags);
 	ImGui::End();
 }
 
-void EditorApp::Shutdown()
+void UTEditorApp::Shutdown()
 {
 	if (GLContext_ || Window_) 
 	{

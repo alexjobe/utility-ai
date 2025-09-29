@@ -63,7 +63,10 @@
     <ClCompile Include="Extern\imgui\backends\imgui_impl_sdl3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Editor\Private\EditorApp.cpp">
+    <ClCompile Include="Source\Editor\Private\UTEditorApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Editor\Private\UTWindowManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -161,7 +164,10 @@
     <ClInclude Include="Extern\imgui\backends\imgui_impl_sdl3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Editor\Public\EditorApp.h">
+    <ClInclude Include="Source\Editor\Public\UTEditorApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Public\UTWindowManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
