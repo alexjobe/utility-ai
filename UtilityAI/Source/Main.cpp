@@ -1,11 +1,12 @@
 #include "Core/UTAction.h"
 #include "Game/Character.h"
 #include "Game/GameHelpers.h"
-#include <UTEditorApp.h>
+#include <Core/UTEffectTypes.h>
 #include <Logging/Logger.h>
 #include <Scripting/UTLuaLoader.h>
 #include <Scripting/UTLuaLogger.h>
 #include <sol.hpp>
+#include <UTEditorApp.h>
 #define SOL_ALL_SAFETIES_ON 1
 
 using namespace UAI;
@@ -16,6 +17,8 @@ using namespace UTEditor;
 int main()
 {
 	Logger::Instance().AddSink(std::make_shared<ConsoleSink>(EVerbosity::Minimal));
+
+	UAI::RegisterEffectTypes();
 
 	sol::state Lua;
 	Lua.open_libraries(sol::lib::base);
@@ -52,6 +55,9 @@ int main()
 	}
 
 	App.Run();
+
+	UTActionRegistry::Instance().ClearAll();
+	UTFunctionRegistry::Instance().Clear();
 
 	return 0;
 }

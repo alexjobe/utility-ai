@@ -4,7 +4,7 @@
 #include <functional>
 
 using CurveFnSig = float(float);
-using CurveFn = std::function<CurveFnSig>;
+using CurveFnType = std::function<CurveFnSig>;
 
 namespace UAI
 {

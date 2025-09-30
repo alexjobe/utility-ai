@@ -1,6 +1,7 @@
 #pragma once
 #include "Core/UTEffect.h"
 #include "StatTypes.h"
+#include <Core/UTEffectTypes.h>
 #include <sol.hpp>
 
 namespace Game

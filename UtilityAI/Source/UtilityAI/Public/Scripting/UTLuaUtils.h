@@ -56,12 +56,14 @@ namespace LuaUtils
 
 	// Wraps a Lua function in a std::function<Sig>
 	template <typename Sig>
-	std::function<Sig> WrapLuaFunction(sol::function Fn, const std::string& Field)
+	std::function<Sig> WrapLuaFunction(sol::function Fn, const std::string& DebugName)
 	{
+		using ResultType = typename std::function<Sig>::result_type;
+
 		return std::function<Sig>
 		{
 			// Lambda that matches signature Sig
-			[Fn = std::move(Fn), Field](auto&&... Args) -> decltype(auto)
+			[Fn = std::move(Fn), DebugName](auto&&... Args) -> decltype(auto)
 			{
 				// Call the Lua function with perfectly-forwarded arguments
 				sol::protected_function_result FnResult = Fn(std::forward<decltype(Args)>(Args)...);
@@ -69,10 +71,8 @@ namespace LuaUtils
 				if (!FnResult.valid())
 				{
 					sol::error Err = FnResult;
-					LOG_ERROR(std::format("Error calling Lua function field '{}': {}", Field, std::string(Err.what())))
+					LOG_ERROR(std::format("Error calling Lua function '{}': {}", DebugName, std::string(Err.what())))
 				}
-
-				using ResultType = typename std::function<Sig>::result_type;
 
 				if constexpr (std::is_void_v<ResultType>)
 				{

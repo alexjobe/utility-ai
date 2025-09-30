@@ -12,9 +12,9 @@ _RegisterScoreFunction("SuccessChanceScore", function (Ctx, Data)
     return Chance
 end)
 
-function TimeScoreCurve(X)
+_RegisterCurveFunction("TimeScoreCurve", function (X)
     return 1.0 - X
-end
+end)
 
 Action.Key = "Action.Raid"
 Action.Tags = { "Wealth", "Aggressive" }
@@ -36,7 +36,8 @@ Action.Effects = {
     _MakeNeedEffect(ENeedType.Survival, -10),
     {
         Key = "Effect.RaidVillage",
-        bIsConsideration = false
+        bIsConsideration = false,
+        EffectFnKey = "RaidVillage"
     },
 }
 

@@ -1,10 +1,38 @@
+#include "Core/UTFunctionRegistry.h"
 #include "Logging/Logger.h"
+#include "Math/Curves.h"
 #include "Math/Math.h"
 #include <algorithm>
 #include <Core/UTConsideration.h>
 #include <format>
 
 using namespace UAI;
+
+void UTConsideration::SetRawScoreFnKey(const std::string& InKey)
+{
+	RawScoreFnKey = InKey;
+	if (!InKey.empty())
+	{
+		RawScoreFn = UTFunctionRegistry::Instance().Get<ScoreFnSig>(InKey);
+	}
+	else
+	{
+		RawScoreFn = nullptr;
+	}
+}
+
+void UTConsideration::SetScoreCurveFnKey(const std::string& InKey)
+{
+	ScoreCurveFnKey = InKey;
+	if (!InKey.empty())
+	{
+		ScoreCurveFn = UTFunctionRegistry::Instance().Get<CurveFnSig>(InKey);
+	}
+	else
+	{
+		ScoreCurveFn = nullptr;
+	}
+}
 
 void UTEvaluationData::DebugPrint()
 {
@@ -19,19 +47,38 @@ void UTEvaluationData::DebugPrint()
 
 float UTConsideration::Score(const UTAgentContext& Context) const
 {
-	float RawScore = EvalRawScoreFn
-		? EvalRawScoreFn(Context, Data)
+	float RawScore = RawScoreFn
+		? EvalRawScore(Context, Data)
 		: Normalize(Data.Raw, Data.MinRaw, Data.MaxRaw);
 
-	RawScore = std::clamp(RawScore, 0.f, 1.f);
-	return ScoreCurveFn ? ScoreCurveFn(RawScore) : RawScore;
+	return ScoreCurveFn ? EvalScoreCurve(RawScore) : RawScore;
 }
 
 void UTConsideration::DebugPrint()
 {
 	LOG_INFO("-- Consideration --")
 	LOG_INFO(std::format("Key: {}", Key))
-	LOG_INFO(std::format("EvalRawScoreFn: {}", EvalRawScoreFn.target_type().name()))
-	LOG_INFO(std::format("ScoreCurveFn: {}", ScoreCurveFn.target_type().name()))
+	LOG_INFO(std::format("RawScoreFn: {}", RawScoreFnKey))
+	LOG_INFO(std::format("ScoreCurveFn: {}", ScoreCurveFnKey))
 	Data.DebugPrint();
+}
+
+float UTConsideration::EvalRawScore(const UTAgentContext& Context, const UTEvaluationData& Data) const
+{
+	if (RawScoreFn && *RawScoreFn) 
+	{
+		const float RawScore = (*RawScoreFn)(Context, Data);
+		return std::clamp(RawScore, 0.f, 1.f);
+	}
+	return 0.0f;
+}
+
+float UTConsideration::EvalScoreCurve(float X) const
+{
+	if (ScoreCurveFn && *ScoreCurveFn) 
+	{
+		const float CurveScore = (*ScoreCurveFn)(X);
+		return std::clamp(CurveScore, 0.f, 1.f);
+	}
+	return 0.0f;
 }

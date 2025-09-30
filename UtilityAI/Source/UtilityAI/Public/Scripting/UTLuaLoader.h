@@ -73,8 +73,16 @@ namespace UAI
 	{
 		UTConsideration Consideration;
 		LOAD_FIELD(Consideration, Key, Table, Result, true);
-		LOAD_FUNCTION(Consideration, EvalRawScoreFn, Table, Result, false);
-		LOAD_FUNCTION(Consideration, ScoreCurveFn, Table, Result, false);
+
+		if (const auto RawScoreFnKey = ValidateField<std::string>(Table, "RawScoreFnKey", Result))
+		{
+			Consideration.SetRawScoreFnKey(*RawScoreFnKey);
+		}
+
+		if (const auto ScoreCurveFnKey = ValidateField<std::string>(Table, "ScoreCurveFnKey", Result))
+		{
+			Consideration.SetScoreCurveFnKey(*ScoreCurveFnKey);
+		}
 
 		if (const auto Data = ValidateField<sol::table>(Table, "Data", Result))
 		{
@@ -90,9 +98,21 @@ namespace UAI
 		LOAD_FIELD(Effect, Key, Table, Result, true);
 		LOAD_FIELD(Effect, ConsiderationKey, Table, Result, false);
 		LOAD_FIELD(Effect, bIsConsideration, Table, Result, false);
-		LOAD_FUNCTION(Effect, EvalRawScoreFn, Table, Result, false);
-		LOAD_FUNCTION(Effect, ScoreCurveFn, Table, Result, false);
-		LOAD_FUNCTION(Effect, EffectFn, Table, Result, false);
+
+		if (const auto RawScoreFnKey = ValidateField<std::string>(Table, "RawScoreFnKey", Result))
+		{
+			Effect.SetRawScoreFnKey(*RawScoreFnKey);
+		}
+
+		if (const auto ScoreCurveFnKey = ValidateField<std::string>(Table, "ScoreCurveFnKey", Result))
+		{
+			Effect.SetScoreCurveFnKey(*ScoreCurveFnKey);
+		}
+
+		if (const auto EffectFnKey = ValidateField<std::string>(Table, "EffectFnKey", Result))
+		{
+			Effect.SetEffectFnKey(*EffectFnKey);
+		}
 
 		if (const auto Data = ValidateField<sol::table>(Table, "Data", Result))
 		{

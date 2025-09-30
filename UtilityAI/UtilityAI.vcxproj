@@ -170,6 +170,7 @@
     <ClCompile Include="Source\UtilityAI\Private\Core\UTAction.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Core\UTActionRegistry.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Core\UTConsideration.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTEffect.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Core\UTFunctionRegistry.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Core\UTGoal.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Core\UTScorer.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Source\UtilityAI\Public\Core\UTActionRegistry.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTAgentContext.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTConsideration.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTEffectTypes.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTFunctionRegistry.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTScorer.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTEffect.h" />

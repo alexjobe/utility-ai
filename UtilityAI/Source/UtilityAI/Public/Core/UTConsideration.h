@@ -19,16 +19,28 @@ struct UTEvaluationData
 };
 
 using ScoreFnSig = float(const UTAgentContext&, const UTEvaluationData&);
-using ScoreFn = std::function<ScoreFnSig>;
+using ScoreFnType = std::function<ScoreFnSig>;
 
 struct UTConsideration
 {
 	std::string Key;
 	UTEvaluationData Data;
-	ScoreFn EvalRawScoreFn = nullptr;
-	CurveFn ScoreCurveFn = nullptr;
+
+	void SetRawScoreFnKey(const std::string& InKey);
+	void SetScoreCurveFnKey(const std::string& InKey);
+	std::string GetRawScoreFnKey() const { return RawScoreFnKey; }
+	std::string GetScoreCurveFnKey() const { return ScoreCurveFnKey; }
 
 	float Score(const UTAgentContext& Context) const;
 	void DebugPrint();
+
+private:
+	std::string RawScoreFnKey;
+	std::string ScoreCurveFnKey;
+	const ScoreFnType* RawScoreFn = nullptr;
+	const CurveFnType* ScoreCurveFn = nullptr;
+
+	float EvalRawScore(const UTAgentContext& Context, const UTEvaluationData& Data) const;
+	float EvalScoreCurve(float X) const;
 };
 }
