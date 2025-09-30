@@ -3,7 +3,8 @@
 #include <cmath>
 #include <functional>
 
-using CurveFn = std::function<float(float)>;
+using CurveFnSig = float(float);
+using CurveFn = std::function<CurveFnSig>;
 
 namespace UAI
 {

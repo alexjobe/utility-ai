@@ -11,6 +11,8 @@
 
 namespace UAI
 {
+using EffectFnSig = void(UTAgentContext&, const UTEvaluationData&);
+
 class UTEffect
 {
 public:
@@ -22,7 +24,7 @@ public:
 
 	bool bIsConsideration = false;
 
-	std::function<void(UTAgentContext&, const UTEvaluationData&)> EffectFn = nullptr;
+	std::function<EffectFnSig> EffectFn = nullptr;
 
 	void Apply(UTAgentContext& Context) const
 	{

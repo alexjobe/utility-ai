@@ -61,7 +61,7 @@ namespace LuaUtils
 		return std::function<Sig>
 		{
 			// Lambda that matches signature Sig
-			[Fn, Field](auto&&... Args) -> decltype(auto)
+			[Fn = std::move(Fn), Field](auto&&... Args) -> decltype(auto)
 			{
 				// Call the Lua function with perfectly-forwarded arguments
 				sol::protected_function_result FnResult = Fn(std::forward<decltype(Args)>(Args)...);

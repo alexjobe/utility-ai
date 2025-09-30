@@ -2,6 +2,11 @@
 
 using namespace UAI;
 
+UTActionRegistry::~UTActionRegistry()
+{
+	ClearAll();
+}
+
 UTActionRegistry& UTActionRegistry::Instance()
 {
 	static UTActionRegistry Singleton;

@@ -18,7 +18,8 @@ struct UTEvaluationData
 	void DebugPrint();
 };
 
-using ScoreFn = std::function<float(const UTAgentContext&, const UTEvaluationData&)>;
+using ScoreFnSig = float(const UTAgentContext&, const UTEvaluationData&);
+using ScoreFn = std::function<ScoreFnSig>;
 
 struct UTConsideration
 {

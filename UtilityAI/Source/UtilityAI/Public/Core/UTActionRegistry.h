@@ -28,7 +28,7 @@ private:
 	std::unordered_map<std::string, std::unordered_set<std::string>> Categories;
 
 	UTActionRegistry() = default;
-	~UTActionRegistry() = default;
+	~UTActionRegistry();
 	UTActionRegistry(const UTActionRegistry&) = delete;
 	UTActionRegistry& operator=(const UTActionRegistry&) = delete;
 	UTActionRegistry(UTActionRegistry&&) = delete;

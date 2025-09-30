@@ -1,16 +1,16 @@
 local Action = {}
 
-function RaidVillage(Ctx, Data)
+_RegisterEffectFunction("RaidVillage", function (Ctx, Data)
    print("Village was raided!")
-end
+end)
 
-function SuccessChanceScore(Ctx, Data)
+_RegisterScoreFunction("SuccessChanceScore", function (Ctx, Data)
     local Strength = Ctx:GetStat("Strength")
     local Endurance = Ctx:GetStat("Endurance")
     local Chance = (0.6 * Strength + 0.4 * Endurance)
     print("Success Chance: " .. Chance)
     return Chance
-end
+end)
 
 function TimeScoreCurve(X)
     return 1.0 - X
@@ -22,8 +22,7 @@ Action.Tags = { "Wealth", "Aggressive" }
 Action.Considerations = {
     {
         Key = "SuccessChance",
-        Data = { Weight=1.5 },
-        EvalRawScoreFn = SuccessChanceScore
+        Data = { Weight=1.5 }
     },
     {
         Key = "TimeCost",
@@ -37,7 +36,6 @@ Action.Effects = {
     _MakeNeedEffect(ENeedType.Survival, -10),
     {
         Key = "Effect.RaidVillage",
-        EffectFn = RaidVillage,
         bIsConsideration = false
     },
 }

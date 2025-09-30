@@ -1,8 +1,10 @@
 #pragma once
+#include "Core/UTFunctionRegistry.h"
 #include "UTLuaUtils.h"
 #include <Core/UTAction.h>
 #include <Core/UTActionRegistry.h>
 #include <Core/UTAgentContext.h>
+#include <Core/UTConsideration.h>
 #include <Core/UTEffect.h>
 #include <filesystem>
 #include <Logging/Logger.h>
@@ -14,6 +16,30 @@ using namespace LuaUtils;
 
 namespace UAI
 {
+	void RegisterScoreFunction(const std::string& Key, sol::function Fn)
+	{
+		UTFunctionRegistry::Instance().Register<ScoreFnSig>(
+			Key, 
+			WrapLuaFunction<ScoreFnSig>(std::move(Fn), Key)
+		);
+	}
+
+	void RegisterEffectFunction(const std::string& Key, sol::function Fn)
+	{
+		UTFunctionRegistry::Instance().Register<EffectFnSig>(
+			Key, 
+			WrapLuaFunction<EffectFnSig>(std::move(Fn), Key)
+		);
+	}
+
+	void RegisterCurveFunction(const std::string& Key, sol::function Fn)
+	{
+		UTFunctionRegistry::Instance().Register<CurveFnSig>(
+			Key,
+			WrapLuaFunction<CurveFnSig>(std::move(Fn), Key)
+		);
+	}
+
 	void RegisterLuaTypes(sol::state& Lua) 
 	{
 		Lua.new_usertype<UTAgentContext>(
@@ -25,6 +51,10 @@ namespace UAI
 		);
 
 		Lua.new_usertype<UTEffect>("UTEffect", sol::no_constructor);
+
+		Lua.set_function("_RegisterScoreFunction", &UAI::RegisterScoreFunction);
+		Lua.set_function("_RegisterEffectFunction", &UAI::RegisterEffectFunction);
+		Lua.set_function("_RegisterCurveFunction", &UAI::RegisterCurveFunction);
 	}
 
 	UTEvaluationData LoadEvaluationData(const sol::table& Table, UTValidationResult& Result)
@@ -155,8 +185,14 @@ namespace UAI
 					if (!ScriptResult.valid())
 					{
 						sol::error Err = ScriptResult;
-						Result.AddError(std::format("Failed to execute script: {} Error: {}", 
+						Result.AddError(std::format("Failed to execute script: {} Error: {}",
 							Entry.path().string(), Err.what()));
+						continue;
+					}
+
+					if (ScriptResult.get_type() != sol::type::table) {
+						Result.AddError(std::format("Script did not return a table: {}",
+							Entry.path().string()));
 						continue;
 					}
 
