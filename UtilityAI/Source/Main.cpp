@@ -6,13 +6,14 @@
 #include <Scripting/UTLuaLoader.h>
 #include <Scripting/UTLuaLogger.h>
 #include <sol.hpp>
-#include <UTEditorApp.h>
+#include <UIEditorApp.h>
+#include <Editor/UTActionsPanel.h>
 #define SOL_ALL_SAFETIES_ON 1
 
 using namespace UAI;
 using namespace Game;
 using namespace Log;
-using namespace UTEditor;
+using namespace UI;
 
 int main()
 {
@@ -48,11 +49,13 @@ int main()
 		TestAction->Execute(MyContext);
 	}
 
-	UTEditorApp App;
+	UIEditorApp App;
 	if (!App.Init())
 	{
 		return -1;
 	}
+
+	App.GetWindowManager().AddPanel(std::make_unique<UTActionsPanel>());
 
 	App.Run();
 

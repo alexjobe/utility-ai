@@ -162,8 +162,8 @@
     <ClCompile Include="Extern\imgui\imgui_draw.cpp" />
     <ClCompile Include="Extern\imgui\imgui_tables.cpp" />
     <ClCompile Include="Extern\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="Source\Editor\Private\UTEditorApp.cpp" />
-    <ClCompile Include="Source\Editor\Private\UTWindowManager.cpp" />
+    <ClCompile Include="Source\Editor\Private\UIEditorApp.cpp" />
+    <ClCompile Include="Source\Editor\Private\UIWindowManager.cpp" />
     <ClCompile Include="Source\Game\Character.cpp" />
     <ClCompile Include="Source\glad.c" />
     <ClCompile Include="Source\Main.cpp" />
@@ -174,6 +174,7 @@
     <ClCompile Include="Source\UtilityAI\Private\Core\UTFunctionRegistry.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Core\UTGoal.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Core\UTScorer.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\Editor\UTActionsPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Extern\imgui\backends\imgui_impl_opengl3.h" />
@@ -185,8 +186,9 @@
     <ClInclude Include="Extern\imgui\imstb_rectpack.h" />
     <ClInclude Include="Extern\imgui\imstb_textedit.h" />
     <ClInclude Include="Extern\imgui\imstb_truetype.h" />
-    <ClInclude Include="Source\Editor\Public\UTEditorApp.h" />
-    <ClInclude Include="Source\Editor\Public\UTWindowManager.h" />
+    <ClInclude Include="Source\Editor\Public\UIEditorApp.h" />
+    <ClInclude Include="Source\Editor\Public\UIEditorPanel.h" />
+    <ClInclude Include="Source\Editor\Public\UIWindowManager.h" />
     <ClInclude Include="Source\Game\Character.h" />
     <ClInclude Include="Source\Game\GameHelpers.h" />
     <ClInclude Include="Game\Helpers.h" />
@@ -201,6 +203,7 @@
     <ClInclude Include="Source\UtilityAI\Public\Core\UTEffect.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTGoal.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTTrait.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Editor\UTActionsPanel.h" />
     <ClInclude Include="Source\UtilityAI\Public\Logging\Logger.h" />
     <ClInclude Include="Source\UtilityAI\Public\Math\Curves.h" />
     <ClInclude Include="Source\UtilityAI\Public\Math\Math.h" />

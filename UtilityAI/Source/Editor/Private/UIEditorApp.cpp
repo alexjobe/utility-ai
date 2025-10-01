@@ -1,4 +1,4 @@
-#include "UTEditorApp.h"
+#include "UIEditorApp.h"
 
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_sdl3.h>
@@ -6,12 +6,12 @@
 #include <imgui.h>
 #include <Logging/Logger.h>
 
-using namespace UTEditor;
+using namespace UI;
 
-UTEditorApp::UTEditorApp() = default;
-UTEditorApp::~UTEditorApp() { Shutdown(); }
+UIEditorApp::UIEditorApp() = default;
+UIEditorApp::~UIEditorApp() { Shutdown(); }
 
-bool UTEditorApp::Init()
+bool UIEditorApp::Init()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) == false)
 	{
@@ -24,25 +24,25 @@ bool UTEditorApp::Init()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	Window_ = SDL_CreateWindow(
+	Window = SDL_CreateWindow(
 		"Utility AI Editor",
 		1920, 1080,
 		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN
 	);
 
-	if (!Window_)
+	if (!Window)
 	{
 		LOG_ERROR(std::format("Failed to create window: {}", SDL_GetError()))
 		return false;
 	}
 
-	GLContext_ = SDL_GL_CreateContext(Window_);
-	if (!GLContext_)
+	GLContext = SDL_GL_CreateContext(Window);
+	if (!GLContext)
 	{
 		LOG_ERROR(std::format("Failed to create GL context: {}", SDL_GetError()))
 		return false;
 	}
-	SDL_GL_MakeCurrent(Window_, GLContext_);
+	SDL_GL_MakeCurrent(Window, GLContext);
 
 	if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
 	{
@@ -59,7 +59,7 @@ bool UTEditorApp::Init()
 	IO.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	IO.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
-	IO.FontGlobalScale = FontScale_;
+	IO.FontGlobalScale = FontScale;
 
 	ImGui::StyleColorsDark();
 
@@ -71,22 +71,18 @@ bool UTEditorApp::Init()
 		Style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 	}
 
-	ImGui_ImplSDL3_InitForOpenGL(Window_, GLContext_);
+	ImGui_ImplSDL3_InitForOpenGL(Window, GLContext);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-	WindowManager.Add("Demo", [] { ImGui::ShowDemoWindow(); });
-	WindowManager.Add("Inspector", [] { ImGui::Text("Inspector panel coming soon!"); });
-	WindowManager.Add("Log", [] { ImGui::Text("Log messages..."); });
+	SDL_ShowWindow(Window);
 
-	SDL_ShowWindow(Window_);
-
-	bRunning_ = true;
+	bRunning = true;
 	return true;
 }
 
-void UTEditorApp::Run()
+void UIEditorApp::Run()
 {
-	while (bRunning_) 
+	while (bRunning) 
 	{
 		SDL_Event Event;
 		while (SDL_PollEvent(&Event)) 
@@ -100,7 +96,7 @@ void UTEditorApp::Run()
 	}
 }
 
-bool UTEditorApp::HandleEvent(const SDL_Event& Event)
+bool UIEditorApp::HandleEvent(const SDL_Event& Event)
 {
 	// Always let ImGui process events first
 	ImGui_ImplSDL3_ProcessEvent(&Event);
@@ -108,14 +104,14 @@ bool UTEditorApp::HandleEvent(const SDL_Event& Event)
 	switch (Event.type)
 	{
 	case SDL_EVENT_QUIT:
-		bRunning_ = false;
+		bRunning = false;
 		return true;
 
 	case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
 		// Quit only if it's the main SDL window
-		if (Event.window.windowID == SDL_GetWindowID(Window_))
+		if (Event.window.windowID == SDL_GetWindowID(Window))
 		{
-			bRunning_ = false;
+			bRunning = false;
 			return true;
 		}
 		break;
@@ -127,20 +123,20 @@ bool UTEditorApp::HandleEvent(const SDL_Event& Event)
 	return false; // not consumed
 }
 
-void UTEditorApp::BeginFrame()
+void UIEditorApp::BeginFrame()
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL3_NewFrame();
 	ImGui::NewFrame();
 }
 
-void UTEditorApp::RenderUI()
+void UIEditorApp::RenderUI()
 {
 	RenderDockSpace();
-	WindowManager.RenderWindows();
+	WindowManager.RenderPanels();
 }
 
-void UTEditorApp::EndFrame()
+void UIEditorApp::EndFrame()
 {
 	ImGuiIO& IO = ImGui::GetIO();
 
@@ -161,10 +157,10 @@ void UTEditorApp::EndFrame()
 		SDL_GL_MakeCurrent(BackupWindow, BackupContext);
 	}
 
-	SDL_GL_SwapWindow(Window_);
+	SDL_GL_SwapWindow(Window);
 }
 
-void UTEditorApp::RenderDockSpace()
+void UIEditorApp::RenderDockSpace()
 {
 	static ImGuiDockNodeFlags DockspaceFlags = ImGuiDockNodeFlags_None;
 	ImGuiWindowFlags WindowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -187,7 +183,7 @@ void UTEditorApp::RenderDockSpace()
 		{
 			if (ImGui::MenuItem("Exit", "Alt+F4")) // show hotkey hint
 			{
-				bRunning_ = false;
+				bRunning = false;
 			}
 			ImGui::EndMenu();
 		}
@@ -200,24 +196,24 @@ void UTEditorApp::RenderDockSpace()
 	ImGui::End();
 }
 
-void UTEditorApp::Shutdown()
+void UIEditorApp::Shutdown()
 {
-	if (GLContext_ || Window_) 
+	if (GLContext || Window) 
 	{
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplSDL3_Shutdown();
 		ImGui::DestroyContext();
 	}
 
-	if (GLContext_) 
+	if (GLContext) 
 	{
-		SDL_GL_DestroyContext(GLContext_);
-		GLContext_ = nullptr;
+		SDL_GL_DestroyContext(GLContext);
+		GLContext = nullptr;
 	}
-	if (Window_) 
+	if (Window) 
 	{
-		SDL_DestroyWindow(Window_);
-		Window_ = nullptr;
+		SDL_DestroyWindow(Window);
+		Window = nullptr;
 	}
 	SDL_Quit();
 }

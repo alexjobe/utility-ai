@@ -17,6 +17,8 @@ public:
 
 	const std::unordered_set<std::string>& GetActionsInCategory(const std::string& Category);
 
+	const std::unordered_map<std::string, UTAction>& GetActions() const { return Actions; }
+
 	void ClearCategory(const std::string& Category);
 
 	void ClearAll();
