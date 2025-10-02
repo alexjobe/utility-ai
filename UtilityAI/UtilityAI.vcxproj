@@ -175,6 +175,7 @@
     <ClCompile Include="Source\UtilityAI\Private\Core\UTGoal.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Core\UTScorer.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTActionsPanel.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\Scripting\UTLuaLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Extern\imgui\backends\imgui_impl_opengl3.h" />

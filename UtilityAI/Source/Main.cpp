@@ -1,6 +1,7 @@
 #include "Core/UTAction.h"
 #include "Game/Character.h"
 #include "Game/GameHelpers.h"
+#include <Core/UTActionRegistry.h>
 #include <Core/UTEffectTypes.h>
 #include <Editor/UTActionsPanel.h>
 #include <Logging/Logger.h>
@@ -24,11 +25,11 @@ int main()
 	sol::state Lua;
 	Lua.open_libraries(sol::lib::base);
 	LuaLog::RegisterLogger(Lua);
-	UAI::RegisterLuaTypes(Lua);
+	UTLoader::RegisterLuaTypes(Lua);
 	Game::RegisterLuaTypes(Lua);
 
 	UTValidationResult Result;
-	LoadActionsRecursive("Scripts/Actions", Lua, Result);
+	UTLoader::LoadActionsRecursive("Scripts/Actions", Lua, Result);
 	if (!Result.bValid)
 	{
 		for (const auto& Error : Result.Errors)
