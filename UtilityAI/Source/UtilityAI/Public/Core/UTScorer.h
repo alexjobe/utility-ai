@@ -8,6 +8,9 @@ namespace UAI
 {
 class UTScorer
 {
+friend class UTAction;
+friend class UTGoal;
+
 public:
 	bool AddConsideration(const UTConsideration& NewCons);
 

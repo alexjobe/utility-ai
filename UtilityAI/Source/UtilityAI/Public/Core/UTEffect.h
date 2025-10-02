@@ -21,6 +21,9 @@ public:
 	void SetRawScoreFnKey(const std::string& InKey);
 	void SetScoreCurveFnKey(const std::string& InKey);
 	void SetEffectFnKey(const std::string& InKey);
+	std::string GetRawScoreFnKey() const { return RawScoreFnKey; }
+	std::string GetScoreCurveFnKey() const { return ScoreCurveFnKey; }
+	std::string GetEffectFnKey() const { return EffectFnKey; }
 
 	void Apply(UTAgentContext& InContext) const;
 

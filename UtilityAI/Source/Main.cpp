@@ -2,12 +2,12 @@
 #include "Game/Character.h"
 #include "Game/GameHelpers.h"
 #include <Core/UTEffectTypes.h>
+#include <Editor/UTActionsPanel.h>
 #include <Logging/Logger.h>
 #include <Scripting/UTLuaLoader.h>
 #include <Scripting/UTLuaLogger.h>
 #include <sol.hpp>
 #include <UIEditorApp.h>
-#include <Editor/UTActionsPanel.h>
 #define SOL_ALL_SAFETIES_ON 1
 
 using namespace UAI;
