@@ -8,8 +8,20 @@
 
 using namespace UI;
 
-UIEditorApp::UIEditorApp() = default;
-UIEditorApp::~UIEditorApp() { Shutdown(); }
+UIEditorApp::UIEditorApp()
+	: Window(nullptr)
+	, GLContext(nullptr)
+	, bRunning(false)
+	, TargetFPS(60)
+	, TargetFrameTime(1.f / TargetFPS)
+	, FontScale(2.f)
+{
+}
+
+UIEditorApp::~UIEditorApp() 
+{ 
+	Shutdown(); 
+}
 
 bool UIEditorApp::Init()
 {
@@ -82,6 +94,9 @@ bool UIEditorApp::Init()
 
 void UIEditorApp::Run()
 {
+	const uint64_t PerfFreq = SDL_GetPerformanceFrequency();
+	uint64_t LastCounter = SDL_GetPerformanceCounter();
+
 	while (bRunning) 
 	{
 		SDL_Event Event;
@@ -90,9 +105,25 @@ void UIEditorApp::Run()
 			HandleEvent(Event);
 		}
 
+		// Timing
+		const uint64_t CurrentCounter = SDL_GetPerformanceCounter();
+		const double DeltaTime = static_cast<double>(CurrentCounter - LastCounter) / static_cast<double>(PerfFreq);
+		LastCounter = CurrentCounter;
+
+		// Update/Render
 		BeginFrame();
 		RenderUI();
 		EndFrame();
+
+		// Frame Cap
+		const uint64_t FrameEndCounter = SDL_GetPerformanceCounter();
+		const double FrameDuration = static_cast<double>(FrameEndCounter - CurrentCounter) / static_cast<double>(PerfFreq);
+
+		if (FrameDuration < TargetFrameTime)
+		{
+			const double SleepTimeSec = TargetFrameTime - FrameDuration;
+			SDL_Delay((Uint32)(SleepTimeSec * 1000.0));
+		}
 	}
 }
 

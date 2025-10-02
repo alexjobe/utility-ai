@@ -22,10 +22,12 @@ private:
 	void RenderUI();
 	void RenderDockSpace();
 
-	SDL_Window* Window = nullptr;
-	SDL_GLContext GLContext = nullptr;
-	bool bRunning = false;
-	float FontScale = 2.0f;
+	SDL_Window* Window;
+	SDL_GLContext GLContext;
+	bool bRunning;
+	int TargetFPS;
+	double TargetFrameTime;
+	float FontScale;
 
 	UIWindowManager WindowManager;
 };
