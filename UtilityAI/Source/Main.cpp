@@ -29,7 +29,7 @@ int main()
 	Game::RegisterLuaTypes(Lua);
 
 	UTValidationResult Result;
-	UTLoader::LoadActionsRecursive("Scripts/Actions", Lua, Result);
+	UTLoader::LoadScriptsRecursive("Scripts/Actions", Lua, Result, UTLoader::ActionLoader);
 	if (!Result.bValid)
 	{
 		for (const auto& Error : Result.Errors)

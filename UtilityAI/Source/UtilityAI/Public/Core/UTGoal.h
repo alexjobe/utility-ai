@@ -7,6 +7,9 @@
 
 namespace UAI
 {
+using PreconditionFnSig = bool(const UTAgentContext&);
+using PreconditionFnType = std::function<PreconditionFnSig>;
+
 class UTGoal
 {
 public:
@@ -15,12 +18,16 @@ public:
 
 	UTGoal(const std::string& InKey);
 
-	// Preconditions are quick "is this even possible?"
-	std::function<bool(const UTAgentContext&)> PreconditionFn = nullptr;
-
 	std::string GetKey() const { return Key; }
+
+	void SetPreconditionFnKey(const std::string& InKey);
+	std::string GetPreconditionFnKey() const { return PreconditionFnKey; }
 
 private:
 	std::string Key;
+
+	// Preconditions are quick "is this even possible?"
+	std::string PreconditionFnKey;
+	const PreconditionFnType* PreconditionFn = nullptr;
 };
 }

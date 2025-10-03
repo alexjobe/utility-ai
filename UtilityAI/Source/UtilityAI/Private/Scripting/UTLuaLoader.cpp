@@ -1,5 +1,6 @@
 #include "Core/UTFunctionRegistry.h"
 #include "Scripting/UTLuaLoader.h"
+#include <Core/UTAction.h>
 #include <Core/UTActionRegistry.h>
 #include <filesystem>
 
@@ -112,7 +113,7 @@ UTEffect UTLoader::LoadEffect(const sol::table& Table, UTValidationResult& Resul
 	return Effect;
 }
 
-UTAction UTLoader::LoadAction(const sol::table& Table, UTValidationResult& Result)
+void UTLoader::ActionLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
 {
 	UTAction Action;
 	if (const auto Key = ValidateField<std::string>(Table, "Key", Result, true))
@@ -166,10 +167,61 @@ UTAction UTLoader::LoadAction(const sol::table& Table, UTValidationResult& Resul
 	}
 
 	Action.GenerateConsiderations();
-	return Action;
+	UTActionRegistry::Instance().Register(Action, Category);
+	LOG_INFO(std::format("Loaded Action: {} (Category: {})", Action.GetKey(), Category))
 }
 
-void UTLoader::LoadActionsRecursive(const std::string& BaseDir, sol::state& Lua, UTValidationResult& Result)
+void UTLoader::GoalLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
+{
+	
+}
+
+std::optional<sol::table> UTLoader::LoadLuaTable(
+	const std::filesystem::path& File,
+	sol::state& Lua,
+	UTValidationResult& Result)
+{
+	try
+	{
+		sol::load_result Script = Lua.load_file(File.string());
+		if (!Script.valid())
+		{
+			Result.AddError(std::format("Failed to load script: {} Error: {}",
+				File.string(), Script.get<sol::error>().what()));
+			return std::nullopt;
+		}
+
+		sol::protected_function_result ScriptResult = Script();
+		if (!ScriptResult.valid())
+		{
+			sol::error Err = ScriptResult;
+			Result.AddError(std::format("Failed to execute script: {} Error: {}",
+				File.string(), Err.what()));
+			return std::nullopt;
+		}
+
+		if (ScriptResult.get_type() != sol::type::table)
+		{
+			Result.AddError(std::format("Script did not return a table: {}",
+				File.string()));
+			return std::nullopt;
+		}
+
+		return ScriptResult;
+	}
+	catch (const std::exception& Error)
+	{
+		Result.AddError(std::format("Exception loading script: {} Error: {}",
+			File.string(), Error.what()));
+		return std::nullopt;
+	}
+}
+
+void UTLoader::LoadScriptsRecursive(
+	const std::string& BaseDir,
+	sol::state& Lua,
+	UTValidationResult& Result,
+	LoaderFn Loader)
 {
 	try
 	{
@@ -181,41 +233,9 @@ void UTLoader::LoadActionsRecursive(const std::string& BaseDir, sol::state& Lua,
 			std::filesystem::path Relative = std::filesystem::relative(Entry.path().parent_path(), BaseDir);
 			std::string Category = Relative.empty() ? "Uncategorized" : Relative.string();
 
-			try
+			if (auto Table = LoadLuaTable(Entry.path(), Lua, Result))
 			{
-				sol::load_result Script = Lua.load_file(Entry.path().string());
-				if (!Script.valid())
-				{
-					Result.AddError(std::format("Failed to load script: {} Error: {}",
-						Entry.path().string(), Script.get<sol::error>().what()));
-					continue;
-				}
-
-				sol::protected_function_result ScriptResult = Script();
-				if (!ScriptResult.valid())
-				{
-					sol::error Err = ScriptResult;
-					Result.AddError(std::format("Failed to execute script: {} Error: {}",
-						Entry.path().string(), Err.what()));
-					continue;
-				}
-
-				if (ScriptResult.get_type() != sol::type::table) {
-					Result.AddError(std::format("Script did not return a table: {}",
-						Entry.path().string()));
-					continue;
-				}
-
-				sol::table ActionTable = ScriptResult;
-				UTAction Action = LoadAction(ActionTable, Result);
-				UTActionRegistry::Instance().Register(Action, Category);
-
-				LOG_INFO(std::format("Loaded action: {} (Category: {})", Action.GetKey(), Category))
-			}
-			catch (const std::exception& Error)
-			{
-				Result.AddError(std::format("Failed to load action: {} Error: {}",
-					Entry.path().string(), Error.what()));
+				Loader(*Table, Category, Result);
 			}
 		}
 	}
