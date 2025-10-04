@@ -113,6 +113,15 @@ UTEffect UTLoader::LoadEffect(const sol::table& Table, UTValidationResult& Resul
 	return Effect;
 }
 
+UTBias UTLoader::LoadBias(const sol::table& Table, UTValidationResult& Result)
+{
+	UTBias Bias;
+	LoadTags(Table, Result, [&](const std::string& Tag) { Bias.Tags.insert(Tag); });
+	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Bias.AddEffect(Effect); });
+	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Bias.AddConsideration(Cons); });
+	return Bias;
+}
+
 void UTLoader::ActionLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
 {
 	UTAction Action;
@@ -121,59 +130,18 @@ void UTLoader::ActionLoader(const sol::table& Table, const std::string& Category
 		Action.SetKey(*Key);
 	}
 
-	if (const auto Tags = ValidateField<sol::table>(Table, "Tags", Result))
-	{
-		for (auto& [_, Tag] : *Tags)
-		{
-			if (Tag.get_type() == sol::type::string)
-			{
-				Action.Tags.insert(Tag.as<std::string>());
-			}
-			else
-			{
-				Result.AddError("Invalid tag type (expected string)");
-			}
-		}
-	}
-
-	if (const auto Effects = ValidateField<sol::table>(Table, "Effects", Result))
-	{
-		for (auto& [_, Effect] : *Effects)
-		{
-			if (Effect.get_type() == sol::type::table)
-			{
-				Action.AddEffect(LoadEffect(Effect, Result));
-			}
-			else if (Effect.is<UTEffect>())
-			{
-				Action.AddEffect(Effect.as<UTEffect>());
-			}
-			else
-			{
-				Result.AddError("Unexpected effect type in Effects array");
-			}
-		}
-	}
-
-	if (const auto Considerations = ValidateField<sol::table>(Table, "Considerations", Result))
-	{
-		for (auto& [_, Consideration] : *Considerations)
-		{
-			if (Consideration.get_type() == sol::type::table)
-			{
-				Action.Scorer.AddConsideration(LoadConsideration(Consideration, Result));
-			}
-		}
-	}
+	LoadTags(Table, Result, [&](const std::string& Tag) { Action.Tags.insert(Tag); });
+	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Action.AddEffect(Effect); });
+	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Action.Scorer.AddConsideration(Cons); });
 
 	Action.GenerateConsiderations();
 	UTActionRegistry::Instance().Register(Action, Category);
 	LOG_INFO(std::format("Loaded Action: {} (Category: {})", Action.GetKey(), Category))
 }
 
-void UTLoader::GoalLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
+void UTLoader::TraitLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
 {
-	
+
 }
 
 std::optional<sol::table> UTLoader::LoadLuaTable(

@@ -78,6 +78,9 @@
     <ClCompile Include="Source\UtilityAI\Private\Scripting\UTLuaLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTTrait.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UtilityCore\UtilityCore.h">

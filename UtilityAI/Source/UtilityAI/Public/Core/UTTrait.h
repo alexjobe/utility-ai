@@ -2,9 +2,9 @@
 #include "UTAction.h"
 #include "UTEffect.h"
 #include "UTGoal.h"
-#include "UTScorer.h"
 #include <set>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace UAI
@@ -12,56 +12,24 @@ namespace UAI
 // Biases add their effects and considerations to goals and actions with the required tags
 struct UTBias
 {
-	std::set<std::string> RequiredTags;
-	std::vector<UTEffect> Effects;
-	std::vector<UTConsideration> Considerations;
+	std::set<std::string> Tags;
 
-	bool AppliesTo(const UTGoal& Goal) const
-	{
-		if (RequiredTags.empty()) return true;
-		for (auto& Tag : RequiredTags)
-		{
-			if (Goal.RequiredTags.contains(Tag)) return true;
-		}
-		return false;
-	}
+	bool AppliesTo(const UTGoal& Goal) const;
+	bool AppliesTo(const UTAction& Action) const;
+	void ApplyToGoal(UTGoal& Goal) const;
+	void ApplyToAction(UTAction& Action) const;
 
-	bool AppliesTo(const UTAction& Action) const
-	{
-		if (RequiredTags.empty()) return true;
-		for (auto& Tag : RequiredTags)
-		{
-			if (Action.Tags.contains(Tag)) return true;
-		}
-		return false;
-	}
+	bool AddEffect(const UTEffect& NewEffect);
+	bool AddConsideration(const UTConsideration& NewCons);
 
-	void ApplyToGoal(UTGoal& Goal) const
-	{
-		if (!AppliesTo(Goal)) return;
-		for (const auto& Cons : Considerations)
-		{
-			Goal.Scorer.AddConsideration(Cons);
-		}
-	}
-
-	void ApplyToAction(UTAction& Action) const
-	{
-		if (!AppliesTo(Action)) return;
-		for (const auto& Cons : Considerations)
-		{
-			Action.Scorer.AddConsideration(Cons);
-		}
-		for (const auto& Effect : Effects)
-		{
-			Action.AddEffect(Effect);
-		}
-	}
+private:
+	std::unordered_map<std::string, UTEffect> Effects;
+	std::unordered_map<std::string, UTConsideration> Considerations;
 };
 
 struct UTTrait
 {
-	std::string Name;
+	std::string Key;
 	std::vector<UTBias> Biases;
 };
 

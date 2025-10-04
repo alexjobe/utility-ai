@@ -16,7 +16,7 @@ void UTAction::SetKey(const std::string& InKey)
 	Scorer.SetOwnerKey(InKey);
 }
 
-const bool UTAction::AddEffect(const UTEffect& NewEffect)
+bool UTAction::AddEffect(const UTEffect& NewEffect)
 {
 	if (NewEffect.Key.empty() || Effects.contains(NewEffect.Key))
 	{

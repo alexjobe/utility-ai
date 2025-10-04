@@ -20,7 +20,7 @@ public:
 	std::string GetKey() const { return Key; }
 	void SetKey(const std::string& InKey);
 
-	const bool AddEffect(const UTEffect& NewEffect);
+	bool AddEffect(const UTEffect& NewEffect);
 
 	// Generate considerations from effects
 	void GenerateConsiderations();
