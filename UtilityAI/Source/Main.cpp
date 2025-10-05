@@ -30,6 +30,7 @@ int main()
 
 	UTValidationResult Result;
 	UTLoader::LoadScriptsRecursive("Scripts/Actions", Lua, Result, UTLoader::ActionLoader);
+	UTLoader::LoadScriptsRecursive("Scripts/Traits", Lua, Result, UTLoader::TraitLoader);
 	if (!Result.bValid)
 	{
 		for (const auto& Error : Result.Errors)

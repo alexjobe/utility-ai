@@ -1,4 +1,5 @@
 #include "Core/UTActionRegistry.h"
+#include <Logging/Logger.h>
 
 using namespace UAI;
 
@@ -15,14 +16,26 @@ UTActionRegistry& UTActionRegistry::Instance()
 
 void UTActionRegistry::Register(const UTAction& Action, const std::string& Category)
 {
-	Actions[Action.GetKey()] = Action;
-	Categories[Category].insert(Action.GetKey());
+	if (!Actions.contains(Action.GetKey()))
+	{
+		Actions[Action.GetKey()] = Action;
+		Categories[Category].insert(Action.GetKey());
+	}
+	else
+	{
+		LOG_WARN(std::format("Attempted to add duplicate action to registry: {}", Action.GetKey()))
+	}
 }
 
 UTAction* UTActionRegistry::Get(const std::string& Key)
 {
 	auto It = Actions.find(Key);
-	return It != Actions.end() ? &It->second : nullptr;
+	if (It != Actions.end())
+	{
+		return &It->second;
+	}
+	LOG_WARN(std::format("Action is not registered: {}", Key))
+	return nullptr;
 }
 
 const std::unordered_set<std::string>& UTActionRegistry::GetActionsInCategory(const std::string& Category)

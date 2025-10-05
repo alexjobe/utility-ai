@@ -2,6 +2,7 @@
 #include "Scripting/UTLuaLoader.h"
 #include <Core/UTAction.h>
 #include <Core/UTActionRegistry.h>
+#include <Core/UTTraitRegistry.h>
 #include <filesystem>
 
 using namespace UAI;
@@ -125,10 +126,10 @@ UTBias UTLoader::LoadBias(const sol::table& Table, UTValidationResult& Result)
 void UTLoader::ActionLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
 {
 	UTAction Action;
-	if (const auto Key = ValidateField<std::string>(Table, "Key", Result, true))
-	{
-		Action.SetKey(*Key);
-	}
+	const auto Key = ValidateField<std::string>(Table, "Key", Result, true);
+	if(!Key) return;
+
+	Action.SetKey(*Key);
 
 	LoadTags(Table, Result, [&](const std::string& Tag) { Action.Tags.insert(Tag); });
 	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Action.AddEffect(Effect); });
@@ -141,7 +142,15 @@ void UTLoader::ActionLoader(const sol::table& Table, const std::string& Category
 
 void UTLoader::TraitLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
 {
+	UTTrait Trait;
+	const auto Key = ValidateField<std::string>(Table, "Key", Result, true);
+	if(!Key) return;
 
+	Trait.Key = *Key;
+
+	LoadBiases(Table, Result, [&](const UTBias& Bias) { Trait.Biases.push_back(Bias); });
+	UTTraitRegistry::Instance().Register(Trait, Category);
+	LOG_INFO(std::format("Loaded Trait: {} (Category: {})", Trait.Key, Category))
 }
 
 std::optional<sol::table> UTLoader::LoadLuaTable(

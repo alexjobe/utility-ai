@@ -81,6 +81,9 @@
     <ClCompile Include="Source\UtilityAI\Private\Core\UTTrait.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTTraitRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UtilityCore\UtilityCore.h">
@@ -191,8 +194,12 @@
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTActionsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTTraitRegistry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Actions\Test\TestAction.lua" />
+    <None Include="Scripts\Traits\Test\TestTrait.lua" />
   </ItemGroup>
 </Project>
