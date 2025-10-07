@@ -18,7 +18,7 @@ bool UTScorer::AddConsideration(const UTConsideration& NewCons)
 	if (It != Considerations.end())
 	{
 		// Merge into existing consideration
-		It->second.Data.Weight *= NewCons.Data.Weight;
+		It->second.Data.Weight = (It->second.Data.Weight + NewCons.Data.Weight) * 0.5f; // Average
 		const std::string ScoreCurveFnKey = NewCons.GetScoreCurveFnKey();
 		if (!ScoreCurveFnKey.empty() && NewCons.Data.Priority >= It->second.Data.Priority)
 		{

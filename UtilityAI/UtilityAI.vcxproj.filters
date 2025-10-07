@@ -84,6 +84,12 @@
     <ClCompile Include="Source\UtilityAI\Private\Core\UTTraitRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UtilityAI\Private\Editor\UTTraitsPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UtilityAI\Private\Editor\UTPanelHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UtilityCore\UtilityCore.h">
@@ -195,6 +201,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\UtilityAI\Public\Core\UTTraitRegistry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UtilityAI\Public\Editor\UTTraitsPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UtilityAI\Public\Editor\UTPanelHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

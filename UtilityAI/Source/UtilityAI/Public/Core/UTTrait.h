@@ -22,9 +22,12 @@ struct UTBias
 	bool AddEffect(const UTEffect& NewEffect);
 	bool AddConsideration(const UTConsideration& NewCons);
 
+	const std::unordered_map<std::string, UTConsideration>& GetConsiderations() const { return Considerations; }
+	const std::unordered_map<std::string, UTEffect>& GetEffects() const { return Effects; }
+
 private:
-	std::unordered_map<std::string, UTEffect> Effects;
 	std::unordered_map<std::string, UTConsideration> Considerations;
+	std::unordered_map<std::string, UTEffect> Effects;
 };
 
 struct UTTrait

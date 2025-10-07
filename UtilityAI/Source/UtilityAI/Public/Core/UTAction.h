@@ -27,8 +27,8 @@ public:
 
 	void Execute(UTAgentContext& Context);
 
-	const std::unordered_map<std::string, UTEffect>& GetEffects() const { return Effects; }
 	const std::unordered_map<std::string, UTConsideration>& GetConsiderations() const { return Scorer.Considerations; }
+	const std::unordered_map<std::string, UTEffect>& GetEffects() const { return Effects; }
 
 private:
 	std::string Key;

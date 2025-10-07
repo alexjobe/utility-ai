@@ -177,6 +177,8 @@
     <ClCompile Include="Source\UtilityAI\Private\Core\UTTrait.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Core\UTTraitRegistry.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTActionsPanel.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\Editor\UTPanelHelpers.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\Editor\UTTraitsPanel.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Scripting\UTLuaLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +210,8 @@
     <ClInclude Include="Source\UtilityAI\Public\Core\UTTrait.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTTraitRegistry.h" />
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTActionsPanel.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Editor\UTPanelHelpers.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Editor\UTTraitsPanel.h" />
     <ClInclude Include="Source\UtilityAI\Public\Logging\Logger.h" />
     <ClInclude Include="Source\UtilityAI\Public\Math\Curves.h" />
     <ClInclude Include="Source\UtilityAI\Public\Math\Math.h" />

@@ -4,6 +4,7 @@
 #include <Core/UTActionRegistry.h>
 #include <Core/UTEffectTypes.h>
 #include <Editor/UTActionsPanel.h>
+#include <Editor/UTTraitsPanel.h>
 #include <Logging/Logger.h>
 #include <Scripting/UTLuaLoader.h>
 #include <Scripting/UTLuaLogger.h>
@@ -57,7 +58,8 @@ int main()
 		return -1;
 	}
 
-	App.GetWindowManager().AddPanel(std::make_unique<UTActionsPanel>());
+	App.GetWindowManager().AddPanel(std::make_unique<UTEditor::UTActionsPanel>());
+	App.GetWindowManager().AddPanel(std::make_unique<UTEditor::UTTraitsPanel>());
 
 	App.Run();
 
