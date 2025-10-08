@@ -78,7 +78,7 @@ void UTEditor::RenderAction(const UTAction& Action)
 
 void UTEditor::RenderTrait(const UTTrait& Trait)
 {
-	if (ImGui::TreeNode(Trait.Key.c_str()))
+	if (ImGui::TreeNode(Trait.GetKey().c_str()))
 	{
 		if (ImGui::TreeNode("Tags"))
 		{

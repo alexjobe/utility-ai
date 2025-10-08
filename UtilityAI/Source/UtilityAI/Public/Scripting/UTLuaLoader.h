@@ -23,6 +23,7 @@ namespace UTLoader
 	#define LoaderArgs const sol::table& Table, const std::string& Category, UTValidationResult& Result
 	using LoaderFn = std::function<void(LoaderArgs)>;
 	void ActionLoader(LoaderArgs);
+	void GoalLoader(LoaderArgs);
 	void TraitLoader(LoaderArgs);
 
 	std::optional<sol::table> LoadLuaTable(const std::filesystem::path& File, sol::state& Lua, UTValidationResult& Result);

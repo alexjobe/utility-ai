@@ -8,7 +8,7 @@ bool UTTrait::AppliesTo(const UTGoal& Goal) const
 	if (Tags.empty()) return true;
 	for (auto& Tag : Tags)
 	{
-		if (Goal.RequiredTags.contains(Tag)) return true;
+		if (Goal.Tags.contains(Tag)) return true;
 	}
 	return false;
 }

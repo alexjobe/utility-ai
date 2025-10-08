@@ -5,6 +5,11 @@ using namespace UAI;
 
 UTGoal::UTGoal(const std::string& InKey)
 {
+	SetKey(InKey);
+}
+
+void UTGoal::SetKey(const std::string& InKey)
+{
 	Key = InKey;
 	Scorer.SetOwnerKey(InKey);
 }

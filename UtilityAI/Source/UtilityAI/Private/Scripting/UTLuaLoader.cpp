@@ -1,9 +1,9 @@
 #include "Core/UTFunctionRegistry.h"
 #include "Scripting/UTLuaLoader.h"
 #include <Core/UTAction.h>
-#include <Core/UTActionRegistry.h>
+#include <Core/UTGoal.h>
+#include <Core/UTObjectRegistry.h>
 #include <Core/UTTrait.h>
-#include <Core/UTTraitRegistry.h>
 #include <filesystem>
 
 using namespace UAI;
@@ -128,8 +128,23 @@ void UTLoader::ActionLoader(const sol::table& Table, const std::string& Category
 	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Action.Scorer.AddConsideration(Cons); });
 
 	Action.GenerateConsiderations();
-	UTActionRegistry::Instance().Register(Action, Category);
+	UTObjectRegistry<UTAction>::Instance().Register(Action, Category);
 	LOG_INFO(std::format("Loaded Action: {} (Category: {})", Action.GetKey(), Category))
+}
+
+void UTLoader::GoalLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
+{
+	UTGoal Goal;
+	const auto Key = ValidateField<std::string>(Table, "Key", Result, true);
+	if (!Key) return;
+
+	Goal.SetKey(*Key);
+
+	LoadTags(Table, Result, [&](const std::string& Tag) { Goal.Tags.insert(Tag); });
+	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Goal.Scorer.AddConsideration(Cons); });
+
+	UTObjectRegistry<UTGoal>::Instance().Register(Goal, Category);
+	LOG_INFO(std::format("Loaded Goal: {} (Category: {})", Goal.GetKey(), Category))
 }
 
 void UTLoader::TraitLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
@@ -138,14 +153,14 @@ void UTLoader::TraitLoader(const sol::table& Table, const std::string& Category,
 	const auto Key = ValidateField<std::string>(Table, "Key", Result, true);
 	if(!Key) return;
 
-	Trait.Key = *Key;
+	Trait.SetKey(*Key);
 
 	LoadTags(Table, Result, [&](const std::string& Tag) { Trait.Tags.insert(Tag); });
 	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Trait.AddEffect(Effect); });
 	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Trait.AddConsideration(Cons); });
 
-	UTTraitRegistry::Instance().Register(Trait, Category);
-	LOG_INFO(std::format("Loaded Trait: {} (Category: {})", Trait.Key, Category))
+	UTObjectRegistry<UTTrait>::Instance().Register(Trait, Category);
+	LOG_INFO(std::format("Loaded Trait: {} (Category: {})", Trait.GetKey(), Category))
 }
 
 std::optional<sol::table> UTLoader::LoadLuaTable(

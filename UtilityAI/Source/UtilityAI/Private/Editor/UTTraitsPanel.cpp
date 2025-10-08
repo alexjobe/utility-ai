@@ -1,5 +1,6 @@
 #include "Editor/UTTraitsPanel.h"
-#include <Core/UTTraitRegistry.h>
+#include <Core/UTObjectRegistry.h>
+#include <Core/UTTrait.h>
 #include <Editor/UTPanelHelpers.h>
 #include <imgui.h>
 
@@ -10,7 +11,7 @@ void UTTraitsPanel::Render()
 {
 	if (ImGui::BeginChild("TraitsList", ImVec2(0, 0), true))
 	{
-		const auto& Traits = UTTraitRegistry::Instance().GetTraits();
+		const auto& Traits = UTObjectRegistry<UTTrait>::Instance().GetAll();
 		for (const auto& [_, Trait] : Traits)
 		{
 			RenderTrait(Trait);

@@ -1,8 +1,8 @@
 #include "Core/UTAction.h"
 #include "Game/Character.h"
 #include "Game/GameHelpers.h"
-#include <Core/UTActionRegistry.h>
 #include <Core/UTEffectTypes.h>
+#include <Core/UTObjectRegistry.h>
 #include <Editor/UTActionsPanel.h>
 #include <Editor/UTTraitsPanel.h>
 #include <Logging/Logger.h>
@@ -46,7 +46,7 @@ int main()
 
 	UTAgentContext MyContext = MyCharacter.CreateUtilityContext();
 
-	if (UTAction* TestAction = UTActionRegistry::Instance().Get("Action.Raid"))
+	if (UTAction* TestAction = UTObjectRegistry<UTAction>::Instance().Get("Action.Raid"))
 	{
 		TestAction->Scorer.Score(MyContext);
 		TestAction->Execute(MyContext);
@@ -63,7 +63,7 @@ int main()
 
 	App.Run();
 
-	UTActionRegistry::Instance().ClearAll();
+	UTObjectRegistry<UTAction>::Instance().ClearAll();
 	UTFunctionRegistry::Instance().Clear();
 
 	return 0;

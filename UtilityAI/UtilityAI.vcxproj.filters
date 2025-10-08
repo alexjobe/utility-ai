@@ -36,9 +36,6 @@
     <ClCompile Include="Source\UtilityAI\Private\Core\UTFunctionRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\UtilityAI\Private\Core\UTActionRegistry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -79,9 +76,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\UtilityAI\Private\Core\UTTrait.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\UtilityAI\Private\Core\UTTraitRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTTraitsPanel.cpp">
@@ -138,9 +132,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\UtilityAI\Public\Core\UTConsideration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UtilityAI\Public\Core\UTActionRegistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\UtilityAI\Public\Core\UTAgentContext.h">
@@ -200,13 +191,13 @@
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTActionsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UtilityAI\Public\Core\UTTraitRegistry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTTraitsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTPanelHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTObjectRegistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

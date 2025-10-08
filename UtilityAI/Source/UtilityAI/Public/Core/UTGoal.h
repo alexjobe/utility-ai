@@ -13,12 +13,14 @@ using PreconditionFnType = std::function<PreconditionFnSig>;
 class UTGoal
 {
 public:
-	std::set<std::string> RequiredTags; // Only actions with the required tags will be considered
+	std::set<std::string> Tags; // Only actions with the required tags will be considered
 	UTScorer Scorer;
 
+	UTGoal() = default;
 	UTGoal(const std::string& InKey);
 
 	std::string GetKey() const { return Key; }
+	void SetKey(const std::string& InKey);
 
 	void SetPreconditionFnKey(const std::string& InKey);
 	std::string GetPreconditionFnKey() const { return PreconditionFnKey; }

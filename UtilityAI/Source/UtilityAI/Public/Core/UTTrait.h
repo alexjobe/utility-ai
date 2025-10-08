@@ -12,8 +12,10 @@ namespace UAI
 // Traits add their effects and considerations to goals and actions with the required tags
 struct UTTrait
 {
-	std::string Key;
 	std::set<std::string> Tags;
+
+	std::string GetKey() const { return Key; }
+	void SetKey(const std::string& InKey) { Key = InKey; }
 
 	bool AppliesTo(const UTGoal& Goal) const;
 	bool AppliesTo(const UTAction& Action) const;
@@ -27,6 +29,7 @@ struct UTTrait
 	const std::unordered_map<std::string, UTEffect>& GetEffects() const { return Effects; }
 
 private:
+	std::string Key;
 	std::unordered_map<std::string, UTConsideration> Considerations;
 	std::unordered_map<std::string, UTEffect> Effects;
 };
