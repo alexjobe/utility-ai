@@ -18,7 +18,7 @@ void UTTraitRegistry::Register(const UTTrait& Trait, const std::string& Category
 	}
 	else
 	{
-		LOG_WARN(std::format("Attempted to add duplicate trait to registry: {}", Trait.Key))
+		LOG_WARN(std::format("Attempted to add duplicate trait to registry: '{}'", Trait.Key))
 	}
 }
 
@@ -29,7 +29,7 @@ UTTrait* UTTraitRegistry::Get(const std::string& Key)
 	{
 		return &It->second;
 	}
-	LOG_WARN(std::format("Trait is not registered: {}", Key))
+	LOG_WARN(std::format("Trait is not registered: '{}'", Key))
 	return nullptr;
 }
 

@@ -2,9 +2,12 @@ local Trait = {}
 
 Trait.Key = "Trait.Greedy"
 
-Trait.Biases = {
+Trait.Tags = { "Wealth" }
+
+Trait.Considerations = {
 	{
-		Tags = { "Wealth" }
+		Key = "Need.Wealth",
+		Data = { Weight = 2 }
 	}
 }
 

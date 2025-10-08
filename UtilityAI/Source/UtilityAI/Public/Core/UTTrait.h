@@ -9,9 +9,10 @@
 
 namespace UAI
 { 
-// Biases add their effects and considerations to goals and actions with the required tags
-struct UTBias
+// Traits add their effects and considerations to goals and actions with the required tags
+struct UTTrait
 {
+	std::string Key;
 	std::set<std::string> Tags;
 
 	bool AppliesTo(const UTGoal& Goal) const;
@@ -30,31 +31,19 @@ private:
 	std::unordered_map<std::string, UTEffect> Effects;
 };
 
-struct UTTrait
-{
-	std::string Key;
-	std::vector<UTBias> Biases;
-};
-
-inline void ApplyBiases(UTAction& Action, const std::vector<UTTrait>& Traits)
+inline void ApplyTraits(UTAction& Action, const std::vector<UTTrait>& Traits)
 {
 	for (const auto& Trait : Traits)
 	{
-		for (const auto& Bias : Trait.Biases)
-		{
-			Bias.ApplyToAction(Action);
-		}
+		Trait.ApplyToAction(Action);
 	}
 }
 
-inline void ApplyBiases(UTGoal& Goal, const std::vector<UTTrait>& Traits)
+inline void ApplyTraits(UTGoal& Goal, const std::vector<UTTrait>& Traits)
 {
 	for (const auto& Trait : Traits)
 	{
-		for (const auto& Bias : Trait.Biases)
-		{
-			Bias.ApplyToGoal(Goal);
-		}
+		Trait.ApplyToGoal(Goal);
 	}
 }
 }

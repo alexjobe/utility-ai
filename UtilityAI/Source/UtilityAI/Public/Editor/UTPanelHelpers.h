@@ -12,6 +12,5 @@ namespace UTEditor
 	void RenderEffect(const UTEffect& Effect);
 	void RenderEvaluationData(const UTEvaluationData& Data);
 	void RenderAction(const UTAction& Action);
-	void RenderBias(const UTBias& Bias);
 	void RenderTrait(const UTTrait& Trait);
 }

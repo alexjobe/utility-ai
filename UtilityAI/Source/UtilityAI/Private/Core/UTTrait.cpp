@@ -3,7 +3,7 @@
 
 using namespace UAI;
 
-bool UTBias::AppliesTo(const UTGoal& Goal) const
+bool UTTrait::AppliesTo(const UTGoal& Goal) const
 {
 	if (Tags.empty()) return true;
 	for (auto& Tag : Tags)
@@ -13,7 +13,7 @@ bool UTBias::AppliesTo(const UTGoal& Goal) const
 	return false;
 }
 
-bool UTBias::AppliesTo(const UTAction& Action) const
+bool UTTrait::AppliesTo(const UTAction& Action) const
 {
 	if (Tags.empty()) return true;
 	for (auto& Tag : Tags)
@@ -23,7 +23,7 @@ bool UTBias::AppliesTo(const UTAction& Action) const
 	return false;
 }
 
-void UTBias::ApplyToGoal(UTGoal& Goal) const
+void UTTrait::ApplyToGoal(UTGoal& Goal) const
 {
 	if (!AppliesTo(Goal)) return;
 	for (const auto& [_, Cons] : Considerations)
@@ -32,7 +32,7 @@ void UTBias::ApplyToGoal(UTGoal& Goal) const
 	}
 }
 
-void UTBias::ApplyToAction(UTAction& Action) const
+void UTTrait::ApplyToAction(UTAction& Action) const
 {
 	if (!AppliesTo(Action)) return;
 	for (const auto& [_, Cons] : Considerations)
@@ -45,22 +45,22 @@ void UTBias::ApplyToAction(UTAction& Action) const
 	}
 }
 
-bool UTBias::AddEffect(const UTEffect& NewEffect)
+bool UTTrait::AddEffect(const UTEffect& NewEffect)
 {
 	if (NewEffect.Key.empty() || Effects.contains(NewEffect.Key))
 	{
-		LOG_ERROR(std::format("Bias - Invalid Effect! Check Key: {}", NewEffect.Key))
+		LOG_ERROR(std::format("Trait: '{}' - Invalid Effect! Check Key: '{}'", Key, NewEffect.Key))
 		return false;
 	}
 	Effects[NewEffect.Key] = NewEffect;
 	return true;
 }
 
-bool UTBias::AddConsideration(const UTConsideration& NewCons)
+bool UTTrait::AddConsideration(const UTConsideration& NewCons)
 {
 	if (NewCons.Key.empty() || Considerations.contains(NewCons.Key))
 	{
-		LOG_ERROR(std::format("Bias - Invalid Consideration! Check Key: {}", NewCons.Key))
+		LOG_ERROR(std::format("Trait: '{}' - Invalid Consideration! Check Key: '{}'", Key, NewCons.Key))
 		return false;
 	}
 	Considerations[NewCons.Key] = NewCons;

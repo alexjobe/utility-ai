@@ -76,13 +76,13 @@ void UTEditor::RenderAction(const UTAction& Action)
 	}
 }
 
-void UTEditor::RenderBias(const UTBias& Bias)
+void UTEditor::RenderTrait(const UTTrait& Trait)
 {
-	if (ImGui::TreeNode("Bias"))
+	if (ImGui::TreeNode(Trait.Key.c_str()))
 	{
 		if (ImGui::TreeNode("Tags"))
 		{
-			for (auto& Tag : Bias.Tags)
+			for (auto& Tag : Trait.Tags)
 			{
 				ImGui::BulletText("%s", Tag.c_str());
 			}
@@ -92,7 +92,7 @@ void UTEditor::RenderBias(const UTBias& Bias)
 		ImGui::Separator();
 		if (ImGui::TreeNode("Considerations"))
 		{
-			for (auto& [_, Consideration] : Bias.GetConsiderations())
+			for (auto& [_, Consideration] : Trait.GetConsiderations())
 			{
 				RenderConsideration(Consideration);
 			}
@@ -102,24 +102,11 @@ void UTEditor::RenderBias(const UTBias& Bias)
 		ImGui::Separator();
 		if (ImGui::TreeNode("Effects"))
 		{
-			for (auto& [_, Effect] : Bias.GetEffects())
+			for (auto& [_, Effect] : Trait.GetEffects())
 			{
 				RenderEffect(Effect);
 			}
 			ImGui::TreePop();
-		}
-
-		ImGui::TreePop();
-	}
-}
-
-void UTEditor::RenderTrait(const UTTrait& Trait)
-{
-	if (ImGui::TreeNode(Trait.Key.c_str()))
-	{
-		for (const auto& Bias : Trait.Biases)
-		{
-			RenderBias(Bias);
 		}
 		ImGui::TreePop();
 	}

@@ -2,6 +2,7 @@
 #include "Scripting/UTLuaLoader.h"
 #include <Core/UTAction.h>
 #include <Core/UTActionRegistry.h>
+#include <Core/UTTrait.h>
 #include <Core/UTTraitRegistry.h>
 #include <filesystem>
 
@@ -114,15 +115,6 @@ UTEffect UTLoader::LoadEffect(const sol::table& Table, UTValidationResult& Resul
 	return Effect;
 }
 
-UTBias UTLoader::LoadBias(const sol::table& Table, UTValidationResult& Result)
-{
-	UTBias Bias;
-	LoadTags(Table, Result, [&](const std::string& Tag) { Bias.Tags.insert(Tag); });
-	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Bias.AddEffect(Effect); });
-	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Bias.AddConsideration(Cons); });
-	return Bias;
-}
-
 void UTLoader::ActionLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
 {
 	UTAction Action;
@@ -148,7 +140,10 @@ void UTLoader::TraitLoader(const sol::table& Table, const std::string& Category,
 
 	Trait.Key = *Key;
 
-	LoadBiases(Table, Result, [&](const UTBias& Bias) { Trait.Biases.push_back(Bias); });
+	LoadTags(Table, Result, [&](const std::string& Tag) { Trait.Tags.insert(Tag); });
+	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Trait.AddEffect(Effect); });
+	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Trait.AddConsideration(Cons); });
+
 	UTTraitRegistry::Instance().Register(Trait, Category);
 	LOG_INFO(std::format("Loaded Trait: {} (Category: {})", Trait.Key, Category))
 }
