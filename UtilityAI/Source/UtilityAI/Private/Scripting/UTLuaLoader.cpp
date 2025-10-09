@@ -143,6 +143,11 @@ void UTLoader::GoalLoader(const sol::table& Table, const std::string& Category, 
 	LoadTags(Table, Result, [&](const std::string& Tag) { Goal.Tags.insert(Tag); });
 	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Goal.Scorer.AddConsideration(Cons); });
 
+	if (const auto PreconditionFnKey = ValidateField<std::string>(Table, "PreconditionFnKey", Result))
+	{
+		Goal.SetPreconditionFnKey(*PreconditionFnKey);
+	}
+
 	UTObjectRegistry<UTGoal>::Instance().Register(Goal, Category);
 	LOG_INFO(std::format("Loaded Goal: {} (Category: {})", Goal.GetKey(), Category))
 }

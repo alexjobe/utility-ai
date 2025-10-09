@@ -76,6 +76,36 @@ void UTEditor::RenderAction(const UTAction& Action)
 	}
 }
 
+void UTEditor::RenderGoal(const UTGoal& Goal)
+{
+	if (ImGui::TreeNode(Goal.GetKey().c_str()))
+	{
+		if (ImGui::TreeNode("Tags"))
+		{
+			for (auto& Tag : Goal.Tags)
+			{
+				ImGui::BulletText("%s", Tag.c_str());
+			}
+			ImGui::TreePop();
+		}
+
+		ImGui::Separator();
+		if (ImGui::TreeNode("Considerations"))
+		{
+			for (auto& [_, Consideration] : Goal.GetConsiderations())
+			{
+				RenderConsideration(Consideration);
+			}
+			ImGui::TreePop();
+		}
+
+		ImGui::Separator();
+		ImGui::BulletText("PreconditionFn: %s", Goal.GetPreconditionFnKey().c_str());
+
+		ImGui::TreePop();
+	}
+}
+
 void UTEditor::RenderTrait(const UTTrait& Trait)
 {
 	if (ImGui::TreeNode(Trait.GetKey().c_str()))

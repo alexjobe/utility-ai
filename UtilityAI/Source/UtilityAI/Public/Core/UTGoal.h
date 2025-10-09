@@ -25,6 +25,8 @@ public:
 	void SetPreconditionFnKey(const std::string& InKey);
 	std::string GetPreconditionFnKey() const { return PreconditionFnKey; }
 
+	const std::unordered_map<std::string, UTConsideration>& GetConsiderations() const { return Scorer.Considerations; }
+
 private:
 	std::string Key;
 

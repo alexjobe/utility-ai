@@ -175,6 +175,7 @@
     <ClCompile Include="Source\UtilityAI\Private\Core\UTScorer.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Core\UTTrait.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTActionsPanel.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\Editor\UTGoalsPanel.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTPanelHelpers.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTTraitsPanel.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Scripting\UTLuaLoader.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="Source\UtilityAI\Public\Core\UTGoal.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTTrait.h" />
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTActionsPanel.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Editor\UTGoalsPanel.h" />
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTPanelHelpers.h" />
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTTraitsPanel.h" />
     <ClInclude Include="Source\UtilityAI\Public\Logging\Logger.h" />
@@ -221,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Actions\Test\TestAction.lua" />
+    <None Include="Scripts\Goals\Test\TestGoal.lua" />
     <None Include="Scripts\Traits\Test\TestTrait.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

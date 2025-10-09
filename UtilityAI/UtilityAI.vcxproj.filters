@@ -84,6 +84,9 @@
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTPanelHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UtilityAI\Private\Editor\UTGoalsPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UtilityCore\UtilityCore.h">
@@ -200,9 +203,13 @@
     <ClInclude Include="Source\UtilityAI\Public\Core\UTObjectRegistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\UtilityAI\Public\Editor\UTGoalsPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Actions\Test\TestAction.lua" />
     <None Include="Scripts\Traits\Test\TestTrait.lua" />
+    <None Include="Scripts\Goals\Test\TestGoal.lua" />
   </ItemGroup>
 </Project>

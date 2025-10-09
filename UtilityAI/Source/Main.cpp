@@ -4,6 +4,7 @@
 #include <Core/UTEffectTypes.h>
 #include <Core/UTObjectRegistry.h>
 #include <Editor/UTActionsPanel.h>
+#include <Editor/UTGoalsPanel.h>
 #include <Editor/UTTraitsPanel.h>
 #include <Logging/Logger.h>
 #include <Scripting/UTLuaLoader.h>
@@ -31,6 +32,7 @@ int main()
 
 	UTValidationResult Result;
 	UTLoader::LoadScriptsRecursive("Scripts/Actions", Lua, Result, UTLoader::ActionLoader);
+	UTLoader::LoadScriptsRecursive("Scripts/Goals", Lua, Result, UTLoader::GoalLoader);
 	UTLoader::LoadScriptsRecursive("Scripts/Traits", Lua, Result, UTLoader::TraitLoader);
 	if (!Result.bValid)
 	{
@@ -59,6 +61,7 @@ int main()
 	}
 
 	App.GetWindowManager().AddPanel(std::make_unique<UTEditor::UTActionsPanel>());
+	App.GetWindowManager().AddPanel(std::make_unique<UTEditor::UTGoalsPanel>());
 	App.GetWindowManager().AddPanel(std::make_unique<UTEditor::UTTraitsPanel>());
 
 	App.Run();
