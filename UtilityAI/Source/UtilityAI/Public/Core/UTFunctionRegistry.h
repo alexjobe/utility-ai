@@ -14,25 +14,33 @@ public:
 	template <typename Sig>
 	void Register(const std::string& Key, std::function<Sig> Fn)
 	{
+		if (Key.empty())
+		{
+			LOG_WARN("[UTFunctionRegistry] Function key cannot be empty")
+			return;
+		}
+
 		if (!Functions.contains(Key))
 		{
 			Functions[Key] = std::move(Fn);
 		}
 		else
 		{
-			LOG_WARN(std::format("Attempted to add duplicate function to registry: {}", Key))
+			LOG_WARN(std::format("[UTFunctionRegistry] Attempted to add duplicate function: '{}'", Key))
 		}
 	}
 
 	template <typename Sig>
 	const std::function<Sig>* Get(const std::string& Key) const 
 	{
+		if (Key.empty()) return nullptr;
+
 		auto It = Functions.find(Key);
 		if (It != Functions.end()) 
 		{
 			return std::any_cast<std::function<Sig>>(&It->second);
 		}
-		LOG_WARN(std::format("Function is not registered: {}", Key))
+		LOG_WARN(std::format("[UTFunctionRegistry] Function is not registered: '{}'", Key))
 		return nullptr;
 	}
 
@@ -48,5 +56,4 @@ private:
 	UTFunctionRegistry(UTFunctionRegistry&&) = delete;
 	UTFunctionRegistry& operator=(UTFunctionRegistry&&) = delete;
 };
-
 }

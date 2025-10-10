@@ -7,41 +7,20 @@ using namespace UAI;
 
 void UTEffect::SetRawScoreFnKey(const std::string& InKey)
 {
-	RawScoreFnKey = InKey;
-	if (!RawScoreFnKey.empty())
-	{
-		RawScoreFn = UTFunctionRegistry::Instance().Get<ScoreFnSig>(InKey);
-	}
-	else
-	{
-		RawScoreFn = nullptr;
-	}
+	RawScoreFn = UTFunctionRegistry::Instance().Get<ScoreFnSig>(InKey);
+	RawScoreFnKey = RawScoreFn ? InKey : "";
 }
 
 void UTEffect::SetScoreCurveFnKey(const std::string& InKey)
 {
-	ScoreCurveFnKey = InKey;
-	if (!ScoreCurveFnKey.empty())
-	{
-		ScoreCurveFn = UTFunctionRegistry::Instance().Get<CurveFnSig>(InKey);
-	}
-	else
-	{
-		ScoreCurveFn = nullptr;
-	}
+	ScoreCurveFn = UTFunctionRegistry::Instance().Get<CurveFnSig>(InKey);
+	ScoreCurveFnKey = ScoreCurveFn ? InKey : "";
 }
 
 void UTEffect::SetEffectFnKey(const std::string& InKey)
 {
-	EffectFnKey = InKey;
-	if (!EffectFnKey.empty())
-	{
-		EffectFn = UTFunctionRegistry::Instance().Get<EffectFnSig>(InKey);
-	}
-	else
-	{
-		EffectFn = nullptr;
-	}
+	EffectFn = UTFunctionRegistry::Instance().Get<EffectFnSig>(InKey);
+	EffectFnKey = EffectFn ? InKey : "";
 }
 
 void UTEffect::Apply(UTAgentContext& InContext) const

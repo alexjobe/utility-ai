@@ -16,13 +16,6 @@ void UTGoal::SetKey(const std::string& InKey)
 
 void UTGoal::SetPreconditionFnKey(const std::string& InKey)
 {
-	PreconditionFnKey = InKey;
-	if (!PreconditionFnKey.empty())
-	{
-		PreconditionFn = UTFunctionRegistry::Instance().Get<PreconditionFnSig>(InKey);
-	}
-	else
-	{
-		PreconditionFn = nullptr;
-	}
+	PreconditionFn = UTFunctionRegistry::Instance().Get<PreconditionFnSig>(InKey);
+	PreconditionFnKey = PreconditionFn ? InKey : "";
 }

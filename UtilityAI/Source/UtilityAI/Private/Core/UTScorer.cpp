@@ -45,15 +45,32 @@ float UTScorer::Score(const UTAgentContext& Context) const
 
 	LOG_INFO(std::format("'{}' -- Evaluating...", OwnerKey))
 
-	float WeightedLogSum = 0.0f;
 	float WeightSum = 0.0f;
+	for (const auto& [_, Cons] : Considerations)
+	{
+		if (Cons.Data.Weight < 0.0f)
+		{
+			LOG_WARN(std::format("'{}' -- Negative weight on '{}'; clamping to zero.", OwnerKey, Cons.Key));
+		}
 
+		WeightSum += std::max(0.0f, Cons.Data.Weight);
+	}
+
+	if (WeightSum <= 0.0f)
+	{
+		LOG_WARN(std::format("'{}' -- All weights are zero or invalid.", OwnerKey));
+		return 0.0f;
+	}
+
+	float WeightedLogSum = 0.0f;
 	for (const auto& [Key, Consideration] : Considerations)
 	{
 		const float ConScore = std::clamp(Consideration.Score(Context), 0.001f, 1.0f); // avoid log(0)
-		WeightedLogSum += Consideration.Data.Weight * std::log(ConScore);
-		WeightSum += Consideration.Data.Weight;
-		LOG_INFO(std::format("'{}' -- ['{}' | Score: {} | Weight: {}]", OwnerKey, Consideration.Key, ConScore, Consideration.Data.Weight))
+		const float WeightedLog = Consideration.Data.Weight * std::log(ConScore);
+		WeightedLogSum += WeightedLog;
+
+		const float Contribution = std::pow(ConScore, Consideration.Data.Weight / WeightSum);
+		LOG_INFO(std::format("'{}' -- ['{}' | Score: {} | Weight: {} | Contrib: {}]", OwnerKey, Consideration.Key, ConScore, Consideration.Data.Weight, Contribution))
 	}
 
 	const float FinalScore = std::exp(WeightedLogSum / WeightSum);

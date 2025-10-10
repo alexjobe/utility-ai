@@ -10,28 +10,14 @@ using namespace UAI;
 
 void UTConsideration::SetRawScoreFnKey(const std::string& InKey)
 {
-	RawScoreFnKey = InKey;
-	if (!InKey.empty())
-	{
-		RawScoreFn = UTFunctionRegistry::Instance().Get<ScoreFnSig>(InKey);
-	}
-	else
-	{
-		RawScoreFn = nullptr;
-	}
+	RawScoreFn = UTFunctionRegistry::Instance().Get<ScoreFnSig>(InKey);
+	RawScoreFnKey = RawScoreFn ? InKey : "";
 }
 
 void UTConsideration::SetScoreCurveFnKey(const std::string& InKey)
 {
-	ScoreCurveFnKey = InKey;
-	if (!InKey.empty())
-	{
-		ScoreCurveFn = UTFunctionRegistry::Instance().Get<CurveFnSig>(InKey);
-	}
-	else
-	{
-		ScoreCurveFn = nullptr;
-	}
+	ScoreCurveFn = UTFunctionRegistry::Instance().Get<CurveFnSig>(InKey);
+	ScoreCurveFnKey = ScoreCurveFn ? InKey : "";
 }
 
 void UTEvaluationData::DebugPrint()
