@@ -4,6 +4,8 @@
 #include <Core/UTEffectTypes.h>
 #include <sol.hpp>
 
+using namespace UAI;
+
 namespace Game
 {
 	UTEffect MakeNeedEffect(ENeedType Need, float Magnitude)

@@ -18,7 +18,7 @@
     <ClCompile Include="Source\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Character.cpp">
+    <ClCompile Include="Source\Game\GCharacter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\UtilityAI\Private\Core\UTAction.cpp">
@@ -87,6 +87,12 @@
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTGoalsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\GCharactersPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\GWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UtilityCore\UtilityCore.h">
@@ -104,7 +110,7 @@
     <ClInclude Include="Source\UtilityAI\Public\Math\Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Character.h">
+    <ClInclude Include="Source\Game\GCharacter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game\StatTypes.h">
@@ -206,9 +212,15 @@
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTGoalsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Game\GCharactersPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\GWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Scripts\Actions\Test\TestAction.lua" />
+    <None Include="Scripts\Actions\Test\RaidAction.lua" />
     <None Include="Scripts\Traits\Test\TestTrait.lua" />
     <None Include="Scripts\Goals\Test\TestGoal.lua" />
   </ItemGroup>

@@ -2,6 +2,7 @@ local Action = {}
 
 _RegisterEffectFunction("RaidVillage", function (Ctx, Data)
    print("Village was raided!")
+   -- Do something with context
 end)
 
 _RegisterScoreFunction("SuccessChanceScore", function (Ctx, Data)

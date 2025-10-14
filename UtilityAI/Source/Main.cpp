@@ -1,8 +1,11 @@
 #include "Core/UTAction.h"
-#include "Game/Character.h"
 #include "Game/GameHelpers.h"
+#include "Game/GCharacter.h"
+#include "Game/GCharactersPanel.h"
+#include "Game/GWorld.h"
 #include <Core/UTEffectTypes.h>
 #include <Core/UTObjectRegistry.h>
+#include <Core/UTTrait.h>
 #include <Editor/UTActionsPanel.h>
 #include <Editor/UTGoalsPanel.h>
 #include <Editor/UTTraitsPanel.h>
@@ -42,16 +45,24 @@ int main()
 		}
 	}
 
-	Character MyCharacter;
+	GCharacter MyCharacter;
+	MyCharacter.Key = "Bilbo";
 	MyCharacter.CoreStats[ECoreStatType::Strength] = 11.f;
 	MyCharacter.CoreStats[ECoreStatType::Endurance] = 7.f;
 
-	UTAgentContext MyContext = MyCharacter.CreateUtilityContext();
+	GWorld::Instance().AddCharacter(MyCharacter);
 
-	if (UTAction* TestAction = UTObjectRegistry<UTAction>::Instance().Get("Action.Raid"))
+	UTAgentContext MyContext = MyCharacter.CreateAgentContext();
+
+	UTAction* RaidAction = UTObjectRegistry<UTAction>::Instance().Get("Action.Raid");
+	UTTrait* GreedyTrait = UTObjectRegistry<UTTrait>::Instance().Get("Trait.Greedy");
+
+	if (RaidAction && GreedyTrait)
 	{
-		TestAction->Scorer.Score(MyContext);
-		TestAction->Execute(MyContext);
+		UTAction Action = *RaidAction;
+		GreedyTrait->ApplyToAction(Action);
+		Action.Scorer.Score(MyContext);
+		Action.Execute(MyContext);
 	}
 
 	UIEditorApp App;
@@ -63,6 +74,7 @@ int main()
 	App.GetWindowManager().AddPanel(std::make_unique<UTEditor::UTActionsPanel>());
 	App.GetWindowManager().AddPanel(std::make_unique<UTEditor::UTGoalsPanel>());
 	App.GetWindowManager().AddPanel(std::make_unique<UTEditor::UTTraitsPanel>());
+	App.GetWindowManager().AddPanel(std::make_unique<GCharactersPanel>());
 
 	App.Run();
 

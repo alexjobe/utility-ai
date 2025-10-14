@@ -164,7 +164,9 @@
     <ClCompile Include="Extern\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Editor\Private\UIEditorApp.cpp" />
     <ClCompile Include="Source\Editor\Private\UIWindowManager.cpp" />
-    <ClCompile Include="Source\Game\Character.cpp" />
+    <ClCompile Include="Source\Game\GCharacter.cpp" />
+    <ClCompile Include="Source\Game\GCharactersPanel.cpp" />
+    <ClCompile Include="Source\Game\GWorld.cpp" />
     <ClCompile Include="Source\glad.c" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Core\UTAction.cpp" />
@@ -193,10 +195,12 @@
     <ClInclude Include="Source\Editor\Public\UIEditorApp.h" />
     <ClInclude Include="Source\Editor\Public\UIEditorPanel.h" />
     <ClInclude Include="Source\Editor\Public\UIWindowManager.h" />
-    <ClInclude Include="Source\Game\Character.h" />
+    <ClInclude Include="Source\Game\GCharacter.h" />
+    <ClInclude Include="Source\Game\GCharactersPanel.h" />
     <ClInclude Include="Source\Game\GameHelpers.h" />
     <ClInclude Include="Game\Helpers.h" />
     <ClInclude Include="Source\Game\StatTypes.h" />
+    <ClInclude Include="Source\Game\GWorld.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTAction.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTAgentContext.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTConsideration.h" />
@@ -222,7 +226,7 @@
     <ClInclude Include="UtilityCore\UtilityCore.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Scripts\Actions\Test\TestAction.lua" />
+    <None Include="Scripts\Actions\Test\RaidAction.lua" />
     <None Include="Scripts\Goals\Test\TestGoal.lua" />
     <None Include="Scripts\Traits\Test\TestTrait.lua" />
   </ItemGroup>

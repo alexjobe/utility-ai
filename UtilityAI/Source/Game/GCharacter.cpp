@@ -1,9 +1,9 @@
-#include "Character.h"
-#include "Math/Math.h"
+#include "GCharacter.h"
 
 using namespace Game;
 
-Character::Character()
+GCharacter::GCharacter()
+	: Key("")
 {
 	constexpr float MidNeed = (MIN_NEED + MAX_NEED) / 2.f;
 	Needs[ENeedType::Survival] = MidNeed;
@@ -22,7 +22,7 @@ Character::Character()
 	CoreStats[ECoreStatType::Charisma] = MidCoreStat;
 }
 
-UTAgentContext Character::CreateUtilityContext() const
+UTAgentContext GCharacter::CreateAgentContext() const
 {
 	UTAgentContext Context;
 	for (const auto& [NeedType, Value] : Needs)

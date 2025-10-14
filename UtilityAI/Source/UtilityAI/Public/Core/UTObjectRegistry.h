@@ -47,6 +47,58 @@ public:
 		return (It != Categories.end()) ? It->second : Empty;
 	}
 
+	const std::unordered_set<std::string> FindAllWithTag(const std::string& Tag) const
+	{
+		std::unordered_set<std::string> Result;
+		for (const auto& [_, Object] : Objects)
+		{
+			if (Object.Tags.contains(Tag))
+			{
+				Result.insert(Object.GetKey());
+			}
+		}
+		return Result;
+	}
+
+	const std::unordered_set<std::string> FindAllWithTags(const std::vector<std::string>& Tags) const
+	{
+		std::unordered_set<std::string> Result;
+		for (const auto& [_, Object] : Objects)
+		{
+			bool bHasTags = true;
+			for (const auto& Tag : Tags)
+			{
+				if (!Object.Tags.contains(Tag))
+				{
+					bHasTags = false;
+					break;
+				}
+			}
+			if (bHasTags)
+			{
+				Result.insert(Object.GetKey());
+			}
+		}
+		return Result;
+	}
+
+	const std::unordered_set<std::string> FindAllWithAnyTag(const std::vector<std::string>& Tags) const
+	{
+		std::unordered_set<std::string> Result;
+		for (const auto& [_, Object] : Objects)
+		{
+			for (const auto& Tag : Tags)
+			{
+				if (Object.Tags.contains(Tag))
+				{
+					Result.insert(Object.GetKey());
+					break;
+				}
+			}
+		}
+		return Result;
+	}
+
 	const std::unordered_map<std::string, T>& GetAll() const { return Objects; }
 
 	void ClearCategory(const std::string& Category)
