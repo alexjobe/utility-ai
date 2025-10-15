@@ -2,8 +2,8 @@
 
 using namespace Game;
 
-GCharacter::GCharacter()
-	: Key("")
+GCharacter::GCharacter(const std::string& InKey)
+	: Key(InKey)
 {
 	constexpr float MidNeed = (MIN_NEED + MAX_NEED) / 2.f;
 	Needs[ENeedType::Survival] = MidNeed;

@@ -11,7 +11,7 @@ namespace Game
 		static GWorld& Instance();
 		void AddCharacter(const GCharacter& NewChar);
 		GCharacter* GetCharacter(const std::string& Key);
-		const std::unordered_map<std::string, GCharacter>& GetAllCharacters() const { return Characters; }
+		std::unordered_map<std::string, GCharacter>& GetAllCharacters() { return Characters; }
 
 	private:
 		std::unordered_map<std::string, GCharacter> Characters;

@@ -45,8 +45,7 @@ int main()
 		}
 	}
 
-	GCharacter MyCharacter;
-	MyCharacter.Key = "Bilbo";
+	GCharacter MyCharacter("Bilbo");
 	MyCharacter.CoreStats[ECoreStatType::Strength] = 11.f;
 	MyCharacter.CoreStats[ECoreStatType::Endurance] = 7.f;
 

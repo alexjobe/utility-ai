@@ -11,6 +11,7 @@ namespace Game
 	public:
 		GCharactersPanel() : UIEditorPanel("Characters") {}
 		void Render() override;
-		void RenderCharacter(const GCharacter& Character);
+		void RenderCharacter(GCharacter& Character);
+		void RenderTraits(GCharacter& Character);
 	};
 }
