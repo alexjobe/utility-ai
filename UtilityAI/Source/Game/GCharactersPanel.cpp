@@ -10,8 +10,8 @@ void GCharactersPanel::Render()
 	if (ImGui::Button("Add Character"))
 	{
 		static int NewID = 0;
-		std::string Key = std::format("Character_{}", NewID++);
-		GWorld::Instance().AddCharacter(GCharacter{ Key });
+		std::string Name = std::format("Character_{}", NewID++);
+		GWorld::Instance().AddCharacter(GCharacter{ Name });
 	}
 
 	ImGui::Separator();
@@ -29,8 +29,19 @@ void GCharactersPanel::Render()
 
 void GCharactersPanel::RenderCharacter(GCharacter& Character)
 {
-	if (ImGui::TreeNode(Character.Key.c_str()))
+	if (ImGui::TreeNode(std::format("{}##{}", Character.Name, Character.GetKey()).c_str()))
 	{
+		// Name edit
+		char NewName[128] = "";
+		if (ImGui::InputText("Change Name", NewName, sizeof(NewName), ImGuiInputTextFlags_EnterReturnsTrue))
+		{
+			if (strlen(NewName) > 0)
+			{
+				Character.Name = NewName;
+				NewName[0] = '\0';
+			}
+		}
+
 		RenderTraits(Character);
 
 		ImGui::Separator();
@@ -83,7 +94,7 @@ void GCharactersPanel::RenderTraits(GCharacter& Character)
 			}
 		}
 
-		static char NewTrait[64] = "";
+		char NewTrait[64] = "";
 		if (ImGui::InputText("New Trait", NewTrait, sizeof(NewTrait), ImGuiInputTextFlags_EnterReturnsTrue))
 		{
 			if (strlen(NewTrait) > 0)

@@ -45,13 +45,13 @@ int main()
 		}
 	}
 
-	GCharacter MyCharacter("Bilbo");
-	MyCharacter.CoreStats[ECoreStatType::Strength] = 11.f;
-	MyCharacter.CoreStats[ECoreStatType::Endurance] = 7.f;
-
-	GWorld::Instance().AddCharacter(MyCharacter);
-
-	UTAgentContext MyContext = MyCharacter.CreateAgentContext();
+	UTAgentContext MyContext;
+	if (GCharacter* MyCharacter = GWorld::Instance().AddCharacter(GCharacter("Bilbo")))
+	{
+		MyCharacter->CoreStats[ECoreStatType::Strength] = 11.f;
+		MyCharacter->CoreStats[ECoreStatType::Endurance] = 7.f;
+		MyContext = MyCharacter->CreateAgentContext();
+	}
 
 	UTAction* RaidAction = UTObjectRegistry<UTAction>::Instance().Get("Action.Raid");
 	UTTrait* GreedyTrait = UTObjectRegistry<UTTrait>::Instance().Get("Trait.Greedy");

@@ -9,7 +9,7 @@ namespace Game
 	{
 	public:
 		static GWorld& Instance();
-		void AddCharacter(const GCharacter& NewChar);
+		GCharacter* AddCharacter(GCharacter&& NewChar);
 		GCharacter* GetCharacter(const std::string& Key);
 		std::unordered_map<std::string, GCharacter>& GetAllCharacters() { return Characters; }
 

@@ -1,4 +1,5 @@
 #include "GWorld.h"
+#include <utility>
 
 using namespace Game;
 
@@ -8,12 +9,14 @@ GWorld& GWorld::Instance()
 	return Singleton;
 }
 
-void GWorld::AddCharacter(const GCharacter& NewChar)
+GCharacter* GWorld::AddCharacter(GCharacter&& NewChar)
 {
-	if (!Characters.contains(NewChar.Key))
+	auto [It, bSuccess] = Characters.emplace(NewChar.GetKey(), std::move(NewChar));
+	if (bSuccess)
 	{
-		Characters[NewChar.Key] = NewChar;
+		return &It->second;
 	}
+	return nullptr;
 }
 
 Game::GCharacter* GWorld::GetCharacter(const std::string& Key)

@@ -1,9 +1,10 @@
 #include "GCharacter.h"
+#include <Core/UTKeyGenerator.h>
 
 using namespace Game;
+using namespace Core;
 
-GCharacter::GCharacter(const std::string& InKey)
-	: Key(InKey)
+GCharacter::GCharacter()
 {
 	constexpr float MidNeed = (MIN_NEED + MAX_NEED) / 2.f;
 	Needs[ENeedType::Survival] = MidNeed;
@@ -20,6 +21,14 @@ GCharacter::GCharacter(const std::string& InKey)
 	CoreStats[ECoreStatType::Intellect] = MidCoreStat;
 	CoreStats[ECoreStatType::Willpower] = MidCoreStat;
 	CoreStats[ECoreStatType::Charisma] = MidCoreStat;
+
+	Key = UTKeyGenerator::Instance().GenerateKey();
+}
+
+GCharacter::GCharacter(const std::string& InName)
+	: GCharacter()
+{
+	Name = InName;
 }
 
 UTAgentContext GCharacter::CreateAgentContext() const
