@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>
 
-namespace UAI
+namespace UTMath
 {
 	inline float Clamp01(float Value) { return std::max(0.0f, std::min(1.0f, Value)); }
 

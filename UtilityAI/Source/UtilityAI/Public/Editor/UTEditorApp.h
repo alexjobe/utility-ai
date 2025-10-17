@@ -1,19 +1,19 @@
 #pragma once
+#include <Editor/UTWindowManager.h>
 #include <SDL3/SDL.h>
-#include <UIWindowManager.h>
 
-namespace UI
+namespace UTEditor
 {
-class UIEditorApp {
+class UTEditorApp {
 public:
-	UIEditorApp();
-	~UIEditorApp();
+	UTEditorApp();
+	~UTEditorApp();
 
 	bool Init();
 	void Run();
 	void Shutdown();
 
-	UIWindowManager& GetWindowManager() { return WindowManager; }
+	UTWindowManager& GetWindowManager() { return WindowManager; }
 
 private:
 	bool HandleEvent(const SDL_Event& Event);
@@ -29,6 +29,6 @@ private:
 	double TargetFrameTime;
 	float FontScale;
 
-	UIWindowManager WindowManager;
+	UTWindowManager WindowManager;
 };
 }

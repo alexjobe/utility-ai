@@ -1,5 +1,5 @@
-#include "Core/UTTrait.h"
-#include <Logging/Logger.h>
+#include "UAI/UTTrait.h"
+#include <Logging/UTLogger.h>
 
 using namespace UAI;
 

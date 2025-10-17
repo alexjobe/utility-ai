@@ -13,7 +13,7 @@ inline float ScoreNeedChange(const UTAgentContext& Context, const UTEvaluationDa
 	const float After = std::clamp(Before - Data.Raw, Data.MinRaw, Data.MaxRaw);
 	const float PercentChange = (After - Before) / (Data.MaxRaw - Data.MinRaw);
 
-	const float BeforeNorm = Normalize(Before, Data.MinRaw, Data.MaxRaw);
+	const float BeforeNorm = UTMath::Normalize(Before, Data.MinRaw, Data.MaxRaw);
 	const float RawScore = BeforeNorm * -PercentChange; // Favor smaller values
 
 	return std::clamp(RawScore, 0.0f, 1.0f);

@@ -1,13 +1,13 @@
 #pragma once
 #include <string>
 
-namespace UI
+namespace UTEditor
 {
-class UIEditorPanel
+class UTEditorPanel
 {
 public:
-	UIEditorPanel(const std::string& InName) : Name(InName), bOpen(true) {}
-	virtual ~UIEditorPanel() = default;
+	UTEditorPanel(const std::string& InName) : Name(InName), bOpen(true) {}
+	virtual ~UTEditorPanel() = default;
 
 	const std::string& GetName() const { return Name; }
 	bool* GetOpenPtr() { return &bOpen; }

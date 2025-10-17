@@ -1,13 +1,13 @@
 #pragma once
 #include <functional>
-#include <Logging/Logger.h>
+#include <Logging/UTLogger.h>
 #include <optional>
 #include <sol.hpp>
 #include <string>
 #include <type_traits>
 #include <vector>
 
-namespace LuaUtils
+namespace UTLuaUtils
 {
 	struct UTValidationResult
 	{
@@ -130,7 +130,7 @@ namespace LuaUtils
 }
 
 #define LOAD_FIELD(obj, member, table, result, required) \
-    LuaUtils::LoadField(obj, &std::decay_t<decltype(obj)>::member, table, #member, result, required);
+    UTLuaUtils::LoadField(obj, &std::decay_t<decltype(obj)>::member, table, #member, result, required);
 
 #define LOAD_FUNCTION(obj, member, table, result, required) \
-    LuaUtils::LoadFunction(obj, &std::decay_t<decltype(obj)>::member, table, #member, result, required);
+    UTLuaUtils::LoadFunction(obj, &std::decay_t<decltype(obj)>::member, table, #member, result, required);

@@ -1,14 +1,12 @@
 #pragma once
-#include "UIEditorPanel.h"
-
-using namespace UI;
+#include "UTEditorPanel.h"
 
 namespace UTEditor
 {
-	class UTGoalsPanel : public UIEditorPanel
-	{
-	public:
-		UTGoalsPanel() : UIEditorPanel("Goals") {}
-		void Render() override;
-	};
+class UTGoalsPanel : public UTEditorPanel
+{
+public:
+	UTGoalsPanel() : UTEditorPanel("Goals") {}
+	void Render() override;
+};
 }

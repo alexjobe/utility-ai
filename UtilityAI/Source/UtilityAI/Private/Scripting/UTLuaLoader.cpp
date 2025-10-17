@@ -1,15 +1,15 @@
-#include "Core/UTFunctionRegistry.h"
 #include "Scripting/UTLuaLoader.h"
-#include <Core/UTAction.h>
-#include <Core/UTGoal.h>
-#include <Core/UTObjectRegistry.h>
-#include <Core/UTTrait.h>
+#include "UAI/UTFunctionRegistry.h"
 #include <filesystem>
+#include <UAI/UTAction.h>
+#include <UAI/UTGoal.h>
+#include <UAI/UTObjectRegistry.h>
+#include <UAI/UTTrait.h>
 
 using namespace UAI;
-using namespace LuaUtils;
+using namespace UTLuaUtils;
 
-void UTLoader::RegisterScoreFunction(const std::string& Key, sol::function Fn)
+void UTLuaLoader::RegisterScoreFunction(const std::string& Key, sol::function Fn)
 {
 	UTFunctionRegistry::Instance().Register<ScoreFnSig>(
 		Key,
@@ -17,7 +17,7 @@ void UTLoader::RegisterScoreFunction(const std::string& Key, sol::function Fn)
 	);
 }
 
-void UTLoader::RegisterEffectFunction(const std::string& Key, sol::function Fn)
+void UTLuaLoader::RegisterEffectFunction(const std::string& Key, sol::function Fn)
 {
 	UTFunctionRegistry::Instance().Register<EffectFnSig>(
 		Key,
@@ -25,7 +25,7 @@ void UTLoader::RegisterEffectFunction(const std::string& Key, sol::function Fn)
 	);
 }
 
-void UTLoader::RegisterCurveFunction(const std::string& Key, sol::function Fn)
+void UTLuaLoader::RegisterCurveFunction(const std::string& Key, sol::function Fn)
 {
 	UTFunctionRegistry::Instance().Register<CurveFnSig>(
 		Key,
@@ -33,7 +33,7 @@ void UTLoader::RegisterCurveFunction(const std::string& Key, sol::function Fn)
 	);
 }
 
-void UTLoader::RegisterLuaTypes(sol::state& Lua)
+void UTLuaLoader::RegisterLuaTypes(sol::state& Lua)
 {
 	Lua.new_usertype<UTAgentContext>(
 		"UTAgentContext",
@@ -45,12 +45,12 @@ void UTLoader::RegisterLuaTypes(sol::state& Lua)
 
 	Lua.new_usertype<UTEffect>("UTEffect", sol::no_constructor);
 
-	Lua.set_function("_RegisterScoreFunction", &UTLoader::RegisterScoreFunction);
-	Lua.set_function("_RegisterEffectFunction", &UTLoader::RegisterEffectFunction);
-	Lua.set_function("_RegisterCurveFunction", &UTLoader::RegisterCurveFunction);
+	Lua.set_function("_RegisterScoreFunction", &UTLuaLoader::RegisterScoreFunction);
+	Lua.set_function("_RegisterEffectFunction", &UTLuaLoader::RegisterEffectFunction);
+	Lua.set_function("_RegisterCurveFunction", &UTLuaLoader::RegisterCurveFunction);
 }
 
-UTEvaluationData UTLoader::LoadEvaluationData(const sol::table& Table, UTValidationResult& Result)
+UTEvaluationData UTLuaLoader::LoadEvaluationData(const sol::table& Table, UTValidationResult& Result)
 {
 	UTEvaluationData Data;
 	LOAD_FIELD(Data, Target, Table, Result, false);
@@ -62,7 +62,7 @@ UTEvaluationData UTLoader::LoadEvaluationData(const sol::table& Table, UTValidat
 	return Data;
 }
 
-UTConsideration UTLoader::LoadConsideration(const sol::table& Table, UTValidationResult& Result)
+UTConsideration UTLuaLoader::LoadConsideration(const sol::table& Table, UTValidationResult& Result)
 {
 	UTConsideration Consideration;
 	LOAD_FIELD(Consideration, Key, Table, Result, true);
@@ -85,7 +85,7 @@ UTConsideration UTLoader::LoadConsideration(const sol::table& Table, UTValidatio
 	return Consideration;
 }
 
-UTEffect UTLoader::LoadEffect(const sol::table& Table, UTValidationResult& Result)
+UTEffect UTLuaLoader::LoadEffect(const sol::table& Table, UTValidationResult& Result)
 {
 	UTEffect Effect;
 	LOAD_FIELD(Effect, Key, Table, Result, true);
@@ -115,7 +115,7 @@ UTEffect UTLoader::LoadEffect(const sol::table& Table, UTValidationResult& Resul
 	return Effect;
 }
 
-void UTLoader::ActionLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
+void UTLuaLoader::ActionLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
 {
 	UTAction Action;
 	const auto Key = ValidateField<std::string>(Table, "Key", Result, true);
@@ -132,7 +132,7 @@ void UTLoader::ActionLoader(const sol::table& Table, const std::string& Category
 	LOG_INFO(std::format("Loaded Action: {} (Category: {})", Action.GetKey(), Category))
 }
 
-void UTLoader::GoalLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
+void UTLuaLoader::GoalLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
 {
 	UTGoal Goal;
 	const auto Key = ValidateField<std::string>(Table, "Key", Result, true);
@@ -152,7 +152,7 @@ void UTLoader::GoalLoader(const sol::table& Table, const std::string& Category, 
 	LOG_INFO(std::format("Loaded Goal: {} (Category: {})", Goal.GetKey(), Category))
 }
 
-void UTLoader::TraitLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
+void UTLuaLoader::TraitLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
 {
 	UTTrait Trait;
 	const auto Key = ValidateField<std::string>(Table, "Key", Result, true);
@@ -168,7 +168,7 @@ void UTLoader::TraitLoader(const sol::table& Table, const std::string& Category,
 	LOG_INFO(std::format("Loaded Trait: {} (Category: {})", Trait.GetKey(), Category))
 }
 
-std::optional<sol::table> UTLoader::LoadLuaTable(
+std::optional<sol::table> UTLuaLoader::LoadLuaTable(
 	const std::filesystem::path& File,
 	sol::state& Lua,
 	UTValidationResult& Result)
@@ -209,7 +209,7 @@ std::optional<sol::table> UTLoader::LoadLuaTable(
 	}
 }
 
-void UTLoader::LoadScriptsRecursive(
+void UTLuaLoader::LoadScriptsRecursive(
 	const std::string& BaseDir,
 	sol::state& Lua,
 	UTValidationResult& Result,

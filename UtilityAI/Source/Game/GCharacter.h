@@ -1,6 +1,6 @@
 #pragma once
-#include "Core/UTAgentContext.h"
 #include "StatTypes.h"
+#include "UAI/UTAgentContext.h"
 #include <string>
 #include <unordered_map>
 #include <unordered_set>

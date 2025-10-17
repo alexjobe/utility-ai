@@ -1,5 +1,5 @@
 #pragma once
-#include "Math/Curves.h"
+#include "Math/UTCurves.h"
 #include "UTAgentContext.h"
 #include <functional>
 #include <string>

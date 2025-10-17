@@ -1,8 +1,8 @@
 #include "Editor/UTTraitsPanel.h"
-#include <Core/UTObjectRegistry.h>
-#include <Core/UTTrait.h>
 #include <Editor/UTPanelHelpers.h>
 #include <imgui.h>
+#include <UAI/UTObjectRegistry.h>
+#include <UAI/UTTrait.h>
 
 using namespace UTEditor;
 using namespace UAI;

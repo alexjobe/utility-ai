@@ -1,10 +1,10 @@
-#include "Core/UTFunctionRegistry.h"
-#include "Logging/Logger.h"
-#include "Math/Curves.h"
-#include "Math/Math.h"
+#include "Logging/UTLogger.h"
+#include "Math/UTCurves.h"
+#include "Math/UTMath.h"
+#include "UAI/UTFunctionRegistry.h"
 #include <algorithm>
-#include <Core/UTConsideration.h>
 #include <format>
+#include <UAI/UTConsideration.h>
 
 using namespace UAI;
 
@@ -35,7 +35,7 @@ float UTConsideration::Score(const UTAgentContext& Context) const
 {
 	float RawScore = RawScoreFn
 		? EvalRawScore(Context, Data)
-		: Normalize(Data.Raw, Data.MinRaw, Data.MaxRaw);
+		: UTMath::Normalize(Data.Raw, Data.MinRaw, Data.MaxRaw);
 
 	return ScoreCurveFn ? EvalScoreCurve(RawScore) : RawScore;
 }

@@ -1,25 +1,25 @@
-#include "Core/UTAction.h"
 #include "Game/GameHelpers.h"
 #include "Game/GCharacter.h"
 #include "Game/GCharactersPanel.h"
 #include "Game/GWorld.h"
-#include <Core/UTEffectTypes.h>
-#include <Core/UTObjectRegistry.h>
-#include <Core/UTTrait.h>
+#include "UAI/UTAction.h"
 #include <Editor/UTActionsPanel.h>
+#include <Editor/UTEditorApp.h>
 #include <Editor/UTGoalsPanel.h>
 #include <Editor/UTTraitsPanel.h>
-#include <Logging/Logger.h>
+#include <Logging/UTLogger.h>
 #include <Scripting/UTLuaLoader.h>
 #include <Scripting/UTLuaLogger.h>
 #include <sol.hpp>
-#include <UIEditorApp.h>
+#include <UAI/UTEffectTypes.h>
+#include <UAI/UTObjectRegistry.h>
+#include <UAI/UTTrait.h>
 #define SOL_ALL_SAFETIES_ON 1
 
 using namespace UAI;
 using namespace Game;
-using namespace Log;
-using namespace UI;
+using namespace UTLog;
+using namespace UTEditor;
 
 int main()
 {
@@ -29,14 +29,14 @@ int main()
 
 	sol::state Lua;
 	Lua.open_libraries(sol::lib::base);
-	LuaLog::RegisterLogger(Lua);
-	UTLoader::RegisterLuaTypes(Lua);
+	UTLuaLog::RegisterLogger(Lua);
+	UTLuaLoader::RegisterLuaTypes(Lua);
 	Game::RegisterLuaTypes(Lua);
 
 	UTValidationResult Result;
-	UTLoader::LoadScriptsRecursive("Scripts/Actions", Lua, Result, UTLoader::ActionLoader);
-	UTLoader::LoadScriptsRecursive("Scripts/Goals", Lua, Result, UTLoader::GoalLoader);
-	UTLoader::LoadScriptsRecursive("Scripts/Traits", Lua, Result, UTLoader::TraitLoader);
+	UTLuaLoader::LoadScriptsRecursive("Scripts/Actions", Lua, Result, UTLuaLoader::ActionLoader);
+	UTLuaLoader::LoadScriptsRecursive("Scripts/Goals", Lua, Result, UTLuaLoader::GoalLoader);
+	UTLuaLoader::LoadScriptsRecursive("Scripts/Traits", Lua, Result, UTLuaLoader::TraitLoader);
 	if (!Result.bValid)
 	{
 		for (const auto& Error : Result.Errors)
@@ -64,7 +64,7 @@ int main()
 		Action.Execute(MyContext);
 	}
 
-	UIEditorApp App;
+	UTEditorApp App;
 	if (!App.Init())
 	{
 		return -1;

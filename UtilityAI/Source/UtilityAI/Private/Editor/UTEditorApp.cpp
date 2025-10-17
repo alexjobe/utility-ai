@@ -1,14 +1,13 @@
-#include "UIEditorApp.h"
-
+#include "Editor/UTEditorApp.h"
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_sdl3.h>
 #include <glad/glad.h>
 #include <imgui.h>
-#include <Logging/Logger.h>
+#include <Logging/UTLogger.h>
 
-using namespace UI;
+using namespace UTEditor;
 
-UIEditorApp::UIEditorApp()
+UTEditorApp::UTEditorApp()
 	: Window(nullptr)
 	, GLContext(nullptr)
 	, bRunning(false)
@@ -18,12 +17,12 @@ UIEditorApp::UIEditorApp()
 {
 }
 
-UIEditorApp::~UIEditorApp() 
+UTEditorApp::~UTEditorApp() 
 { 
 	Shutdown(); 
 }
 
-bool UIEditorApp::Init()
+bool UTEditorApp::Init()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) == false)
 	{
@@ -92,7 +91,7 @@ bool UIEditorApp::Init()
 	return true;
 }
 
-void UIEditorApp::Run()
+void UTEditorApp::Run()
 {
 	const uint64_t PerfFreq = SDL_GetPerformanceFrequency();
 	uint64_t LastCounter = SDL_GetPerformanceCounter();
@@ -127,7 +126,7 @@ void UIEditorApp::Run()
 	}
 }
 
-bool UIEditorApp::HandleEvent(const SDL_Event& Event)
+bool UTEditorApp::HandleEvent(const SDL_Event& Event)
 {
 	// Always let ImGui process events first
 	ImGui_ImplSDL3_ProcessEvent(&Event);
@@ -154,20 +153,20 @@ bool UIEditorApp::HandleEvent(const SDL_Event& Event)
 	return false; // not consumed
 }
 
-void UIEditorApp::BeginFrame()
+void UTEditorApp::BeginFrame()
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL3_NewFrame();
 	ImGui::NewFrame();
 }
 
-void UIEditorApp::RenderUI()
+void UTEditorApp::RenderUI()
 {
 	RenderDockSpace();
 	WindowManager.RenderPanels();
 }
 
-void UIEditorApp::EndFrame()
+void UTEditorApp::EndFrame()
 {
 	ImGuiIO& IO = ImGui::GetIO();
 
@@ -191,7 +190,7 @@ void UIEditorApp::EndFrame()
 	SDL_GL_SwapWindow(Window);
 }
 
-void UIEditorApp::RenderDockSpace()
+void UTEditorApp::RenderDockSpace()
 {
 	static ImGuiDockNodeFlags DockspaceFlags = ImGuiDockNodeFlags_None;
 	ImGuiWindowFlags WindowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -227,7 +226,7 @@ void UIEditorApp::RenderDockSpace()
 	ImGui::End();
 }
 
-void UIEditorApp::Shutdown()
+void UTEditorApp::Shutdown()
 {
 	if (GLContext || Window) 
 	{

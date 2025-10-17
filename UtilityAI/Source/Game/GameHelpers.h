@@ -1,8 +1,8 @@
 #pragma once
-#include "Core/UTEffect.h"
 #include "StatTypes.h"
-#include <Core/UTEffectTypes.h>
+#include "UAI/UTEffect.h"
 #include <sol.hpp>
+#include <UAI/UTEffectTypes.h>
 
 using namespace UAI;
 

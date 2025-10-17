@@ -11,7 +11,7 @@
 #include <thread>
 #include <vector>
 
-namespace Log
+namespace UTLog
 {
 enum class ELogLevel 
 {
@@ -208,8 +208,8 @@ private:
 }
 
 // Macros
-#define LOG_DEBUG(Msg)    Log::Logger::Instance().Log(Log::ELogLevel::Debug,    Msg, __FILE__, __LINE__);
-#define LOG_INFO(Msg)     Log::Logger::Instance().Log(Log::ELogLevel::Info,     Msg, __FILE__, __LINE__);
-#define LOG_WARN(Msg)     Log::Logger::Instance().Log(Log::ELogLevel::Warning,  Msg, __FILE__, __LINE__);
-#define LOG_ERROR(Msg)    Log::Logger::Instance().Log(Log::ELogLevel::Error,    Msg, __FILE__, __LINE__);
-#define LOG_CRITICAL(Msg) Log::Logger::Instance().Log(Log::ELogLevel::Critical, Msg, __FILE__, __LINE__);
+#define LOG_DEBUG(Msg)    UTLog::Logger::Instance().Log(UTLog::ELogLevel::Debug,    Msg, __FILE__, __LINE__);
+#define LOG_INFO(Msg)     UTLog::Logger::Instance().Log(UTLog::ELogLevel::Info,     Msg, __FILE__, __LINE__);
+#define LOG_WARN(Msg)     UTLog::Logger::Instance().Log(UTLog::ELogLevel::Warning,  Msg, __FILE__, __LINE__);
+#define LOG_ERROR(Msg)    UTLog::Logger::Instance().Log(UTLog::ELogLevel::Error,    Msg, __FILE__, __LINE__);
+#define LOG_CRITICAL(Msg) UTLog::Logger::Instance().Log(UTLog::ELogLevel::Critical, Msg, __FILE__, __LINE__);

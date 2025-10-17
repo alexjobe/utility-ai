@@ -1,5 +1,5 @@
-#include "Core/UTScorer.h"
-#include "Logging/Logger.h"
+#include "UAI/UTScorer.h"
+#include "Logging/UTLogger.h"
 #include <algorithm>
 #include <cmath>
 #include <string>

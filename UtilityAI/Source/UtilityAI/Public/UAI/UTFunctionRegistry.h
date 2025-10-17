@@ -1,5 +1,5 @@
 #pragma once
-#include "Logging/Logger.h"
+#include "Logging/UTLogger.h"
 #include <any>
 #include <functional>
 #include <string>

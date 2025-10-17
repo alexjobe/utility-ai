@@ -1,12 +1,12 @@
 #pragma once
-#include "Math.h"
+#include "UTMath.h"
 #include <cmath>
 #include <functional>
 
 using CurveFnSig = float(float);
 using CurveFnType = std::function<CurveFnSig>;
 
-namespace UAI
+namespace UTMath
 {
 	struct Curves
 	{

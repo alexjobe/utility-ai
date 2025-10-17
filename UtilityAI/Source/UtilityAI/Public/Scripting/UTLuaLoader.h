@@ -1,15 +1,15 @@
 #pragma once
 #include "UTLuaUtils.h"
-#include <Core/UTConsideration.h>
-#include <Core/UTEffect.h>
 #include <optional>
 #include <sol.hpp>
 #include <string>
+#include <UAI/UTConsideration.h>
+#include <UAI/UTEffect.h>
 
 using namespace UAI;
-using namespace LuaUtils;
+using namespace UTLuaUtils;
 
-namespace UTLoader
+namespace UTLuaLoader
 {
 	void RegisterScoreFunction(const std::string& Key, sol::function Fn);
 	void RegisterEffectFunction(const std::string& Key, sol::function Fn);

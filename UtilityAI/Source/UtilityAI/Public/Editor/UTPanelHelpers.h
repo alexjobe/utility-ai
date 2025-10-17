@@ -1,9 +1,9 @@
 #pragma once
-#include <Core/UTAction.h>
-#include <Core/UTConsideration.h>
-#include <Core/UTEffect.h>
-#include <Core/UTGoal.h>
-#include <Core/UTTrait.h>
+#include <UAI/UTAction.h>
+#include <UAI/UTConsideration.h>
+#include <UAI/UTEffect.h>
+#include <UAI/UTGoal.h>
+#include <UAI/UTTrait.h>
 
 using namespace UAI;
 

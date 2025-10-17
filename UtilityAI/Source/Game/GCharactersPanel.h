@@ -1,15 +1,15 @@
 #pragma once
+#include "Editor/UTEditorPanel.h"
 #include "GCharacter.h"
-#include "UIEditorPanel.h"
 
-using namespace UI;
+using namespace UTEditor;
 
 namespace Game
 {
-	class GCharactersPanel : public UIEditorPanel
+	class GCharactersPanel : public UTEditorPanel
 	{
 	public:
-		GCharactersPanel() : UIEditorPanel("Characters") {}
+		GCharactersPanel() : UTEditorPanel("Characters") {}
 		void Render() override;
 
 	private:

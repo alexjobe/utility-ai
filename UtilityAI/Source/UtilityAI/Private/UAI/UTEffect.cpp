@@ -1,7 +1,7 @@
-#include "Core/UTEffect.h"
-#include "Core/UTFunctionRegistry.h"
-#include <Logging/Logger.h>
-#include <Math/Curves.h>
+#include "UAI/UTEffect.h"
+#include "UAI/UTFunctionRegistry.h"
+#include <Logging/UTLogger.h>
+#include <Math/UTCurves.h>
 
 using namespace UAI;
 

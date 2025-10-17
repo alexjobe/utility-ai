@@ -1,15 +1,14 @@
-#include "UIWindowManager.h"
+#include "Editor/UTWindowManager.h"
 #include <imgui.h>
 
-using namespace UI;
+using namespace UTEditor;
 
-void UIWindowManager::AddPanel(std::unique_ptr<UIEditorPanel> InPanel)
+void UTWindowManager::AddPanel(std::unique_ptr<UTEditorPanel> InPanel)
 {
 	Panels.push_back(std::move(InPanel));
 }
 
-
-void UIWindowManager::RenderMenu()
+void UTWindowManager::RenderMenu()
 {
 	if (ImGui::BeginMenu("Window"))
 	{
@@ -21,7 +20,7 @@ void UIWindowManager::RenderMenu()
 	}
 }
 
-void UIWindowManager::RenderPanels()
+void UTWindowManager::RenderPanels()
 {
 	for (auto& Panel : Panels)
 	{
