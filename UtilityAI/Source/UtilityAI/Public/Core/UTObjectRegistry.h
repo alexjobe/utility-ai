@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-namespace UAI
+namespace UTCore
 {
 template<typename T>
 class UTObjectRegistry
@@ -60,7 +60,7 @@ public:
 		return Result;
 	}
 
-	const std::unordered_set<std::string> FindAllWithTags(const std::vector<std::string>& Tags) const
+	const std::unordered_set<std::string> FindAllWithTags(const std::unordered_set<std::string>& Tags) const
 	{
 		std::unordered_set<std::string> Result;
 		for (const auto& [_, Object] : Objects)
@@ -82,7 +82,7 @@ public:
 		return Result;
 	}
 
-	const std::unordered_set<std::string> FindAllWithAnyTag(const std::vector<std::string>& Tags) const
+	const std::unordered_set<std::string> FindAllWithAnyTag(const std::unordered_set<std::string>& Tags) const
 	{
 		std::unordered_set<std::string> Result;
 		for (const auto& [_, Object] : Objects)

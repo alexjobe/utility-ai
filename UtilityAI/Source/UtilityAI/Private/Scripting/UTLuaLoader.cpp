@@ -1,12 +1,13 @@
 #include "Scripting/UTLuaLoader.h"
 #include "UAI/UTFunctionRegistry.h"
+#include <Core/UTObjectRegistry.h>
 #include <filesystem>
 #include <UAI/UTAction.h>
 #include <UAI/UTGoal.h>
-#include <UAI/UTObjectRegistry.h>
 #include <UAI/UTTrait.h>
 
 using namespace UAI;
+using namespace UTCore;;
 using namespace UTLuaUtils;
 
 void UTLuaLoader::RegisterScoreFunction(const std::string& Key, sol::function Fn)

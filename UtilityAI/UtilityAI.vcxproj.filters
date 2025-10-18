@@ -209,7 +209,7 @@
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTPanelHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTObjectRegistry.h">
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTObjectRegistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTGoalsPanel.h">
@@ -222,6 +222,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\UtilityAI\Public\Core\UTKeyGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTObjectQuery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

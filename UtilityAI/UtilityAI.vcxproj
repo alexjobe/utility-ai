@@ -193,6 +193,7 @@
     <ClInclude Include="Extern\imgui\imstb_rectpack.h" />
     <ClInclude Include="Extern\imgui\imstb_textedit.h" />
     <ClInclude Include="Extern\imgui\imstb_truetype.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTObjectQuery.h" />
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTEditorApp.h" />
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTEditorPanel.h" />
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTWindowManager.h" />
@@ -208,7 +209,7 @@
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTEffectTypes.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTFunctionRegistry.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTKeyGenerator.h" />
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTObjectRegistry.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTObjectRegistry.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTScorer.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTEffect.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTGoal.h" />

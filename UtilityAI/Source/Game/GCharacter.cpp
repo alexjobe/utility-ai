@@ -2,7 +2,7 @@
 #include <Core/UTKeyGenerator.h>
 
 using namespace Game;
-using namespace Core;
+using namespace UTCore;
 
 GCharacter::GCharacter()
 {
