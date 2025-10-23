@@ -65,6 +65,17 @@ int main()
 		Action.Execute(MyContext);
 	}
 
+	UTObjectQuery<UTAction> Query;
+	Query.RequiredTags = { "Wealth" };
+	Query.AnyTags = { "Aggressive", "Generic" };
+
+	auto Results = UTObjectRegistry<UTAction>::Instance().Query(Query);
+
+	for (const auto* Action : Results)
+	{
+		LOG_INFO(std::format("Found action: {}", Action->GetKey()));
+	}
+
 	UTEditorApp App;
 	if (!App.Init())
 	{
