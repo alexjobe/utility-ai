@@ -42,6 +42,22 @@ void GCharactersPanel::RenderCharacter(GCharacter& Character)
 			}
 		}
 
+		ImGui::Separator();
+		if (ImGui::TreeNode(std::format("Profession: {}", Character.Profession).c_str()))
+		{
+			// Profession edit
+			char NewProfession[128] = "";
+			if (ImGui::InputText("Change Profession", NewProfession, sizeof(NewProfession), ImGuiInputTextFlags_EnterReturnsTrue))
+			{
+				if (strlen(NewProfession) > 0)
+				{
+					Character.Profession = NewProfession;
+					NewProfession[0] = '\0';
+				}
+			}
+			ImGui::TreePop();
+		}
+
 		RenderTraits(Character);
 
 		ImGui::Separator();

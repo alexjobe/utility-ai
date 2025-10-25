@@ -49,6 +49,7 @@ int main()
 	UTAgentContext MyContext;
 	if (GCharacter* MyCharacter = GWorld::Instance().AddCharacter(GCharacter("Bilbo")))
 	{
+		MyCharacter->Profession = "Burglar";
 		MyCharacter->CoreStats[ECoreStatType::Strength] = 11.f;
 		MyCharacter->CoreStats[ECoreStatType::Endurance] = 7.f;
 		MyContext = MyCharacter->CreateAgentContext();
