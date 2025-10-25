@@ -76,9 +76,9 @@ namespace UTLuaLoader
 	}
 
 	template <typename AddFn>
-	void LoadTags(const sol::table& Table, UTValidationResult& Result, AddFn Add)
+	void LoadTags(const sol::table& Table, const std::string& Field, UTValidationResult& Result, AddFn Add)
 	{
-		if (const auto Tags = ValidateField<sol::table>(Table, "Tags", Result))
+		if (const auto Tags = ValidateField<sol::table>(Table, Field, Result))
 		{
 			for (auto& [_, Tag] : *Tags)
 			{

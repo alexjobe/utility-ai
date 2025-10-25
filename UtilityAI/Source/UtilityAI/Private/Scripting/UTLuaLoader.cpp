@@ -124,7 +124,7 @@ void UTLuaLoader::ActionLoader(const sol::table& Table, const std::string& Categ
 
 	Action.SetKey(*Key);
 
-	LoadTags(Table, Result, [&](const std::string& Tag) { Action.Tags.insert(Tag); });
+	LoadTags(Table, "OwnedTags", Result, [&](const std::string& Tag) { Action.OwnedTags.insert(Tag); });
 	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Action.AddEffect(Effect); });
 	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Action.Scorer.AddConsideration(Cons); });
 
@@ -141,7 +141,8 @@ void UTLuaLoader::GoalLoader(const sol::table& Table, const std::string& Categor
 
 	Goal.SetKey(*Key);
 
-	LoadTags(Table, Result, [&](const std::string& Tag) { Goal.Tags.insert(Tag); });
+	LoadTags(Table, "OwnedTags", Result, [&](const std::string& Tag) { Goal.OwnedTags.insert(Tag); });
+	LoadTags(Table, "RequiredTags", Result, [&](const std::string& Tag) { Goal.RequiredTags.insert(Tag); });
 	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Goal.Scorer.AddConsideration(Cons); });
 
 	if (const auto PreconditionFnKey = ValidateField<std::string>(Table, "PreconditionFnKey", Result))
@@ -161,7 +162,8 @@ void UTLuaLoader::TraitLoader(const sol::table& Table, const std::string& Catego
 
 	Trait.SetKey(*Key);
 
-	LoadTags(Table, Result, [&](const std::string& Tag) { Trait.Tags.insert(Tag); });
+	LoadTags(Table, "OwnedTags", Result, [&](const std::string& Tag) { Trait.OwnedTags.insert(Tag); });
+	LoadTags(Table, "RequiredTags", Result, [&](const std::string& Tag) { Trait.RequiredTags.insert(Tag); });
 	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Trait.AddEffect(Effect); });
 	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Trait.AddConsideration(Cons); });
 

@@ -12,7 +12,8 @@ namespace UAI
 // Traits add their effects and considerations to goals and actions with the required tags
 struct UTTrait
 {
-	std::set<std::string> Tags;
+	std::set<std::string> OwnedTags;
+	std::set<std::string> RequiredTags;
 
 	std::string GetKey() const { return Key; }
 	void SetKey(const std::string& InKey) { Key = InKey; }

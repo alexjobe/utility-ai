@@ -5,20 +5,20 @@ using namespace UAI;
 
 bool UTTrait::AppliesTo(const UTGoal& Goal) const
 {
-	if (Tags.empty()) return true;
-	for (auto& Tag : Tags)
+	if (OwnedTags.empty()) return true;
+	for (auto& Tag : OwnedTags)
 	{
-		if (Goal.Tags.contains(Tag)) return true;
+		if (Goal.OwnedTags.contains(Tag)) return true;
 	}
 	return false;
 }
 
 bool UTTrait::AppliesTo(const UTAction& Action) const
 {
-	if (Tags.empty()) return true;
-	for (auto& Tag : Tags)
+	if (OwnedTags.empty()) return true;
+	for (auto& Tag : OwnedTags)
 	{
-		if (Action.Tags.contains(Tag)) return true;
+		if (Action.OwnedTags.contains(Tag)) return true;
 	}
 	return false;
 }

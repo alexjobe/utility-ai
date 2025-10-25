@@ -18,7 +18,7 @@ _RegisterCurveFunction("TimeScoreCurve", function (X)
 end)
 
 Action.Key = "Action.Raid"
-Action.Tags = { "Wealth", "Aggressive" }
+Action.OwnedTags = { "Wealth", "Aggressive" }
 
 Action.Considerations = {
     {

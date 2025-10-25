@@ -11,7 +11,7 @@ namespace UAI
 class UTAction
 {
 public:
-	std::set<std::string> Tags;
+	std::set<std::string> OwnedTags;
 	UTScorer Scorer;
 
 	UTAction() = default;

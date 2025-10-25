@@ -19,7 +19,7 @@ struct UTObjectQuery
 		// Must have all required tags
 		for (const auto& Tag : RequiredTags)
 		{
-			if (!Object.Tags.contains(Tag))
+			if (!Object.OwnedTags.contains(Tag))
 			{
 				return false;
 			}
@@ -28,7 +28,7 @@ struct UTObjectQuery
 		// Must NOT have excluded tags
 		for (const auto& Tag : ExcludedTags)
 		{
-			if (Object.Tags.contains(Tag))
+			if (Object.OwnedTags.contains(Tag))
 			{
 				return false;
 			}
@@ -40,7 +40,7 @@ struct UTObjectQuery
 			bool bHasAny = false;
 			for (const auto& Tag : AnyTags)
 			{
-				if (Object.Tags.contains(Tag))
+				if (Object.OwnedTags.contains(Tag))
 				{
 					bHasAny = true;
 					break;

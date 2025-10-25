@@ -43,9 +43,9 @@ void UTEditor::RenderAction(const UTAction& Action)
 {
 	if (ImGui::TreeNode(Action.GetKey().c_str()))
 	{
-		if (ImGui::TreeNode("Tags"))
+		if (ImGui::TreeNode("OwnedTags"))
 		{
-			for (auto& Tag : Action.Tags)
+			for (auto& Tag : Action.OwnedTags)
 			{
 				ImGui::BulletText("%s", Tag.c_str());
 			}
@@ -80,9 +80,19 @@ void UTEditor::RenderGoal(const UTGoal& Goal)
 {
 	if (ImGui::TreeNode(Goal.GetKey().c_str()))
 	{
-		if (ImGui::TreeNode("Tags"))
+		if (ImGui::TreeNode("OwnedTags"))
 		{
-			for (auto& Tag : Goal.Tags)
+			for (auto& Tag : Goal.OwnedTags)
+			{
+				ImGui::BulletText("%s", Tag.c_str());
+			}
+			ImGui::TreePop();
+		}
+
+		ImGui::Separator();
+		if (ImGui::TreeNode("RequiredTags"))
+		{
+			for (auto& Tag : Goal.RequiredTags)
 			{
 				ImGui::BulletText("%s", Tag.c_str());
 			}
@@ -110,9 +120,19 @@ void UTEditor::RenderTrait(const UTTrait& Trait)
 {
 	if (ImGui::TreeNode(Trait.GetKey().c_str()))
 	{
-		if (ImGui::TreeNode("Tags"))
+		if (ImGui::TreeNode("OwnedTags"))
 		{
-			for (auto& Tag : Trait.Tags)
+			for (auto& Tag : Trait.OwnedTags)
+			{
+				ImGui::BulletText("%s", Tag.c_str());
+			}
+			ImGui::TreePop();
+		}
+
+		ImGui::Separator();
+		if (ImGui::TreeNode("RequiredTags"))
+		{
+			for (auto& Tag : Trait.RequiredTags)
 			{
 				ImGui::BulletText("%s", Tag.c_str());
 			}

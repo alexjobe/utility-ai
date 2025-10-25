@@ -13,7 +13,9 @@ using PreconditionFnType = std::function<PreconditionFnSig>;
 class UTGoal
 {
 public:
-	std::set<std::string> Tags; // Only actions with the required tags will be considered
+	std::set<std::string> OwnedTags;
+	std::set<std::string> RequiredTags; // Only actions with the required tags will be considered
+
 	UTScorer Scorer;
 
 	UTGoal() = default;

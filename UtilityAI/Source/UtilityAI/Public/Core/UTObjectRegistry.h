@@ -33,7 +33,7 @@ public:
 		Categories[Category].insert(Key);
 
 		// Build TagIndex for fast filtering
-		for (const auto& Tag : Object.Tags)
+		for (const auto& Tag : Object.OwnedTags)
 		{
 			TagIndex[Tag].insert(Key);
 		}
@@ -140,7 +140,7 @@ public:
 			if (ObjIt != Objects.end())
 			{
 				// Remove from tag index
-				for (const auto& Tag : ObjIt->second.Tags)
+				for (const auto& Tag : ObjIt->second.OwnedTags)
 				{
 					if (auto TagIt = TagIndex.find(Tag); TagIt != TagIndex.end())
 					{
