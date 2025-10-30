@@ -24,7 +24,10 @@ namespace Game
 		UTAgentContext CreateAgentContext() const;
 		std::string GetKey() const { return Key; }
 
+		void UpdateGoals();
+
 	private:
 		std::string Key;
+		std::vector<const class UTGoal*> CurrentGoals;
 	};
 }

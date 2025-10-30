@@ -1,8 +1,14 @@
 #include "GCharacter.h"
 #include <Core/UTKeyGenerator.h>
+#include <Core/UTObjectQuery.h>
+#include <Core/UTObjectRegistry.h>
+#include <Logging/UTLogger.h>
+#include <UAI/UTGoal.h>
+#include <UAI/UTGoalStatics.h>
 
 using namespace Game;
 using namespace UTCore;
+using namespace UAI;
 
 GCharacter::GCharacter()
 {
@@ -43,4 +49,25 @@ UTAgentContext GCharacter::CreateAgentContext() const
 		Context.Stats[ToString(StatType)] = Value;
 	}
 	return Context;
+}
+
+void GCharacter::UpdateGoals()
+{
+	UTObjectQuery<UAI::UTGoal> GoalQuery;
+	GoalQuery.AnyTags = { "Generic", Profession };
+
+	const auto FoundGoals = UTObjectRegistry<UAI::UTGoal>::Instance().Query(GoalQuery);
+	if (FoundGoals.empty())
+	{
+		LOG_WARN(std::format("(Character: {}) No available goals found!", Name))
+		return;
+	}
+
+	UTAgentContext Context = CreateAgentContext();
+
+	std::vector<UTGoalScore> TopGoals = GetTopKGoalsWithScores(FoundGoals, Context, 1);
+	for (auto& GS : TopGoals)
+	{
+		LOG_INFO(std::format("'{}' Score: {}", GS.Goal->GetKey(), GS.Score))
+	}
 }

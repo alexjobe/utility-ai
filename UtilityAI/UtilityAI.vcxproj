@@ -175,6 +175,7 @@
     <ClCompile Include="Source\UtilityAI\Private\UAI\UTFunctionRegistry.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\UAI\UTGoal.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Core\UTKeyGenerator.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\UAI\UTGoalStatics.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\UAI\UTScorer.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\UAI\UTTrait.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTActionsPanel.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTFunctionRegistry.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTKeyGenerator.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTObjectRegistry.h" />
+    <ClInclude Include="Source\UtilityAI\Public\UAI\UTGoalStatics.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTScorer.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTEffect.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTGoal.h" />

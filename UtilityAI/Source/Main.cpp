@@ -53,6 +53,7 @@ int main()
 		MyCharacter->CoreStats[ECoreStatType::Strength] = 11.f;
 		MyCharacter->CoreStats[ECoreStatType::Endurance] = 7.f;
 		MyContext = MyCharacter->CreateAgentContext();
+		MyCharacter->UpdateGoals();
 	}
 
 	UTAction* RaidAction = UTObjectRegistry<UTAction>::Instance().Get("Action.Raid");
