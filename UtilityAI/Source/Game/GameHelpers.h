@@ -8,9 +8,25 @@ using namespace UAI;
 
 namespace Game
 {
-	UTEffect MakeNeedEffect(ENeedType Need, float Magnitude)
+	UTEffect MakeNeedEffect(ENeedType Need, float Magnitude, float Weight = 1.0f)
 	{
-		return UAI::NeedEffect(ToString(Need), Magnitude, MIN_NEED, MAX_NEED);
+		UTEvaluationData Data;
+		Data.Target = ToString(Need);
+		Data.Raw = Magnitude;
+		Data.MinRaw = MIN_NEED;
+		Data.MaxRaw = MAX_NEED;
+		Data.Weight = Weight;
+		return UAI::NeedEffect(Data);
+	}
+
+	UTConsideration MakeNeedConsideration(ENeedType Need, float Weight = 1.0f)
+	{
+		UTEvaluationData Data;
+		Data.Target = ToString(Need);
+		Data.MinRaw = MIN_NEED;
+		Data.MaxRaw = MAX_NEED;
+		Data.Weight = Weight;
+		return UAI::NeedConsideration(Data);
 	}
 
 	void RegisterLuaTypes(sol::state& Lua)
@@ -34,5 +50,6 @@ namespace Game
 			});
 
 		Lua.set_function("_MakeNeedEffect", &MakeNeedEffect);
+		Lua.set_function("_MakeNeedConsideration", &MakeNeedConsideration);
 	}
 }

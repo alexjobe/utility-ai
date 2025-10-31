@@ -33,8 +33,8 @@ Action.Considerations = {
 }
 
 Action.Effects = {
-    _MakeNeedEffect(ENeedType.Wealth, 30),
-    _MakeNeedEffect(ENeedType.Survival, -10),
+    _MakeNeedEffect(ENeedType.Wealth, 30, 1),
+    _MakeNeedEffect(ENeedType.Survival, -10, 1),
     {
         Key = "Effect.RaidVillage",
         bIsConsideration = false,
