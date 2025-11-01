@@ -11,10 +11,13 @@ void UTActionsPanel::Render()
 {
 	if (ImGui::BeginChild("ActionsList", ImVec2(0, 0), true))
 	{
-		const auto& Actions = UTObjectRegistry<UTAction>::Instance().GetAll();
-		for (const auto& [_, Action] : Actions)
+		const auto Actions = UTObjectRegistry<UTAction>::Instance().GetAll();
+		for (const auto* Action : Actions)
 		{
-			RenderAction(Action);
+			if (Action)
+			{
+				RenderAction(*Action);
+			}
 		}
 		ImGui::EndChild();
 	}

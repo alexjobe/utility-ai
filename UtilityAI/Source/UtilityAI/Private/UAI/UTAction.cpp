@@ -1,26 +1,20 @@
-#include "UAI/UTAction.h"
 #include "Logging/UTLogger.h"
+#include "UAI/UTAction.h"
 #include <format>
 #include <string>
 
 using namespace UAI;
 
-UTAction::UTAction(const std::string& InKey)
+UTAction::UTAction()
 {
-	SetKey(InKey);
-}
-
-void UTAction::SetKey(const std::string& InKey)
-{
-	Key = InKey;
-	Scorer.SetOwnerKey(InKey);
+	Scorer.SetOwner(this);
 }
 
 bool UTAction::AddEffect(const UTEffect& NewEffect)
 {
 	if (NewEffect.Key.empty() || Effects.contains(NewEffect.Key))
 	{
-		LOG_ERROR(std::format("Action: {} - Invalid Effect! Check Key: {}", Key, NewEffect.Key))
+		LOG_ERROR(std::format("[UTAction] '{}' - Invalid Effect! Check Key: '{}'", GetName(), NewEffect.Key))
 		return false;
 	}
 
@@ -31,13 +25,13 @@ bool UTAction::AddEffect(const UTEffect& NewEffect)
 // Generate considerations from effects
 void UTAction::GenerateConsiderations()
 {
-	LOG_INFO(std::format("Action: {} - Generating Considerations...", Key))
+	LOG_INFO(std::format("[UTAction] '{}' - Generating Considerations...", GetName()))
 
 	for (auto& [Key, Effect] : Effects)
 	{
 		if (Effect.bIsConsideration && Scorer.AddConsideration(Effect.AsConsideration()))
 		{
-			LOG_INFO(std::format("Effect: {} - Added Consideration: {}", Effect.Key, Effect.ConsiderationKey))
+			LOG_INFO(std::format("[UTAction] '{}' - '{}' added Consideration: '{}'", GetName(), Effect.Key, Effect.ConsiderationKey))
 		}
 	}
 }

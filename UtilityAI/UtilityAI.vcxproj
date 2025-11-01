@@ -162,6 +162,7 @@
     <ClCompile Include="Extern\imgui\imgui_draw.cpp" />
     <ClCompile Include="Extern\imgui\imgui_tables.cpp" />
     <ClCompile Include="Extern\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTObject.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTEditorApp.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTWindowManager.cpp" />
     <ClCompile Include="Source\Game\GCharacter.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Extern\imgui\imstb_rectpack.h" />
     <ClInclude Include="Extern\imgui\imstb_textedit.h" />
     <ClInclude Include="Extern\imgui\imstb_truetype.h" />
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTObject.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTObjectQuery.h" />
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTEditorApp.h" />
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTEditorPanel.h" />

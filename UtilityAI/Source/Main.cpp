@@ -56,17 +56,6 @@ int main()
 		MyCharacter->UpdateGoals();
 	}
 
-	UTAction* RaidAction = UTObjectRegistry<UTAction>::Instance().Get("Action.Raid");
-	UTTrait* GreedyTrait = UTObjectRegistry<UTTrait>::Instance().Get("Trait.Greedy");
-
-	if (RaidAction && GreedyTrait)
-	{
-		UTAction Action = *RaidAction;
-		GreedyTrait->ApplyToAction(Action);
-		Action.Scorer.Score(MyContext);
-		Action.Execute(MyContext);
-	}
-
 	UTObjectQuery<UTAction> Query;
 	Query.RequiredTags = { "Wealth" };
 	Query.AnyTags = { "Aggressive", "Generic" };
@@ -75,7 +64,7 @@ int main()
 
 	for (const auto* Action : Results)
 	{
-		LOG_INFO(std::format("Found action: {}", Action->GetKey()));
+		LOG_INFO(std::format("Found action: {}", Action->GetName()));
 	}
 
 	UTEditorApp App;

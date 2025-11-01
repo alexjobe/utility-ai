@@ -1,6 +1,6 @@
 local Goal = {}
 
-Goal.Key = "Goal.AcquireWealth"
+Goal.Name = "Goal.AcquireWealth"
 Goal.OwnedTags = { "Generic", "Wealth" }
 Goal.RequiredTags = { "Wealth" }
 Goal.PreconditionFnKey = "Invalid"

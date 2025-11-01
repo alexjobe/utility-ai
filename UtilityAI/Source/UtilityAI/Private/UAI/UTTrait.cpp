@@ -49,7 +49,7 @@ bool UTTrait::AddEffect(const UTEffect& NewEffect)
 {
 	if (NewEffect.Key.empty() || Effects.contains(NewEffect.Key))
 	{
-		LOG_ERROR(std::format("Trait: '{}' - Invalid Effect! Check Key: '{}'", Key, NewEffect.Key))
+		LOG_ERROR(std::format("[UTTrait] '{}' - Invalid Effect! Check Key: '{}'", GetKey(), NewEffect.Key))
 		return false;
 	}
 	Effects[NewEffect.Key] = NewEffect;
@@ -60,7 +60,7 @@ bool UTTrait::AddConsideration(const UTConsideration& NewCons)
 {
 	if (NewCons.Key.empty() || Considerations.contains(NewCons.Key))
 	{
-		LOG_ERROR(std::format("Trait: '{}' - Invalid Consideration! Check Key: '{}'", Key, NewCons.Key))
+		LOG_ERROR(std::format("[UTTrait] '{}' - Invalid Consideration! Check Key: '{}'", GetKey(), NewCons.Key))
 		return false;
 	}
 	Considerations[NewCons.Key] = NewCons;

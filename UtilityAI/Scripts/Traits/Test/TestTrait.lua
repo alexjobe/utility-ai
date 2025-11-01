@@ -1,6 +1,6 @@
 local Trait = {}
 
-Trait.Key = "Trait.Greedy"
+Trait.Name = "Trait.Greedy"
 
 Trait.OwnedTags = { "Generic", "Wealth" }
 Trait.RequiredTags = { "Wealth" }

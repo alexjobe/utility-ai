@@ -1,5 +1,5 @@
-#include "UAI/UTScorer.h"
 #include "Logging/UTLogger.h"
+#include "UAI/UTScorer.h"
 #include <algorithm>
 #include <cmath>
 #include <string>
@@ -8,9 +8,15 @@ using namespace UAI;
 
 bool UTScorer::AddConsideration(const UTConsideration& NewCons)
 {
+	if (Owner == nullptr)
+	{
+		LOG_ERROR("[UTScorer] Owner not set!")
+		return false;
+	}
+
 	if (NewCons.Key.empty())
 	{
-		LOG_ERROR(std::format("'{}' -- Invalid Consideration! Check Key: '{}'", OwnerKey, NewCons.Key))
+		LOG_ERROR(std::format("[UTScorer] '{}' -- Invalid Consideration! Check Key: '{}'", Owner->GetName(), NewCons.Key))
 		return false;
 	}
 
@@ -37,20 +43,26 @@ bool UTScorer::AddConsideration(const UTConsideration& NewCons)
 // Weighted geometric mean (log-sum)
 float UTScorer::Score(const UTAgentContext& Context) const
 {
-	if (Considerations.empty())
+	if (Owner == nullptr)
 	{
-		LOG_WARN(std::format("'{}' -- No Considerations!", OwnerKey))
+		LOG_ERROR("[UTScorer] Owner not set!")
 		return 0.0f;
 	}
 
-	LOG_INFO(std::format("'{}' -- Evaluating...", OwnerKey))
+	if (Considerations.empty())
+	{
+		LOG_WARN(std::format("[UTScorer] '{}' -- No Considerations!", Owner->GetName()))
+		return 0.0f;
+	}
+
+	LOG_INFO(std::format("[UTScorer] '{}' -- Evaluating...", Owner->GetName()))
 
 	float WeightSum = 0.0f;
 	for (const auto& [_, Cons] : Considerations)
 	{
 		if (Cons.Data.Weight < 0.0f)
 		{
-			LOG_WARN(std::format("'{}' -- Negative weight on '{}'; clamping to zero.", OwnerKey, Cons.Key));
+			LOG_WARN(std::format("[UTScorer] '{}' -- Negative weight on '{}'; clamping to zero.", Owner->GetName(), Cons.Key));
 		}
 
 		WeightSum += std::max(0.0f, Cons.Data.Weight);
@@ -58,7 +70,7 @@ float UTScorer::Score(const UTAgentContext& Context) const
 
 	if (WeightSum <= 0.0f)
 	{
-		LOG_WARN(std::format("'{}' -- All weights are zero or invalid.", OwnerKey));
+		LOG_WARN(std::format("[UTScorer] '{}' -- All weights are zero or invalid.", Owner->GetName()));
 		return 0.0f;
 	}
 
@@ -70,11 +82,11 @@ float UTScorer::Score(const UTAgentContext& Context) const
 		WeightedLogSum += WeightedLog;
 
 		const float Contribution = std::pow(ConScore, Consideration.Data.Weight / WeightSum);
-		LOG_INFO(std::format("'{}' -- ['{}' | Score: {} | Weight: {} | Contrib: {}]", OwnerKey, Consideration.Key, ConScore, Consideration.Data.Weight, Contribution))
+		LOG_INFO(std::format("[UTScorer] '{}' -- ['{}' | Score: {} | Weight: {} | Contrib: {}]", Owner->GetName(), Consideration.Key, ConScore, Consideration.Data.Weight, Contribution))
 	}
 
 	const float FinalScore = std::exp(WeightedLogSum / WeightSum);
-	LOG_INFO(std::format("'{}' -- Final Score: {}", OwnerKey, FinalScore))
+	LOG_INFO(std::format("[UTScorer] '{}' -- Final Score: {}", Owner->GetName(), FinalScore))
 
 	return FinalScore;
 }

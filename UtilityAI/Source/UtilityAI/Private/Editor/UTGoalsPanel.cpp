@@ -12,10 +12,13 @@ void UTGoalsPanel::Render()
 {
 	if (ImGui::BeginChild("GoalsList", ImVec2(0, 0), true))
 	{
-		const auto& Goals = UTObjectRegistry<UTGoal>::Instance().GetAll();
-		for (const auto& [_, Goal] : Goals)
+		const auto Goals = UTObjectRegistry<UTGoal>::Instance().GetAll();
+		for (const auto* Goal : Goals)
 		{
-			RenderGoal(Goal);
+			if (Goal)
+			{
+				RenderGoal(*Goal);
+			}
 		}
 		ImGui::EndChild();
 	}

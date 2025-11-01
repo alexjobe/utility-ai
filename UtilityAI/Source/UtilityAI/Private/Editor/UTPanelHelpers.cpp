@@ -41,7 +41,7 @@ void UTEditor::RenderEvaluationData(const UTEvaluationData& Data)
 
 void UTEditor::RenderAction(const UTAction& Action)
 {
-	if (ImGui::TreeNode(Action.GetKey().c_str()))
+	if (ImGui::TreeNode(Action.GetName().c_str()))
 	{
 		if (ImGui::TreeNode("OwnedTags"))
 		{
@@ -78,7 +78,7 @@ void UTEditor::RenderAction(const UTAction& Action)
 
 void UTEditor::RenderGoal(const UTGoal& Goal)
 {
-	if (ImGui::TreeNode(Goal.GetKey().c_str()))
+	if (ImGui::TreeNode(Goal.GetName().c_str()))
 	{
 		if (ImGui::TreeNode("OwnedTags"))
 		{
@@ -118,7 +118,7 @@ void UTEditor::RenderGoal(const UTGoal& Goal)
 
 void UTEditor::RenderTrait(const UTTrait& Trait)
 {
-	if (ImGui::TreeNode(Trait.GetKey().c_str()))
+	if (ImGui::TreeNode(Trait.GetName().c_str()))
 	{
 		if (ImGui::TreeNode("OwnedTags"))
 		{

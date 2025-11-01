@@ -1,6 +1,7 @@
 #pragma once
 #include "UTObjectQuery.h"
 #include <Logging/UTLogger.h>
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -19,24 +20,32 @@ public:
 	}
 
 	// Register a new object into the registry
-	void Register(const T& Object, const std::string& Category = "Uncategorized")
+	void Register(std::unique_ptr<T> Object, const std::string& Category = "Uncategorized")
 	{
-		const auto& Key = Object.GetKey();
-
-		if (Objects.contains(Key))
+		if (Object == nullptr)
 		{
-			LOG_WARN(std::format("Attempted to add duplicate object to registry: {}", Key))
+			LOG_WARN("[UTObjectRegistry] Attempted to register null object!")
 			return;
 		}
 
-		Objects[Key] = Object;
+		const auto& Key = Object->GetKey();
+
+		if (Objects.contains(Key))
+		{
+			LOG_WARN(std::format("[UTObjectRegistry] Attempted to add duplicate object to registry: '{}'", Object->GetName()))
+			return;
+		}
+
 		Categories[Category].insert(Key);
 
 		// Build TagIndex for fast filtering
-		for (const auto& Tag : Object.OwnedTags)
+		for (const auto& Tag : Object->OwnedTags)
 		{
 			TagIndex[Tag].insert(Key);
 		}
+
+		// Move ownership into the map
+		Objects.emplace(Key, std::move(Object));
 	}
 
 	// Retrieve object (mutable)
@@ -45,10 +54,10 @@ public:
 		auto It = Objects.find(Key);
 		if (It != Objects.end())
 		{
-			return &It->second;
+			return It->second.get();
 		}
 
-		LOG_WARN(std::format("Object not found in registry: {}", Key))
+		LOG_WARN(std::format("[UTObjectRegistry] Object not found in registry: {}", Key))
 		return nullptr;
 	}
 
@@ -56,7 +65,7 @@ public:
 	const T* Get(const std::string& Key) const
 	{
 		auto It = Objects.find(Key);
-		return (It != Objects.end()) ? &It->second : nullptr;
+		return (It != Objects.end()) ? It->second.get() : nullptr;
 	}
 
 	// Get all objects in a category
@@ -98,9 +107,9 @@ public:
 			// Fall back to scanning all objects
 			for (const auto& [_, Obj] : Objects)
 			{
-				if (QueryDef.Matches(Obj))
+				if (QueryDef.Matches(*Obj))
 				{
-					Results.push_back(&Obj);
+					Results.push_back(Obj.get());
 				}
 			}
 		}
@@ -109,7 +118,17 @@ public:
 	}
 
 	// Get all registered objects (read-only)
-	const std::unordered_map<std::string, T>& GetAll() const { return Objects; }
+	std::vector<const T*> GetAll() const 
+	{ 
+		std::vector<const T*> Results;
+
+		for (const auto& [_, Obj] : Objects)
+		{
+			Results.push_back(Obj.get());
+		}
+
+		return Results;
+	}
 
 	std::vector<const T*> FindAllWithTag(const std::string& Tag) const
 	{
@@ -164,7 +183,7 @@ public:
 	}
 
 private:
-	std::unordered_map<std::string, T> Objects;
+	std::unordered_map<std::string, std::unique_ptr<T>> Objects;
 	std::unordered_map<std::string, std::unordered_set<std::string>> Categories;
 	std::unordered_map<std::string, std::unordered_set<std::string>> TagIndex;
 

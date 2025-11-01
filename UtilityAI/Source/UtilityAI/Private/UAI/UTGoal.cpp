@@ -3,15 +3,9 @@
 
 using namespace UAI;
 
-UTGoal::UTGoal(const std::string& InKey)
+UTGoal::UTGoal()
 {
-	SetKey(InKey);
-}
-
-void UTGoal::SetKey(const std::string& InKey)
-{
-	Key = InKey;
-	Scorer.SetOwnerKey(InKey);
+	Scorer.SetOwner(this);
 }
 
 void UTGoal::SetPreconditionFnKey(const std::string& InKey)

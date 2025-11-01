@@ -99,6 +99,9 @@
     <ClCompile Include="Source\UtilityAI\Private\UAI\UTGoalStatics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UtilityAI\Private\Core\UTObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UtilityCore\UtilityCore.h">
@@ -231,6 +234,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTGoalStatics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

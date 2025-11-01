@@ -2,23 +2,22 @@
 #include "UTAgentContext.h"
 #include "UTEffect.h"
 #include "UTScorer.h"
+#include <Core/UTObject.h>
 #include <set>
 #include <string>
 #include <unordered_map>
 
+using namespace UTCore;
+
 namespace UAI
 {
-class UTAction
+class UTAction : public UTObject
 {
 public:
 	std::set<std::string> OwnedTags;
 	UTScorer Scorer;
 
-	UTAction() = default;
-	UTAction(const std::string& InKey);
-
-	std::string GetKey() const { return Key; }
-	void SetKey(const std::string& InKey);
+	UTAction();
 
 	bool AddEffect(const UTEffect& NewEffect);
 
@@ -31,7 +30,6 @@ public:
 	const std::unordered_map<std::string, UTEffect>& GetEffects() const { return Effects; }
 
 private:
-	std::string Key;
 	std::unordered_map<std::string, UTEffect> Effects;
 };
 }

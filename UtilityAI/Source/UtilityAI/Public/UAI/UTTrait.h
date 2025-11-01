@@ -2,21 +2,21 @@
 #include "UTAction.h"
 #include "UTEffect.h"
 #include "UTGoal.h"
+#include <Core/UTObject.h>
 #include <set>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
+using namespace UTCore;
+
 namespace UAI
 { 
 // Traits add their effects and considerations to goals and actions with the required tags
-struct UTTrait
+struct UTTrait: public UTObject
 {
 	std::set<std::string> OwnedTags;
 	std::set<std::string> RequiredTags;
-
-	std::string GetKey() const { return Key; }
-	void SetKey(const std::string& InKey) { Key = InKey; }
 
 	bool AppliesTo(const UTGoal& Goal) const;
 	bool AppliesTo(const UTAction& Action) const;
@@ -30,7 +30,6 @@ struct UTTrait
 	const std::unordered_map<std::string, UTEffect>& GetEffects() const { return Effects; }
 
 private:
-	std::string Key;
 	std::unordered_map<std::string, UTConsideration> Considerations;
 	std::unordered_map<std::string, UTEffect> Effects;
 };

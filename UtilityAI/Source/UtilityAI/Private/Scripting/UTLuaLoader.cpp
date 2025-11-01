@@ -2,6 +2,7 @@
 #include "UAI/UTFunctionRegistry.h"
 #include <Core/UTObjectRegistry.h>
 #include <filesystem>
+#include <memory>
 #include <UAI/UTAction.h>
 #include <UAI/UTGoal.h>
 #include <UAI/UTTrait.h>
@@ -118,57 +119,58 @@ UTEffect UTLuaLoader::LoadEffect(const sol::table& Table, UTValidationResult& Re
 
 void UTLuaLoader::ActionLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
 {
-	UTAction Action;
-	const auto Key = ValidateField<std::string>(Table, "Key", Result, true);
-	if(!Key) return;
+	const auto Name = ValidateField<std::string>(Table, "Name", Result, true);
+	if(!Name) return;
 
-	Action.SetKey(*Key);
+	auto Action = std::make_unique<UTAction>();
+	Action->SetName(*Name);
 
-	LoadTags(Table, "OwnedTags", Result, [&](const std::string& Tag) { Action.OwnedTags.insert(Tag); });
-	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Action.AddEffect(Effect); });
-	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Action.Scorer.AddConsideration(Cons); });
+	LoadTags(Table, "OwnedTags", Result, [&](const std::string& Tag) { Action->OwnedTags.insert(Tag); });
+	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Action->AddEffect(Effect); });
+	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Action->Scorer.AddConsideration(Cons); });
 
-	Action.GenerateConsiderations();
-	UTObjectRegistry<UTAction>::Instance().Register(Action, Category);
-	LOG_INFO(std::format("Loaded Action: {} (Category: {})", Action.GetKey(), Category))
+	Action->GenerateConsiderations();
+
+	UTObjectRegistry<UTAction>::Instance().Register(std::move(Action), Category);
+	LOG_INFO(std::format("[UTLuaLoader] Loaded Action: '{}' (Category: {})", *Name, Category))
 }
 
 void UTLuaLoader::GoalLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
 {
-	UTGoal Goal;
-	const auto Key = ValidateField<std::string>(Table, "Key", Result, true);
-	if (!Key) return;
+	const auto Name = ValidateField<std::string>(Table, "Name", Result, true);
+	if (!Name) return;
 
-	Goal.SetKey(*Key);
+	auto Goal = std::make_unique<UTGoal>();
+	Goal->SetName(*Name);
 
-	LoadTags(Table, "OwnedTags", Result, [&](const std::string& Tag) { Goal.OwnedTags.insert(Tag); });
-	LoadTags(Table, "RequiredTags", Result, [&](const std::string& Tag) { Goal.RequiredTags.insert(Tag); });
-	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Goal.Scorer.AddConsideration(Cons); });
+	LoadTags(Table, "OwnedTags", Result, [&](const std::string& Tag) { Goal->OwnedTags.insert(Tag); });
+	LoadTags(Table, "RequiredTags", Result, [&](const std::string& Tag) { Goal->RequiredTags.insert(Tag); });
+	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Goal->Scorer.AddConsideration(Cons); });
 
 	if (const auto PreconditionFnKey = ValidateField<std::string>(Table, "PreconditionFnKey", Result))
 	{
-		Goal.SetPreconditionFnKey(*PreconditionFnKey);
+		Goal->SetPreconditionFnKey(*PreconditionFnKey);
 	}
 
-	UTObjectRegistry<UTGoal>::Instance().Register(Goal, Category);
-	LOG_INFO(std::format("Loaded Goal: {} (Category: {})", Goal.GetKey(), Category))
+	UTObjectRegistry<UTGoal>::Instance().Register(std::move(Goal), Category);
+	LOG_INFO(std::format("[UTLuaLoader] Loaded Goal: '{}' (Category: {})", *Name, Category))
 }
 
 void UTLuaLoader::TraitLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
 {
-	UTTrait Trait;
-	const auto Key = ValidateField<std::string>(Table, "Key", Result, true);
-	if(!Key) return;
+	const auto Name = ValidateField<std::string>(Table, "Name", Result, true);
+	if(!Name) return;
 
-	Trait.SetKey(*Key);
+	auto Trait = std::make_unique<UTTrait>();
+	Trait->SetName(*Name);
 
-	LoadTags(Table, "OwnedTags", Result, [&](const std::string& Tag) { Trait.OwnedTags.insert(Tag); });
-	LoadTags(Table, "RequiredTags", Result, [&](const std::string& Tag) { Trait.RequiredTags.insert(Tag); });
-	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Trait.AddEffect(Effect); });
-	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Trait.AddConsideration(Cons); });
+	LoadTags(Table, "OwnedTags", Result, [&](const std::string& Tag) { Trait->OwnedTags.insert(Tag); });
+	LoadTags(Table, "RequiredTags", Result, [&](const std::string& Tag) { Trait->RequiredTags.insert(Tag); });
+	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Trait->AddEffect(Effect); });
+	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Trait->AddConsideration(Cons); });
 
-	UTObjectRegistry<UTTrait>::Instance().Register(Trait, Category);
-	LOG_INFO(std::format("Loaded Trait: {} (Category: {})", Trait.GetKey(), Category))
+	UTObjectRegistry<UTTrait>::Instance().Register(std::move(Trait), Category);
+	LOG_INFO(std::format("[UTLuaLoader] Loaded Trait: '{}' (Category: {})", *Name, Category))
 }
 
 std::optional<sol::table> UTLuaLoader::LoadLuaTable(

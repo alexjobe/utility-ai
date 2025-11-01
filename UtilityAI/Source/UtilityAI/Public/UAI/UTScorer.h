@@ -1,8 +1,11 @@
 #pragma once
 #include "UTAgentContext.h"
 #include "UTConsideration.h"
+#include <Core/UTObject.h>
 #include <string>
 #include <unordered_map>
+
+using namespace UTCore;
 
 namespace UAI
 {
@@ -17,10 +20,10 @@ public:
 	// Weighted geometric mean (log-sum)
 	float Score(const UTAgentContext& Context) const;
 
-	void SetOwnerKey(const std::string& Key) { OwnerKey = Key; }
+	void SetOwner(const UTObject* InOwner) { Owner = InOwner; }
 
 protected:
-	std::string OwnerKey;
+	const UTObject* Owner = nullptr;
 	std::unordered_map<std::string, UTConsideration> Considerations;
 };
 }

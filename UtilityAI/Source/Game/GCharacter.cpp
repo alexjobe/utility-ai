@@ -59,7 +59,7 @@ void GCharacter::UpdateGoals()
 	const auto FoundGoals = UTObjectRegistry<UAI::UTGoal>::Instance().Query(GoalQuery);
 	if (FoundGoals.empty())
 	{
-		LOG_WARN(std::format("(Character: {}) No available goals found!", Name))
+		LOG_WARN(std::format("[GCharacter] '{}' - No available goals found!", Name))
 		return;
 	}
 
@@ -68,6 +68,6 @@ void GCharacter::UpdateGoals()
 	std::vector<UTGoalScore> TopGoals = GetTopKGoalsWithScores(FoundGoals, Context, 1);
 	for (auto& GS : TopGoals)
 	{
-		LOG_INFO(std::format("'{}' Score: {}", GS.Goal->GetKey(), GS.Score))
+		LOG_INFO(std::format("[GCharacter] '{}' - Found Goal: '{}' - Score: {}", Name, GS.Goal->GetName(), GS.Score))
 	}
 }

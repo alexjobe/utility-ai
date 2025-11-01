@@ -12,10 +12,13 @@ void UTTraitsPanel::Render()
 {
 	if (ImGui::BeginChild("TraitsList", ImVec2(0, 0), true))
 	{
-		const auto& Traits = UTObjectRegistry<UTTrait>::Instance().GetAll();
-		for (const auto& [_, Trait] : Traits)
+		const auto Traits = UTObjectRegistry<UTTrait>::Instance().GetAll();
+		for (const auto* Trait : Traits)
 		{
-			RenderTrait(Trait);
+			if (Trait)
+			{
+				RenderTrait(*Trait);
+			}
 		}
 		ImGui::EndChild();
 	}
