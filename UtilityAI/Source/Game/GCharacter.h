@@ -2,8 +2,10 @@
 #include "StatTypes.h"
 #include "UAI/UTAgentContext.h"
 #include <string>
+#include <UAI/UTGoal.h>
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
 using namespace UAI;
 
@@ -28,6 +30,6 @@ namespace Game
 
 	private:
 		std::string Key;
-		std::vector<const class UTGoal*> CurrentGoals;
+		std::vector<UTGoal> CurrentGoals;
 	};
 }

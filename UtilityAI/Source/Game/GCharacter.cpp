@@ -53,6 +53,8 @@ UTAgentContext GCharacter::CreateAgentContext() const
 
 void GCharacter::UpdateGoals()
 {
+	CurrentGoals.clear();
+
 	UTObjectQuery<UAI::UTGoal> GoalQuery;
 	GoalQuery.AnyTags = { "Generic", Profession };
 
@@ -66,8 +68,9 @@ void GCharacter::UpdateGoals()
 	UTAgentContext Context = CreateAgentContext();
 
 	std::vector<UTGoalScore> TopGoals = GetTopKGoalsWithScores(FoundGoals, Context, 1);
-	for (auto& GS : TopGoals)
+	for (const auto& GS : TopGoals)
 	{
+		CurrentGoals.push_back(*GS.Goal);
 		LOG_INFO(std::format("[GCharacter] '{}' - Found Goal: '{}' - Score: {}", Name, GS.Goal->GetName(), GS.Score))
 	}
 }
