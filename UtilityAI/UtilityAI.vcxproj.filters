@@ -21,16 +21,16 @@
     <ClCompile Include="Source\Game\GCharacter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\UtilityAI\Private\UAI\UTAction.cpp">
+    <ClCompile Include="Source\UtilityAI\Private\UAI\Actions\UTAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\UtilityAI\Private\UAI\UTScorer.cpp">
+    <ClCompile Include="Source\UtilityAI\Private\UAI\Scoring\UTScorer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\UtilityAI\Private\UAI\UTGoal.cpp">
+    <ClCompile Include="Source\UtilityAI\Private\UAI\Goals\UTGoal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\UtilityAI\Private\UAI\UTConsideration.cpp">
+    <ClCompile Include="Source\UtilityAI\Private\UAI\Considerations\UTConsideration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\UtilityAI\Private\UAI\UTFunctionRegistry.cpp">
@@ -66,7 +66,7 @@
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTWindowManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\UtilityAI\Private\UAI\UTEffect.cpp">
+    <ClCompile Include="Source\UtilityAI\Private\UAI\Effects\UTEffect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTActionsPanel.cpp">
@@ -75,7 +75,7 @@
     <ClCompile Include="Source\UtilityAI\Private\Scripting\UTLuaLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\UtilityAI\Private\UAI\UTTrait.cpp">
+    <ClCompile Include="Source\UtilityAI\Private\UAI\Traits\UTTrait.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTTraitsPanel.cpp">
@@ -96,7 +96,7 @@
     <ClCompile Include="Source\UtilityAI\Private\Core\UTKeyGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\UtilityAI\Private\UAI\UTGoalStatics.cpp">
+    <ClCompile Include="Source\UtilityAI\Private\UAI\Goals\UTGoalStatics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\UtilityAI\Private\Core\UTObject.cpp">
@@ -131,25 +131,25 @@
     <ClInclude Include="Source\Game\GameHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTAction.h">
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Actions\UTAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTTrait.h">
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Traits\UTTrait.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\UtilityAI\Public\Logging\UTLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTEffect.h">
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Effects\UTEffect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTGoal.h">
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Goals\UTGoal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTScorer.h">
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Scoring\UTScorer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTConsideration.h">
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Considerations\UTConsideration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTAgentContext.h">
@@ -200,7 +200,7 @@
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTWindowManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTEffectTypes.h">
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Effects\UTEffectTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTEditorPanel.h">
@@ -233,7 +233,7 @@
     <ClInclude Include="Source\UtilityAI\Public\Core\UTObjectQuery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTGoalStatics.h">
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Goals\UTGoalStatics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\UtilityAI\Public\Core\UTObject.h">

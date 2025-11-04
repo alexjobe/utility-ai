@@ -1,10 +1,11 @@
 #pragma once
 #include "StatTypes.h"
-#include "UAI/UTAgentContext.h"
+#include "UTAgentContext.h"
 #include <string>
-#include <UAI/UTGoal.h>
 #include <unordered_map>
 #include <unordered_set>
+#include <UTAction.h>
+#include <UTGoal.h>
 #include <vector>
 
 using namespace UAI;
@@ -35,11 +36,14 @@ namespace Game
 		std::string GetKey() const { return Key; }
 
 		void UpdateGoals();
+		void UpdateActions();
 
 		const std::vector<UTGoal>& GetCurrentGoals() const { return CurrentGoals; }
+		const std::vector<UTAction>& GetCurrentActions() const { return CurrentActions; }
 
 	private:
 		std::string Key;
 		std::vector<UTGoal> CurrentGoals;
+		std::vector<UTAction> CurrentActions;
 	};
 }

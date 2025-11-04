@@ -1,4 +1,4 @@
-#include <UAI/UTFunctionRegistry.h>
+#include <UTFunctionRegistry.h>
 
 using namespace UAI;
 

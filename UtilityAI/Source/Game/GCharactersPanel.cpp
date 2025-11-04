@@ -121,7 +121,7 @@ void GCharactersPanel::RenderCharacterButtons(GCharacter& Character)
 	}
 
 	ImGui::SameLine();
-	if (ImGui::Button(("Regenerate Goals##" + Character.GetKey()).c_str()))
+	if (ImGui::Button(("Generate Goals##" + Character.GetKey()).c_str()))
 	{
 		Character.UpdateGoals();
 	}
@@ -145,7 +145,7 @@ void GCharactersPanel::RenderChildWindows(GCharacter& Character)
 
 	if (Character.RenderComp.bShowGoalsWindow)
 	{
-		ImGui::SetNextWindowSize(ImVec2(400, 200), ImGuiCond_FirstUseEver);
+		ImGui::SetNextWindowSize(ImVec2(400, 600), ImGuiCond_FirstUseEver);
 		if (ImGui::Begin(
 			(std::format("Goals - {}##{}", Character.Name, Character.GetKey())).c_str(),
 			&Character.RenderComp.bShowGoalsWindow,

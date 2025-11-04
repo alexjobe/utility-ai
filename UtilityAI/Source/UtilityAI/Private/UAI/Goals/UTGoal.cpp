@@ -1,5 +1,5 @@
-#include "UAI/UTGoal.h"
-#include <UAI/UTFunctionRegistry.h>
+#include <UTFunctionRegistry.h>
+#include <UTGoal.h>
 
 using namespace UAI;
 

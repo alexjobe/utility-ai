@@ -1,10 +1,10 @@
 #include "Logging/UTLogger.h"
 #include "Math/UTCurves.h"
 #include "Math/UTMath.h"
-#include "UAI/UTFunctionRegistry.h"
+#include "UTFunctionRegistry.h"
 #include <algorithm>
 #include <format>
-#include <UAI/UTConsideration.h>
+#include <UTConsideration.h>
 
 using namespace UAI;
 

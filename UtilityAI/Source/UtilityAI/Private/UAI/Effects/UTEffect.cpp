@@ -1,5 +1,5 @@
-#include "UAI/UTEffect.h"
-#include "UAI/UTFunctionRegistry.h"
+#include "UTEffect.h"
+#include "UTFunctionRegistry.h"
 #include <Logging/UTLogger.h>
 #include <Math/UTCurves.h>
 

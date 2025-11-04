@@ -3,8 +3,8 @@
 #include <optional>
 #include <sol.hpp>
 #include <string>
-#include <UAI/UTConsideration.h>
-#include <UAI/UTEffect.h>
+#include <UTConsideration.h>
+#include <UTEffect.h>
 
 using namespace UAI;
 using namespace UTLuaUtils;

@@ -1,8 +1,8 @@
 #include "Logging/UTLogger.h"
-#include "UAI/UTScorer.h"
 #include <algorithm>
 #include <cmath>
 #include <string>
+#include <UTScorer.h>
 
 using namespace UAI;
 

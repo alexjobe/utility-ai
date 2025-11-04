@@ -1,11 +1,11 @@
 #pragma once
-#include "UTAction.h"
-#include "UTEffect.h"
-#include "UTGoal.h"
 #include <Core/UTObject.h>
 #include <set>
 #include <string>
 #include <unordered_map>
+#include <UTAction.h>
+#include <UTEffect.h>
+#include <UTGoal.h>
 #include <vector>
 
 using namespace UTCore;

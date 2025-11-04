@@ -3,8 +3,7 @@
 #include <Core/UTObjectQuery.h>
 #include <Core/UTObjectRegistry.h>
 #include <Logging/UTLogger.h>
-#include <UAI/UTGoal.h>
-#include <UAI/UTGoalStatics.h>
+#include <UTGoalStatics.h>
 
 using namespace Game;
 using namespace UTCore;
@@ -74,4 +73,31 @@ void GCharacter::UpdateGoals()
 		CurrentGoals.push_back(*GS.Goal);
 		LOG_INFO(std::format("[GCharacter] '{}' - Found Goal: '{}' - Score: {}", Name, GS.Goal->GetName(), GS.Score))
 	}
+}
+
+void GCharacter::UpdateActions()
+{
+	CurrentActions.clear();
+
+	UTObjectQuery<UTAction> ActionQuery;
+	ActionQuery.AnyTags = { "Generic", Profession };
+
+	for (const auto& Goal : CurrentGoals)
+	{
+		for (const auto& Tag : Goal.RequiredTags)
+		{
+			ActionQuery.RequiredTags.insert(Tag);
+		}
+	}
+
+	const auto FoundActions = UTObjectRegistry<UTAction>::Instance().Query(ActionQuery);
+	if (FoundActions.empty())
+	{
+		LOG_WARN(std::format("[GCharacter] '{}' - No available actions found!", Name))
+		return;
+	}
+
+	UTAgentContext Context = CreateAgentContext();
+
+
 }

@@ -2,7 +2,7 @@
 #include "Game/GCharacter.h"
 #include "Game/GCharactersPanel.h"
 #include "Game/GWorld.h"
-#include "UAI/UTAction.h"
+#include "UTAction.h"
 #include <Core/UTObjectRegistry.h>
 #include <Editor/UTActionsPanel.h>
 #include <Editor/UTEditorApp.h>
@@ -12,8 +12,7 @@
 #include <Scripting/UTLuaLoader.h>
 #include <Scripting/UTLuaLogger.h>
 #include <sol.hpp>
-#include <UAI/UTEffectTypes.h>
-#include <UAI/UTTrait.h>
+#include <UTEffectTypes.h>
 #define SOL_ALL_SAFETIES_ON 1
 
 using namespace UAI;

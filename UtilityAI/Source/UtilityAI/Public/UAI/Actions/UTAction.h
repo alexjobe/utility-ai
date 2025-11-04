@@ -1,11 +1,11 @@
 #pragma once
-#include "UTAgentContext.h"
-#include "UTEffect.h"
-#include "UTScorer.h"
 #include <Core/UTObject.h>
 #include <set>
 #include <string>
 #include <unordered_map>
+#include <UTAgentContext.h>
+#include <UTEffect.h>
+#include <UTScorer.h>
 
 using namespace UTCore;
 

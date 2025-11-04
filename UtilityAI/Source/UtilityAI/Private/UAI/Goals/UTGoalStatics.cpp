@@ -1,8 +1,8 @@
-#include "UAI/UTGoalStatics.h"
 #include <Logging/UTLogger.h>
 #include <queue>
-#include <UAI/UTAgentContext.h>
-#include <UAI/UTGoal.h>
+#include <UTAgentContext.h>
+#include <UTGoal.h>
+#include <UTGoalStatics.h>
 
 using namespace UAI;
 

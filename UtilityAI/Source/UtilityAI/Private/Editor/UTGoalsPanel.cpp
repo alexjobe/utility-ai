@@ -2,7 +2,7 @@
 #include <Core/UTObjectRegistry.h>
 #include <Editor/UTPanelHelpers.h>
 #include <imgui.h>
-#include <UAI/UTGoal.h>
+#include <UTGoal.h>
 
 using namespace UTEditor;
 using namespace UTCore;

@@ -1,11 +1,11 @@
 #include "Scripting/UTLuaLoader.h"
-#include "UAI/UTFunctionRegistry.h"
+#include "UTFunctionRegistry.h"
 #include <Core/UTObjectRegistry.h>
 #include <filesystem>
 #include <memory>
-#include <UAI/UTAction.h>
-#include <UAI/UTGoal.h>
-#include <UAI/UTTrait.h>
+#include <UTAction.h>
+#include <UTGoal.h>
+#include <UTTrait.h>
 
 using namespace UAI;
 using namespace UTCore;;

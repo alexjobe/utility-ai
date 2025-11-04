@@ -73,25 +73,25 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)Include;$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include\SDL3;$(ProjectDir)Extern\imgui;$(ProjectDir)Extern\imgui\backends;$(ProjectDir)Source\UtilityAI\Public;$(ProjectDir)Source\Editor\Public;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Include;$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include\SDL3;$(ProjectDir)Extern\imgui;$(ProjectDir)Extern\imgui\backends;$(ProjectDir)Source\UtilityAI\Public;$(ProjectDir)Source\UtilityAI\Public\UAI;$(ProjectDir)Source\UtilityAI\Public\UAI\Actions;$(ProjectDir)Source\UtilityAI\Public\UAI\Considerations;$(ProjectDir)Source\UtilityAI\Public\UAI\Effects;$(ProjectDir)Source\UtilityAI\Public\UAI\Goals;$(ProjectDir)Source\UtilityAI\Public\UAI\Scoring;$(ProjectDir)Source\UtilityAI\Public\UAI\Traits;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)Include;$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include\SDL3;$(ProjectDir)Extern\imgui;$(ProjectDir)Extern\imgui\backends;$(ProjectDir)Source\UtilityAI\Public;$(ProjectDir)Source\Editor\Public;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Include;$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include\SDL3;$(ProjectDir)Extern\imgui;$(ProjectDir)Extern\imgui\backends;$(ProjectDir)Source\UtilityAI\Public;$(ProjectDir)Source\UtilityAI\Public\UAI;$(ProjectDir)Source\UtilityAI\Public\UAI\Actions;$(ProjectDir)Source\UtilityAI\Public\UAI\Considerations;$(ProjectDir)Source\UtilityAI\Public\UAI\Effects;$(ProjectDir)Source\UtilityAI\Public\UAI\Goals;$(ProjectDir)Source\UtilityAI\Public\UAI\Scoring;$(ProjectDir)Source\UtilityAI\Public\UAI\Traits;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)Include;$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include\SDL3;$(ProjectDir)Extern\imgui;$(ProjectDir)Extern\imgui\backends;$(ProjectDir)Source\UtilityAI\Public;$(ProjectDir)Source\Editor\Public;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Include;$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include\SDL3;$(ProjectDir)Extern\imgui;$(ProjectDir)Extern\imgui\backends;$(ProjectDir)Source\UtilityAI\Public;$(ProjectDir)Source\UtilityAI\Public\UAI;$(ProjectDir)Source\UtilityAI\Public\UAI\Actions;$(ProjectDir)Source\UtilityAI\Public\UAI\Considerations;$(ProjectDir)Source\UtilityAI\Public\UAI\Effects;$(ProjectDir)Source\UtilityAI\Public\UAI\Goals;$(ProjectDir)Source\UtilityAI\Public\UAI\Scoring;$(ProjectDir)Source\UtilityAI\Public\UAI\Traits;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Binaries\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(ProjectDir)Include;$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include\SDL3;$(ProjectDir)Extern\imgui;$(ProjectDir)Extern\imgui\backends;$(ProjectDir)Source\UtilityAI\Public;$(ProjectDir)Source\Editor\Public;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Include;$(ProjectDir)Include\sol;$(ProjectDir)Include\lua;$(ProjectDir)Include\SDL3;$(ProjectDir)Extern\imgui;$(ProjectDir)Extern\imgui\backends;$(ProjectDir)Source\UtilityAI\Public;$(ProjectDir)Source\UtilityAI\Public\UAI;$(ProjectDir)Source\UtilityAI\Public\UAI\Actions;$(ProjectDir)Source\UtilityAI\Public\UAI\Considerations;$(ProjectDir)Source\UtilityAI\Public\UAI\Effects;$(ProjectDir)Source\UtilityAI\Public\UAI\Goals;$(ProjectDir)Source\UtilityAI\Public\UAI\Scoring;$(ProjectDir)Source\UtilityAI\Public\UAI\Traits;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -170,15 +170,15 @@
     <ClCompile Include="Source\Game\GWorld.cpp" />
     <ClCompile Include="Source\glad.c" />
     <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\UtilityAI\Private\UAI\UTAction.cpp" />
-    <ClCompile Include="Source\UtilityAI\Private\UAI\UTConsideration.cpp" />
-    <ClCompile Include="Source\UtilityAI\Private\UAI\UTEffect.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\UAI\Actions\UTAction.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\UAI\Considerations\UTConsideration.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\UAI\Effects\UTEffect.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\UAI\UTFunctionRegistry.cpp" />
-    <ClCompile Include="Source\UtilityAI\Private\UAI\UTGoal.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\UAI\Goals\UTGoal.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Core\UTKeyGenerator.cpp" />
-    <ClCompile Include="Source\UtilityAI\Private\UAI\UTGoalStatics.cpp" />
-    <ClCompile Include="Source\UtilityAI\Private\UAI\UTScorer.cpp" />
-    <ClCompile Include="Source\UtilityAI\Private\UAI\UTTrait.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\UAI\Goals\UTGoalStatics.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\UAI\Scoring\UTScorer.cpp" />
+    <ClCompile Include="Source\UtilityAI\Private\UAI\Traits\UTTrait.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTActionsPanel.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTGoalsPanel.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTPanelHelpers.cpp" />
@@ -206,18 +206,18 @@
     <ClInclude Include="Game\Helpers.h" />
     <ClInclude Include="Source\Game\StatTypes.h" />
     <ClInclude Include="Source\Game\GWorld.h" />
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTAction.h" />
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Actions\UTAction.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTAgentContext.h" />
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTConsideration.h" />
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTEffectTypes.h" />
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Considerations\UTConsideration.h" />
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Effects\UTEffectTypes.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTFunctionRegistry.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTKeyGenerator.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTObjectRegistry.h" />
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTGoalStatics.h" />
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTScorer.h" />
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTEffect.h" />
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTGoal.h" />
-    <ClInclude Include="Source\UtilityAI\Public\UAI\UTTrait.h" />
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Goals\UTGoalStatics.h" />
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Scoring\UTScorer.h" />
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Effects\UTEffect.h" />
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Goals\UTGoal.h" />
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Traits\UTTrait.h" />
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTActionsPanel.h" />
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTGoalsPanel.h" />
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTPanelHelpers.h" />
