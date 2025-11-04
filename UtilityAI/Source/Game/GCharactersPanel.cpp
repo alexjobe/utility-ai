@@ -1,9 +1,15 @@
 #include "GCharactersPanel.h"
 #include "GWorld.h"
+#include <Editor/UTPanelHelpers.h>
 #include <format>
 #include <imgui.h>
 
 using namespace Game;
+
+GCharactersPanel::GCharactersPanel()
+	: UTEditorPanel("Characters")
+{
+}
 
 void GCharactersPanel::Render()
 {
@@ -88,6 +94,25 @@ void GCharactersPanel::RenderCharacter(GCharacter& Character)
 			ImGui::TreePop();
 		}
 
+		ImGui::Separator();
+		if (ImGui::Button(("Goals##" + Character.GetKey()).c_str()))
+		{
+			Character.RenderComp.bShowGoals = !Character.RenderComp.bShowGoals;
+		}
+
+		if (Character.RenderComp.bShowGoals)
+		{
+			ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_FirstUseEver);
+			if (ImGui::Begin(
+				(std::format("Goals - {}##{}", Character.Name, Character.GetKey())).c_str(),
+				&Character.RenderComp.bShowGoals,
+				ImGuiWindowFlags_NoDocking)) // Prevents going into dockspace
+			{
+				RenderCurrentGoals(Character);
+			}
+			ImGui::End();
+		}
+
 		ImGui::TreePop();
 	}
 }
@@ -124,3 +149,14 @@ void GCharactersPanel::RenderTraits(GCharacter& Character)
 	}
 }
 
+void GCharactersPanel::RenderCurrentGoals(GCharacter& Character)
+{
+	if (ImGui::BeginChild("GoalsList", ImVec2(0, 0), true))
+	{
+		for (const auto& Goal : Character.GetCurrentGoals())
+		{
+			UTEditor::RenderGoal(Goal);
+		}
+		ImGui::EndChild();
+	}
+}

@@ -67,6 +67,7 @@ void GCharacter::UpdateGoals()
 
 	UTAgentContext Context = CreateAgentContext();
 
+	// TODO: Replace with GetTopKGoals (no scores)
 	std::vector<UTGoalScore> TopGoals = GetTopKGoalsWithScores(FoundGoals, Context, 1);
 	for (const auto& GS : TopGoals)
 	{

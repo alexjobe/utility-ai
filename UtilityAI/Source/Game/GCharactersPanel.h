@@ -9,11 +9,12 @@ namespace Game
 	class GCharactersPanel : public UTEditorPanel
 	{
 	public:
-		GCharactersPanel() : UTEditorPanel("Characters") {}
+		GCharactersPanel();
 		void Render() override;
 
 	private:
 		void RenderCharacter(GCharacter& Character);
 		void RenderTraits(GCharacter& Character);
+		void RenderCurrentGoals(GCharacter& Character);
 	};
 }

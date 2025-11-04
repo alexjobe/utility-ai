@@ -11,6 +11,11 @@ using namespace UAI;
 
 namespace Game
 {
+	struct GCharacterRenderComponent
+	{
+		bool bShowGoals = false;
+	};
+
 	class GCharacter
 	{
 	public:
@@ -20,6 +25,8 @@ namespace Game
 		std::unordered_map<ENeedType, float> Needs;
 		std::unordered_map<ECoreStatType, float> CoreStats;
 
+		GCharacterRenderComponent RenderComp;
+
 		GCharacter();
 		GCharacter(const std::string& InName);
 
@@ -27,6 +34,8 @@ namespace Game
 		std::string GetKey() const { return Key; }
 
 		void UpdateGoals();
+
+		const std::vector<UTGoal>& GetCurrentGoals() const { return CurrentGoals; }
 
 	private:
 		std::string Key;
