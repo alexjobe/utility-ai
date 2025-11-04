@@ -35,35 +35,8 @@ void GCharactersPanel::Render()
 
 void GCharactersPanel::RenderCharacter(GCharacter& Character)
 {
-	if (ImGui::TreeNode(std::format("{}##{}", Character.Name, Character.GetKey()).c_str()))
+	if (ImGui::TreeNode(std::format("{} - {}##{}", Character.Name, Character.Profession, Character.GetKey()).c_str()))
 	{
-		// Name edit
-		char NewName[128] = "";
-		if (ImGui::InputText("Change Name", NewName, sizeof(NewName), ImGuiInputTextFlags_EnterReturnsTrue))
-		{
-			if (strlen(NewName) > 0)
-			{
-				Character.Name = NewName;
-				NewName[0] = '\0';
-			}
-		}
-
-		ImGui::Separator();
-		if (ImGui::TreeNode(std::format("Profession: {}", Character.Profession).c_str()))
-		{
-			// Profession edit
-			char NewProfession[128] = "";
-			if (ImGui::InputText("Change Profession", NewProfession, sizeof(NewProfession), ImGuiInputTextFlags_EnterReturnsTrue))
-			{
-				if (strlen(NewProfession) > 0)
-				{
-					Character.Profession = NewProfession;
-					NewProfession[0] = '\0';
-				}
-			}
-			ImGui::TreePop();
-		}
-
 		RenderTraits(Character);
 
 		ImGui::Separator();
@@ -94,24 +67,8 @@ void GCharactersPanel::RenderCharacter(GCharacter& Character)
 			ImGui::TreePop();
 		}
 
-		ImGui::Separator();
-		if (ImGui::Button(("Goals##" + Character.GetKey()).c_str()))
-		{
-			Character.RenderComp.bShowGoals = !Character.RenderComp.bShowGoals;
-		}
-
-		if (Character.RenderComp.bShowGoals)
-		{
-			ImGui::SetNextWindowSize(ImVec2(300, 200), ImGuiCond_FirstUseEver);
-			if (ImGui::Begin(
-				(std::format("Goals - {}##{}", Character.Name, Character.GetKey())).c_str(),
-				&Character.RenderComp.bShowGoals,
-				ImGuiWindowFlags_NoDocking)) // Prevents going into dockspace
-			{
-				RenderCurrentGoals(Character);
-			}
-			ImGui::End();
-		}
+		RenderCharacterButtons(Character);
+		RenderChildWindows(Character);
 
 		ImGui::TreePop();
 	}
@@ -149,7 +106,88 @@ void GCharactersPanel::RenderTraits(GCharacter& Character)
 	}
 }
 
-void GCharactersPanel::RenderCurrentGoals(GCharacter& Character)
+void GCharactersPanel::RenderCharacterButtons(GCharacter& Character)
+{
+	ImGui::Separator();
+	if (ImGui::Button(("Change Info##" + Character.GetKey()).c_str()))
+	{
+		Character.RenderComp.bShowInfoWindow = !Character.RenderComp.bShowInfoWindow;
+	}
+
+	ImGui::Separator();
+	if (ImGui::Button(("Goals##" + Character.GetKey()).c_str()))
+	{
+		Character.RenderComp.bShowGoalsWindow = !Character.RenderComp.bShowGoalsWindow;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button(("Regenerate Goals##" + Character.GetKey()).c_str()))
+	{
+		Character.UpdateGoals();
+	}
+}
+
+
+void GCharactersPanel::RenderChildWindows(GCharacter& Character)
+{
+	if (Character.RenderComp.bShowInfoWindow)
+	{
+		ImGui::SetNextWindowSize(ImVec2(800, 200), ImGuiCond_FirstUseEver);
+		if (ImGui::Begin(
+			(std::format("Change Info - {}##{}", Character.Name, Character.GetKey())).c_str(),
+			&Character.RenderComp.bShowInfoWindow,
+			ImGuiWindowFlags_NoDocking)) // Prevents going into dockspace
+		{
+			RenderCharacterInfoWindow(Character);
+		}
+		ImGui::End();
+	}
+
+	if (Character.RenderComp.bShowGoalsWindow)
+	{
+		ImGui::SetNextWindowSize(ImVec2(400, 200), ImGuiCond_FirstUseEver);
+		if (ImGui::Begin(
+			(std::format("Goals - {}##{}", Character.Name, Character.GetKey())).c_str(),
+			&Character.RenderComp.bShowGoalsWindow,
+			ImGuiWindowFlags_NoDocking)) // Prevents going into dockspace
+		{
+			RenderCurrentGoalsWindow(Character);
+		}
+		ImGui::End();
+	}
+}
+
+void GCharactersPanel::RenderCharacterInfoWindow(GCharacter& Character)
+{
+	if (ImGui::BeginChild("CharacterInfo", ImVec2(0, 0), true))
+	{
+		// Name edit
+		char NewName[128] = "";
+		if (ImGui::InputText("Change Name", NewName, sizeof(NewName), ImGuiInputTextFlags_EnterReturnsTrue))
+		{
+			if (strlen(NewName) > 0)
+			{
+				Character.Name = NewName;
+				NewName[0] = '\0';
+			}
+		}
+
+		ImGui::Separator();
+		// Profession edit
+		char NewProfession[128] = "";
+		if (ImGui::InputText("Change Profession", NewProfession, sizeof(NewProfession), ImGuiInputTextFlags_EnterReturnsTrue))
+		{
+			if (strlen(NewProfession) > 0)
+			{
+				Character.Profession = NewProfession;
+				NewProfession[0] = '\0';
+			}
+		}
+		ImGui::EndChild();
+	}
+}
+
+void GCharactersPanel::RenderCurrentGoalsWindow(GCharacter& Character)
 {
 	if (ImGui::BeginChild("GoalsList", ImVec2(0, 0), true))
 	{

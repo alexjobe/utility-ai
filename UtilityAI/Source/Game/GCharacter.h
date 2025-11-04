@@ -13,7 +13,8 @@ namespace Game
 {
 	struct GCharacterRenderComponent
 	{
-		bool bShowGoals = false;
+		bool bShowInfoWindow = false;
+		bool bShowGoalsWindow = false;
 	};
 
 	class GCharacter

@@ -15,6 +15,9 @@ namespace Game
 	private:
 		void RenderCharacter(GCharacter& Character);
 		void RenderTraits(GCharacter& Character);
-		void RenderCurrentGoals(GCharacter& Character);
+		void RenderCharacterButtons(GCharacter& Character);
+		void RenderChildWindows(GCharacter& Character);
+		void RenderCharacterInfoWindow(GCharacter& Character);
+		void RenderCurrentGoalsWindow(GCharacter& Character);
 	};
 }
