@@ -19,5 +19,6 @@ namespace Game
 		void RenderChildWindows(GCharacter& Character);
 		void RenderCharacterInfoWindow(GCharacter& Character);
 		void RenderCurrentGoalsWindow(GCharacter& Character);
+		void RenderCurrentActionsWindow(GCharacter& Character);
 	};
 }

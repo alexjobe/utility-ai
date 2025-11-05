@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cmath>
 #include <string>
+#include <UTFunctionRegistry.h>
 #include <UTScorer.h>
 
 using namespace UAI;
@@ -91,3 +92,17 @@ float UTScorer::Score(const UTAgentContext& Context) const
 	return FinalScore;
 }
 
+void UTScorer::SetPreconditionFnKey(const std::string& InKey)
+{
+	PreconditionFn = UTFunctionRegistry::Instance().Get<PreconditionFnSig>(InKey);
+	PreconditionFnKey = PreconditionFn ? InKey : "";
+}
+
+bool UTScorer::PreconditionCheck(const UTAgentContext& InContext) const
+{
+	if (PreconditionFn && *PreconditionFn)
+	{
+		return (*PreconditionFn)(InContext);
+	}
+	return true;
+}

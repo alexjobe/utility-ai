@@ -3,7 +3,7 @@
 #include <Core/UTObjectQuery.h>
 #include <Core/UTObjectRegistry.h>
 #include <Logging/UTLogger.h>
-#include <UTGoalStatics.h>
+#include <UTObjectScore.h>
 
 using namespace Game;
 using namespace UTCore;
@@ -66,12 +66,11 @@ void GCharacter::UpdateGoals()
 
 	UTAgentContext Context = CreateAgentContext();
 
-	// TODO: Replace with GetTopKGoals (no scores)
-	std::vector<UTGoalScore> TopGoals = GetTopKGoalsWithScores(FoundGoals, Context, 1);
-	for (const auto& GS : TopGoals)
+	std::vector<UTObjectScore<UTGoal>> TopScores = GetTopKWithScores(FoundGoals, Context, 1);
+	for (const auto& Score : TopScores)
 	{
-		CurrentGoals.push_back(*GS.Goal);
-		LOG_INFO(std::format("[GCharacter] '{}' - Found Goal: '{}' - Score: {}", Name, GS.Goal->GetName(), GS.Score))
+		CurrentGoals.push_back(*Score.Object);
+		LOG_INFO(std::format("[GCharacter] '{}' - Found Goal: '{}' - Score: {}", Name, Score.Object->GetName(), Score.Score))
 	}
 }
 
@@ -81,6 +80,12 @@ void GCharacter::UpdateActions()
 
 	UTObjectQuery<UTAction> ActionQuery;
 	ActionQuery.AnyTags = { "Generic", Profession };
+
+	if (CurrentGoals.empty())
+	{
+		LOG_WARN(std::format("[GCharacter] '{}' - Cannot update actions without goals!", Name))
+		return;
+	}
 
 	for (const auto& Goal : CurrentGoals)
 	{
@@ -99,5 +104,10 @@ void GCharacter::UpdateActions()
 
 	UTAgentContext Context = CreateAgentContext();
 
-
+	std::vector<UTObjectScore<UTAction>> TopScores = GetTopKWithScores(FoundActions, Context, 1);
+	for (const auto& Score : TopScores)
+	{
+		CurrentActions.push_back(*Score.Object);
+		LOG_INFO(std::format("[GCharacter] '{}' - Found Action: '{}' - Score: {}", Name, Score.Object->GetName(), Score.Score))
+	}
 }

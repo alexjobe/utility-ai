@@ -129,6 +129,11 @@ void UTLuaLoader::ActionLoader(const sol::table& Table, const std::string& Categ
 	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Action->AddEffect(Effect); });
 	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Action->Scorer.AddConsideration(Cons); });
 
+	if (const auto PreconditionFnKey = ValidateField<std::string>(Table, "PreconditionFnKey", Result))
+	{
+		Action->Scorer.SetPreconditionFnKey(*PreconditionFnKey);
+	}
+
 	Action->GenerateConsiderations();
 
 	UTObjectRegistry<UTAction>::Instance().Register(std::move(Action), Category);
@@ -149,7 +154,7 @@ void UTLuaLoader::GoalLoader(const sol::table& Table, const std::string& Categor
 
 	if (const auto PreconditionFnKey = ValidateField<std::string>(Table, "PreconditionFnKey", Result))
 	{
-		Goal->SetPreconditionFnKey(*PreconditionFnKey);
+		Goal->Scorer.SetPreconditionFnKey(*PreconditionFnKey);
 	}
 
 	UTObjectRegistry<UTGoal>::Instance().Register(std::move(Goal), Category);

@@ -16,6 +16,7 @@ namespace Game
 	{
 		bool bShowInfoWindow = false;
 		bool bShowGoalsWindow = false;
+		bool bShowActionsWindow = false;
 	};
 
 	class GCharacter

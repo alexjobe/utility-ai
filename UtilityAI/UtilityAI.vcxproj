@@ -176,7 +176,6 @@
     <ClCompile Include="Source\UtilityAI\Private\UAI\UTFunctionRegistry.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\UAI\Goals\UTGoal.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Core\UTKeyGenerator.cpp" />
-    <ClCompile Include="Source\UtilityAI\Private\UAI\Goals\UTGoalStatics.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\UAI\Scoring\UTScorer.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\UAI\Traits\UTTrait.cpp" />
     <ClCompile Include="Source\UtilityAI\Private\Editor\UTActionsPanel.cpp" />
@@ -207,13 +206,13 @@
     <ClInclude Include="Source\Game\StatTypes.h" />
     <ClInclude Include="Source\Game\GWorld.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\Actions\UTAction.h" />
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Scoring\UTObjectScore.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTAgentContext.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\Considerations\UTConsideration.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\Effects\UTEffectTypes.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\UTFunctionRegistry.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTKeyGenerator.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTObjectRegistry.h" />
-    <ClInclude Include="Source\UtilityAI\Public\UAI\Goals\UTGoalStatics.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\Scoring\UTScorer.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\Effects\UTEffect.h" />
     <ClInclude Include="Source\UtilityAI\Public\UAI\Goals\UTGoal.h" />

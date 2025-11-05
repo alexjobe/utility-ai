@@ -96,9 +96,6 @@
     <ClCompile Include="Source\UtilityAI\Private\Core\UTKeyGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\UtilityAI\Private\UAI\Goals\UTGoalStatics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\UtilityAI\Private\Core\UTObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -233,10 +230,10 @@
     <ClInclude Include="Source\UtilityAI\Public\Core\UTObjectQuery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UtilityAI\Public\UAI\Goals\UTGoalStatics.h">
+    <ClInclude Include="Source\UtilityAI\Public\Core\UTObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UtilityAI\Public\Core\UTObject.h">
+    <ClInclude Include="Source\UtilityAI\Public\UAI\Scoring\UTObjectScore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

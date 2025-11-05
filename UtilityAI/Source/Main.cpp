@@ -53,6 +53,7 @@ int main()
 		MyCharacter->CoreStats[ECoreStatType::Endurance] = 7.f;
 		MyContext = MyCharacter->CreateAgentContext();
 		MyCharacter->UpdateGoals();
+		MyCharacter->UpdateActions();
 	}
 
 	UTObjectQuery<UTAction> Query;

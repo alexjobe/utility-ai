@@ -125,6 +125,18 @@ void GCharactersPanel::RenderCharacterButtons(GCharacter& Character)
 	{
 		Character.UpdateGoals();
 	}
+
+	ImGui::Separator();
+	if (ImGui::Button(("Actions##" + Character.GetKey()).c_str()))
+	{
+		Character.RenderComp.bShowActionsWindow = !Character.RenderComp.bShowActionsWindow;
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button(("Generate Actions##" + Character.GetKey()).c_str()))
+	{
+		Character.UpdateActions();
+	}
 }
 
 
@@ -152,6 +164,19 @@ void GCharactersPanel::RenderChildWindows(GCharacter& Character)
 			ImGuiWindowFlags_NoDocking)) // Prevents going into dockspace
 		{
 			RenderCurrentGoalsWindow(Character);
+		}
+		ImGui::End();
+	}
+
+	if (Character.RenderComp.bShowActionsWindow)
+	{
+		ImGui::SetNextWindowSize(ImVec2(400, 600), ImGuiCond_FirstUseEver);
+		if (ImGui::Begin(
+			(std::format("Actions - {}##{}", Character.Name, Character.GetKey())).c_str(),
+			&Character.RenderComp.bShowActionsWindow,
+			ImGuiWindowFlags_NoDocking)) // Prevents going into dockspace
+		{
+			RenderCurrentActionsWindow(Character);
 		}
 		ImGui::End();
 	}
@@ -194,6 +219,18 @@ void GCharactersPanel::RenderCurrentGoalsWindow(GCharacter& Character)
 		for (const auto& Goal : Character.GetCurrentGoals())
 		{
 			UTEditor::RenderGoal(Goal);
+		}
+		ImGui::EndChild();
+	}
+}
+
+void GCharactersPanel::RenderCurrentActionsWindow(GCharacter& Character)
+{
+	if (ImGui::BeginChild("ActionsList", ImVec2(0, 0), true))
+	{
+		for (const auto& Action : Character.GetCurrentActions())
+		{
+			UTEditor::RenderAction(Action);
 		}
 		ImGui::EndChild();
 	}

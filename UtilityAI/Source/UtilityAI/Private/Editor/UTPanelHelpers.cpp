@@ -72,6 +72,9 @@ void UTEditor::RenderAction(const UTAction& Action)
 			ImGui::TreePop();
 		}
 
+		ImGui::Separator();
+		ImGui::BulletText("PreconditionFn: %s", Action.Scorer.GetPreconditionFnKey().c_str());
+
 		ImGui::TreePop();
 	}
 }
@@ -110,7 +113,7 @@ void UTEditor::RenderGoal(const UTGoal& Goal)
 		}
 
 		ImGui::Separator();
-		ImGui::BulletText("PreconditionFn: %s", Goal.GetPreconditionFnKey().c_str());
+		ImGui::BulletText("PreconditionFn: %s", Goal.Scorer.GetPreconditionFnKey().c_str());
 
 		ImGui::TreePop();
 	}
