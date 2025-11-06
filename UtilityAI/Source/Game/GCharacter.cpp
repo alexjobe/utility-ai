@@ -54,10 +54,10 @@ void GCharacter::UpdateGoals()
 {
 	CurrentGoals.clear();
 
-	UTObjectQuery<UAI::UTGoal> GoalQuery;
+	UTObjectQuery<UTGoal> GoalQuery;
 	GoalQuery.AnyTags = { "Generic", Profession };
 
-	const auto FoundGoals = UTObjectRegistry<UAI::UTGoal>::Instance().Query(GoalQuery);
+	const auto FoundGoals = UTObjectRegistry<UTGoal>::Instance().Query(GoalQuery);
 	if (FoundGoals.empty())
 	{
 		LOG_WARN(std::format("[GCharacter] '{}' - No available goals found!", Name))
@@ -109,5 +109,25 @@ void GCharacter::UpdateActions()
 	{
 		CurrentActions.push_back(*Score.Object);
 		LOG_INFO(std::format("[GCharacter] '{}' - Found Action: '{}' - Score: {}", Name, Score.Object->GetName(), Score.Score))
+	}
+}
+
+void GCharacter::AddTrait(const std::string& Trait)
+{
+	if (auto It = CurrentTraits.find(Trait); It == CurrentTraits.end())
+	{
+		const auto FoundTraits = UTObjectRegistry<UTTrait>::Instance().FindAllWithName(Trait);
+		if (!FoundTraits.empty())
+		{
+			CurrentTraits[Trait] = FoundTraits[0];
+		}
+		if (FoundTraits.size() > 1)
+		{
+			LOG_WARN(std::format("[GCharacter] Multiple traits found with name '{}'", Trait))
+		}
+	}
+	else
+	{
+		LOG_WARN(std::format("[GCharacter] Attempted to add duplicate trait '{}'", Trait))
 	}
 }

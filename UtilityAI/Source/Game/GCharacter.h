@@ -3,9 +3,9 @@
 #include "UTAgentContext.h"
 #include <string>
 #include <unordered_map>
-#include <unordered_set>
 #include <UTAction.h>
 #include <UTGoal.h>
+#include <UTTrait.h>
 #include <vector>
 
 using namespace UAI;
@@ -15,6 +15,7 @@ namespace Game
 	struct GCharacterRenderComponent
 	{
 		bool bShowInfoWindow = false;
+		bool bShowTraitsWindow = false;
 		bool bShowGoalsWindow = false;
 		bool bShowActionsWindow = false;
 	};
@@ -24,7 +25,6 @@ namespace Game
 	public:
 		std::string Name = "None";
 		std::string Profession = "None";
-		std::unordered_set<std::string> Traits;
 		std::unordered_map<ENeedType, float> Needs;
 		std::unordered_map<ECoreStatType, float> CoreStats;
 
@@ -38,13 +38,16 @@ namespace Game
 
 		void UpdateGoals();
 		void UpdateActions();
+		void AddTrait(const std::string& Trait);
 
 		const std::vector<UTGoal>& GetCurrentGoals() const { return CurrentGoals; }
 		const std::vector<UTAction>& GetCurrentActions() const { return CurrentActions; }
+		const std::unordered_map<std::string, const UTTrait*>& GetCurrentTraits() const { return CurrentTraits; }
 
 	private:
 		std::string Key;
 		std::vector<UTGoal> CurrentGoals;
 		std::vector<UTAction> CurrentActions;
+		std::unordered_map<std::string, const UTTrait*> CurrentTraits;
 	};
 }

@@ -37,6 +37,7 @@ public:
 		}
 
 		Categories[Category].insert(Key);
+		NameIndex[Object->GetName()].insert(Key);
 
 		// Build TagIndex for fast filtering
 		for (const auto& Tag : Object->OwnedTags)
@@ -57,7 +58,7 @@ public:
 			return It->second.get();
 		}
 
-		LOG_WARN(std::format("[UTObjectRegistry] Object not found in registry: {}", Key))
+		LOG_WARN(std::format("[UTObjectRegistry] Object with key not found in registry: '{}'", Key))
 		return nullptr;
 	}
 
@@ -87,10 +88,7 @@ public:
 			// Start with objects matching the first required tag
 			std::string FirstTag = *QueryDef.RequiredTags.begin();
 			auto TagIt = TagIndex.find(FirstTag);
-			if (TagIt == TagIndex.end())
-			{
-				return Results;
-			}
+			if (TagIt == TagIndex.end()) return Results;
 
 			// Copy initial candidates
 			for (const auto& Key : TagIt->second)
@@ -125,6 +123,26 @@ public:
 		for (const auto& [_, Obj] : Objects)
 		{
 			Results.push_back(Obj.get());
+		}
+
+		return Results;
+	}
+
+	std::vector<const T*> FindAllWithName(const std::string& Name)
+	{
+		std::vector<const T*> Results;
+		if (auto It = NameIndex.find(Name); It != NameIndex.end())
+		{
+			for (const auto& Key : It->second)
+			{
+				const auto* Obj = Get(Key);
+				Results.push_back(Obj);
+			}
+		}
+
+		if (Results.empty())
+		{
+			LOG_WARN(std::format("[UTObjectRegistry] Object with name not found in registry: '{}'", Name))
 		}
 
 		return Results;
@@ -185,6 +203,7 @@ public:
 private:
 	std::unordered_map<std::string, std::unique_ptr<T>> Objects;
 	std::unordered_map<std::string, std::unordered_set<std::string>> Categories;
+	std::unordered_map<std::string, std::unordered_set<std::string>> NameIndex;
 	std::unordered_map<std::string, std::unordered_set<std::string>> TagIndex;
 
 	UTObjectRegistry() = default;
