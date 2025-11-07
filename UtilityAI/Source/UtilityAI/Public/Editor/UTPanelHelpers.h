@@ -1,4 +1,5 @@
 #pragma once
+#include <optional>
 #include <UTAction.h>
 #include <UTConsideration.h>
 #include <UTEffect.h>
@@ -12,7 +13,7 @@ namespace UTEditor
 	void RenderConsideration(const UTConsideration& Consideration);
 	void RenderEffect(const UTEffect& Effect);
 	void RenderEvaluationData(const UTEvaluationData& Data);
-	void RenderAction(const UTAction& Action);
-	void RenderGoal(const UTGoal& Goal);
+	void RenderAction(const UTAction& Action, std::optional<float> Score = std::nullopt);
+	void RenderGoal(const UTGoal& Goal, std::optional<float> Score = std::nullopt);
 	void RenderTrait(const UTTrait& Trait);
 }

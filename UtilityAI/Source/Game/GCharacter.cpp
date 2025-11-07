@@ -3,6 +3,7 @@
 #include <Core/UTObjectQuery.h>
 #include <Core/UTObjectRegistry.h>
 #include <Logging/UTLogger.h>
+#include <utility>
 #include <UTObjectScore.h>
 
 using namespace Game;
@@ -57,20 +58,30 @@ void GCharacter::UpdateGoals()
 	UTObjectQuery<UTGoal> GoalQuery;
 	GoalQuery.AnyTags = { "Generic", Profession };
 
-	const auto FoundGoals = UTObjectRegistry<UTGoal>::Instance().Query(GoalQuery);
+	const std::vector<const UTGoal*> FoundGoals = UTObjectRegistry<UTGoal>::Instance().Query(GoalQuery);
 	if (FoundGoals.empty())
 	{
 		LOG_WARN(std::format("[GCharacter] '{}' - No available goals found!", Name))
 		return;
 	}
 
+	std::vector<UTGoal> TraitModifiedGoals;
+	for (const auto* Goal : FoundGoals)
+	{
+		UTGoal ModifiedGoal(*Goal);
+		for (const auto& [_, Trait] : CurrentTraits)
+		{
+			Trait->ApplyToGoal(ModifiedGoal);
+		}
+		TraitModifiedGoals.push_back(std::move(ModifiedGoal));
+	}
+
 	UTAgentContext Context = CreateAgentContext();
 
-	std::vector<UTObjectScore<UTGoal>> TopScores = GetTopKWithScores(FoundGoals, Context, 1);
-	for (const auto& Score : TopScores)
+	CurrentGoals = GetTopKWithScores(std::move(TraitModifiedGoals), Context, 1);
+	for (const auto& Goal : CurrentGoals)
 	{
-		CurrentGoals.push_back(*Score.Object);
-		LOG_INFO(std::format("[GCharacter] '{}' - Found Goal: '{}' - Score: {}", Name, Score.Object->GetName(), Score.Score))
+		LOG_INFO(std::format("[GCharacter] '{}' - Found Goal: '{}' - Score: {}", Name, Goal.Object->GetName(), Goal.Score))
 	}
 }
 
@@ -89,7 +100,7 @@ void GCharacter::UpdateActions()
 
 	for (const auto& Goal : CurrentGoals)
 	{
-		for (const auto& Tag : Goal.RequiredTags)
+		for (const auto& Tag : Goal.Object->RequiredTags)
 		{
 			ActionQuery.RequiredTags.insert(Tag);
 		}
@@ -102,13 +113,23 @@ void GCharacter::UpdateActions()
 		return;
 	}
 
+	std::vector<UTAction> TraitModifiedActions;
+	for (const auto* Action : FoundActions)
+	{
+		UTAction ModifiedAction(*Action);
+		for (const auto& [_, Trait] : CurrentTraits)
+		{
+			Trait->ApplyToAction(ModifiedAction);
+		}
+		TraitModifiedActions.push_back(std::move(ModifiedAction));
+	}
+
 	UTAgentContext Context = CreateAgentContext();
 
-	std::vector<UTObjectScore<UTAction>> TopScores = GetTopKWithScores(FoundActions, Context, 1);
-	for (const auto& Score : TopScores)
+	CurrentActions = GetTopKWithScores(std::move(TraitModifiedActions), Context, 1);
+	for (const auto& Action : CurrentActions)
 	{
-		CurrentActions.push_back(*Score.Object);
-		LOG_INFO(std::format("[GCharacter] '{}' - Found Action: '{}' - Score: {}", Name, Score.Object->GetName(), Score.Score))
+		LOG_INFO(std::format("[GCharacter] '{}' - Found Action: '{}' - Score: {}", Name, Action.Object->GetName(), Action.Score))
 	}
 }
 

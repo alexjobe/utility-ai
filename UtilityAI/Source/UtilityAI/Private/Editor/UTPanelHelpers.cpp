@@ -1,5 +1,7 @@
 #include "Editor/UTPanelHelpers.h"
+#include <format>
 #include <imgui.h>
+#include <string>
 
 void UTEditor::RenderConsideration(const UTConsideration& Consideration)
 {
@@ -39,9 +41,15 @@ void UTEditor::RenderEvaluationData(const UTEvaluationData& Data)
 	}
 }
 
-void UTEditor::RenderAction(const UTAction& Action)
+void UTEditor::RenderAction(const UTAction& Action, std::optional<float> Score)
 {
-	if (ImGui::TreeNode(Action.GetName().c_str()))
+	std::string Name = Action.GetName();
+	if (Score)
+	{
+		Name += std::format(" - Score: {}", Score.value());
+	}
+
+	if (ImGui::TreeNode(Name.c_str()))
 	{
 		if (ImGui::TreeNode("OwnedTags"))
 		{
@@ -79,9 +87,15 @@ void UTEditor::RenderAction(const UTAction& Action)
 	}
 }
 
-void UTEditor::RenderGoal(const UTGoal& Goal)
+void UTEditor::RenderGoal(const UTGoal& Goal, std::optional<float> Score)
 {
-	if (ImGui::TreeNode(Goal.GetName().c_str()))
+	std::string Name = Goal.GetName();
+	if (Score)
+	{
+		Name += std::format(" - Score: {}", Score.value());
+	}
+
+	if (ImGui::TreeNode(Name.c_str()))
 	{
 		if (ImGui::TreeNode("OwnedTags"))
 		{

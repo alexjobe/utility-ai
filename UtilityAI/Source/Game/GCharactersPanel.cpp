@@ -228,7 +228,7 @@ void GCharactersPanel::RenderCurrentGoalsWindow(GCharacter& Character)
 	{
 		for (const auto& Goal : Character.GetCurrentGoals())
 		{
-			UTEditor::RenderGoal(Goal);
+			UTEditor::RenderGoal(*Goal.Object, Goal.Score);
 		}
 		ImGui::EndChild();
 	}
@@ -240,7 +240,7 @@ void GCharactersPanel::RenderCurrentActionsWindow(GCharacter& Character)
 	{
 		for (const auto& Action : Character.GetCurrentActions())
 		{
-			UTEditor::RenderAction(Action);
+			UTEditor::RenderAction(*Action.Object, Action.Score);
 		}
 		ImGui::EndChild();
 	}

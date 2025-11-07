@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+#include <queue>
 #include <vector>
 
 namespace UAI
@@ -6,7 +8,7 @@ namespace UAI
 	template <typename T>
 	struct UTObjectScore
 	{
-		const T* Object;
+		std::unique_ptr<T> Object;
 		float Score;
 
 		bool operator>(const UTObjectScore<T>& Other) const
@@ -17,7 +19,7 @@ namespace UAI
 
 	template <typename T>
 	std::vector<UTObjectScore<T>> GetTopKWithScores(
-		const std::vector<const T*>& ObjectsToScore,
+		std::vector<T>&& ObjectsToScore,
 		const struct UTAgentContext& Context,
 		int K = 1
 	)
@@ -28,35 +30,35 @@ namespace UAI
 
 		std::priority_queue<UTObjectScore<T>, std::vector<UTObjectScore<T>>, decltype(CompareFn)> MinHeap(CompareFn);
 
-		for (const auto* Object : ObjectsToScore)
+		for (auto& Object : ObjectsToScore)
 		{
-			if (Object == nullptr)
-			{
-				LOG_ERROR("UAI::GetTopKWithScores: Object cannot be null!")
-				continue;
-			}
+			if (!Object.Scorer.PreconditionCheck(Context)) continue;
 
-			if (!Object->Scorer.PreconditionCheck(Context)) continue;
+			const float Score = Object.Scorer.Score(Context);
 
-			const float Score = Object->Scorer.Score(Context);
+			auto ScoredObject = UTObjectScore<T>(
+				std::make_unique<T>(std::move(Object)),
+				Score
+			);
 
 			if (MinHeap.size() < static_cast<size_t>(K))
 			{
-				MinHeap.push({ Object, Score });
+				MinHeap.push(std::move(ScoredObject));
 			}
 			else if (Score > MinHeap.top().Score)
 			{
 				MinHeap.pop();
-				MinHeap.push({ Object, Score });
+				MinHeap.push(std::move(ScoredObject));
 			}
 		}
 
 		// Extract results (unsorted)
 		std::vector<UTObjectScore<T>> Result;
 		Result.reserve(MinHeap.size());
+
 		while (!MinHeap.empty())
 		{
-			Result.push_back(MinHeap.top());
+			Result.emplace_back(std::move(const_cast<UTObjectScore<T>&>(MinHeap.top())));
 			MinHeap.pop();
 		}
 

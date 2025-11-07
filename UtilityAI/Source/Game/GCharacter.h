@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <UTAction.h>
 #include <UTGoal.h>
+#include <UTObjectScore.h>
 #include <UTTrait.h>
 #include <vector>
 
@@ -40,14 +41,14 @@ namespace Game
 		void UpdateActions();
 		void AddTrait(const std::string& Trait);
 
-		const std::vector<UTGoal>& GetCurrentGoals() const { return CurrentGoals; }
-		const std::vector<UTAction>& GetCurrentActions() const { return CurrentActions; }
+		const std::vector<UTObjectScore<UTGoal>>& GetCurrentGoals() const { return CurrentGoals; }
+		const std::vector<UTObjectScore<UTAction>>& GetCurrentActions() const { return CurrentActions; }
 		const std::unordered_map<std::string, const UTTrait*>& GetCurrentTraits() const { return CurrentTraits; }
 
 	private:
 		std::string Key;
-		std::vector<UTGoal> CurrentGoals;
-		std::vector<UTAction> CurrentActions;
+		std::vector<UTObjectScore<UTGoal>> CurrentGoals;
+		std::vector<UTObjectScore<UTAction>> CurrentActions;
 		std::unordered_map<std::string, const UTTrait*> CurrentTraits;
 	};
 }

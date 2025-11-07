@@ -13,7 +13,7 @@ public:
 
 	// Non-copyable assignment: avoid reassigning const key
 	UTObject& operator=(const UTObject&) = delete;
-	UTObject& operator=(UTObject&&) = delete;
+	UTObject& operator=(UTObject&& Other) noexcept = default;
 
 	std::string GetKey() const { return Key; }
 	std::string GetName() const { return Name; }
