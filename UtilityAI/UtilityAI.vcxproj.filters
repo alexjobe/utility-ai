@@ -236,10 +236,13 @@
     <ClInclude Include="Source\UtilityAI\Public\UAI\Scoring\UTObjectScore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Scripts\Goals\Test\IncreaseSocial.lua">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Actions\Test\RaidAction.lua" />
     <None Include="Scripts\Traits\Test\TestTrait.lua" />
-    <None Include="Scripts\Goals\Test\TestGoal.lua" />
+    <None Include="Scripts\Goals\Test\IncreaseWealth.lua" />
   </ItemGroup>
 </Project>

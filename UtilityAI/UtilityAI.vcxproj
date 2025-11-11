@@ -194,6 +194,7 @@
     <ClInclude Include="Extern\imgui\imstb_rectpack.h" />
     <ClInclude Include="Extern\imgui\imstb_textedit.h" />
     <ClInclude Include="Extern\imgui\imstb_truetype.h" />
+    <ClInclude Include="Scripts\Goals\Test\IncreaseSocial.lua" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTObject.h" />
     <ClInclude Include="Source\UtilityAI\Public\Core\UTObjectQuery.h" />
     <ClInclude Include="Source\UtilityAI\Public\Editor\UTEditorApp.h" />
@@ -233,7 +234,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Actions\Test\RaidAction.lua" />
-    <None Include="Scripts\Goals\Test\TestGoal.lua" />
+    <None Include="Scripts\Goals\Test\IncreaseWealth.lua" />
     <None Include="Scripts\Traits\Test\TestTrait.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

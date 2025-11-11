@@ -102,7 +102,7 @@ void GCharacter::UpdateActions()
 	{
 		for (const auto& Tag : Goal.Object->RequiredTags)
 		{
-			ActionQuery.RequiredTags.insert(Tag);
+			ActionQuery.AnyTags.insert(Tag);
 		}
 	}
 

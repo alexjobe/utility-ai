@@ -58,9 +58,13 @@ namespace UAI
 
 		while (!MinHeap.empty())
 		{
+			// MinHeap top() is const&, hence the cast.
 			Result.emplace_back(std::move(const_cast<UTObjectScore<T>&>(MinHeap.top())));
 			MinHeap.pop();
 		}
+
+		// Sort in descending order (highest score first)
+		std::sort(Result.begin(), Result.end(), CompareFn);
 
 		return Result;
 	}
