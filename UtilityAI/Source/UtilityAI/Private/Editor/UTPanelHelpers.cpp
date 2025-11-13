@@ -8,6 +8,14 @@ void UTEditor::RenderConsideration(const UTConsideration& Consideration)
 	if (ImGui::TreeNode(Consideration.Key.c_str()))
 	{
 		RenderEvaluationData(Consideration.Data);
+		if (ImGui::TreeNode("OwnedTags"))
+		{
+			for (auto& Tag : Consideration.OwnedTags)
+			{
+				ImGui::BulletText("%s", Tag.c_str());
+			}
+			ImGui::TreePop();
+		}
 		ImGui::BulletText("RawScoreFn: %s", Consideration.GetRawScoreFnKey().c_str());
 		ImGui::BulletText("ScoreCurveFn: %s", Consideration.GetScoreCurveFnKey().c_str());
 		ImGui::TreePop();
@@ -147,21 +155,11 @@ void UTEditor::RenderTrait(const UTTrait& Trait)
 		}
 
 		ImGui::Separator();
-		if (ImGui::TreeNode("RequiredTags"))
+		if (ImGui::TreeNode("Biases"))
 		{
-			for (auto& Tag : Trait.RequiredTags)
+			for (auto& Bias : Trait.GetBiases())
 			{
-				ImGui::BulletText("%s", Tag.c_str());
-			}
-			ImGui::TreePop();
-		}
-
-		ImGui::Separator();
-		if (ImGui::TreeNode("Considerations"))
-		{
-			for (auto& [_, Consideration] : Trait.GetConsiderations())
-			{
-				RenderConsideration(Consideration);
+				RenderBias(Bias);
 			}
 			ImGui::TreePop();
 		}
@@ -175,6 +173,16 @@ void UTEditor::RenderTrait(const UTTrait& Trait)
 			}
 			ImGui::TreePop();
 		}
+		ImGui::TreePop();
+	}
+}
+
+void UTEditor::RenderBias(const UTBias& Bias)
+{
+	if (ImGui::TreeNode("Bias"))
+	{
+		ImGui::BulletText("RequiredTag: %s", Bias.RequiredTag.c_str());
+		ImGui::BulletText("WeightMultiplier: %f", Bias.WeightMultiplier);
 		ImGui::TreePop();
 	}
 }

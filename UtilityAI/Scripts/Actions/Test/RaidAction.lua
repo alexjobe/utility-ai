@@ -8,7 +8,7 @@ end)
 _RegisterScoreFunction("SuccessChanceScore", function (Ctx, Data)
     local Strength = Ctx:GetStat("Strength")
     local Endurance = Ctx:GetStat("Endurance")
-    local Chance = (0.6 * Strength + 0.4 * Endurance)
+    local Chance = (0.6 * (Strength / 20) + 0.4 * (Endurance / 20))
     print("Success Chance: " .. Chance)
     return Chance
 end)
@@ -23,12 +23,13 @@ Action.OwnedTags = { "Wealth", "Aggressive", "Generic" }
 Action.Considerations = {
     {
         Key = "SuccessChance",
-        Data = { Weight=1.5 }
+        Data = { Weight=1.5 },
+        RawScoreFnKey = "SuccessChanceScore"
     },
     {
         Key = "TimeCost",
         Data = { Raw=4, MinRaw=1, MaxRaw=5, Weight=0.5 },
-        ScoreCurveFn = TimeScoreCurve
+        ScoreCurveFnKey = "TimeScoreCurve"
     }
 }
 

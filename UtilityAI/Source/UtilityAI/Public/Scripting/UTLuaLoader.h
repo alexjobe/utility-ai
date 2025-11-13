@@ -5,6 +5,7 @@
 #include <string>
 #include <UTConsideration.h>
 #include <UTEffect.h>
+#include <UTTrait.h>
 
 using namespace UAI;
 using namespace UTLuaUtils;
@@ -19,6 +20,7 @@ namespace UTLuaLoader
 	UTEvaluationData LoadEvaluationData(const sol::table& Table, UTValidationResult& Result);
 	UTConsideration LoadConsideration(const sol::table& Table, UTValidationResult& Result);
 	UTEffect LoadEffect(const sol::table& Table, UTValidationResult& Result);
+	UTBias LoadBias(const sol::table& Table, UTValidationResult& Result);
 
 	#define LoaderArgs const sol::table& Table, const std::string& Category, UTValidationResult& Result
 	using LoaderFn = std::function<void(LoaderArgs)>;
@@ -70,6 +72,29 @@ namespace UTLuaLoader
 				else
 				{
 					Result.AddError("Unexpected effect type in Effects array");
+				}
+			}
+		}
+	}
+
+	template <typename AddFn>
+	void LoadBiases(const sol::table& Table, UTValidationResult& Result, AddFn Add)
+	{
+		if (const auto Biases = ValidateField<sol::table>(Table, "Biases", Result))
+		{
+			for (auto& [_, Bias] : *Biases)
+			{
+				if (Bias.get_type() == sol::type::table)
+				{
+					Add(LoadBias(Bias, Result));
+				}
+				else if (Bias.is<UTBias>())
+				{
+					Add(Bias.as<UTBias>());
+				}
+				else
+				{
+					Result.AddError("Unexpected bias type in Biases array");
 				}
 			}
 		}

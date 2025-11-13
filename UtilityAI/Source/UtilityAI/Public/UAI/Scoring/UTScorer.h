@@ -19,7 +19,7 @@ friend class UTAction;
 friend class UTGoal;
 
 public:
-	bool AddConsideration(const UTConsideration& NewCons);
+	bool AddConsideration(const UTConsideration& InNewCons);
 
 	// Weighted geometric mean (log-sum)
 	float Score(const UTAgentContext& Context) const;
@@ -31,9 +31,12 @@ public:
 	// Preconditions are quick "is this even possible?"
 	bool PreconditionCheck(const UTAgentContext& InContext) const;
 
+	std::vector<UTConsideration*> GetConsiderationsWithTag(const std::string& InTag);
+
 private:
 	const UTObject* Owner = nullptr;
 	std::unordered_map<std::string, UTConsideration> Considerations;
+	std::unordered_map<std::string, std::vector<std::string>> ConsTagIndex;
 
 	std::string PreconditionFnKey;
 	const PreconditionFnType* PreconditionFn = nullptr;

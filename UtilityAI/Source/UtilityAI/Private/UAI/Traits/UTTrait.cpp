@@ -5,20 +5,18 @@ using namespace UAI;
 
 bool UTTrait::AppliesTo(const UTGoal& Goal) const
 {
-	if (OwnedTags.empty()) return true;
-	for (auto& Tag : OwnedTags)
+	for (auto& Bias : Biases)
 	{
-		if (Goal.OwnedTags.contains(Tag)) return true;
+		if (Goal.OwnedTags.contains(Bias.RequiredTag)) return true;
 	}
 	return false;
 }
 
 bool UTTrait::AppliesTo(const UTAction& Action) const
 {
-	if (OwnedTags.empty()) return true;
-	for (auto& Tag : OwnedTags)
+	for (auto& Bias : Biases)
 	{
-		if (Action.OwnedTags.contains(Tag)) return true;
+		if (Action.OwnedTags.contains(Bias.RequiredTag)) return true;
 	}
 	return false;
 }
@@ -26,19 +24,28 @@ bool UTTrait::AppliesTo(const UTAction& Action) const
 void UTTrait::ApplyToGoal(UTGoal& Goal) const
 {
 	if (!AppliesTo(Goal)) return;
-	for (const auto& [_, Cons] : Considerations)
+	for (auto& Bias : Biases)
 	{
-		Goal.Scorer.AddConsideration(Cons);
+		std::vector<UTConsideration*> FoundCons = Goal.Scorer.GetConsiderationsWithTag(Bias.RequiredTag);
+		for (UTConsideration* Cons : FoundCons)
+		{
+			Cons->Data.Weight *= Bias.WeightMultiplier;
+		}
 	}
 }
 
 void UTTrait::ApplyToAction(UTAction& Action) const
 {
 	if (!AppliesTo(Action)) return;
-	for (const auto& [_, Cons] : Considerations)
+	for (auto& Bias : Biases)
 	{
-		Action.Scorer.AddConsideration(Cons);
+		std::vector<UTConsideration*> FoundCons = Action.Scorer.GetConsiderationsWithTag(Bias.RequiredTag);
+		for (UTConsideration* Cons : FoundCons)
+		{
+			Cons->Data.Weight *= Bias.WeightMultiplier;
+		}
 	}
+
 	for (const auto& [_, Effect] : Effects)
 	{
 		Action.AddEffect(Effect);
@@ -56,13 +63,14 @@ bool UTTrait::AddEffect(const UTEffect& NewEffect)
 	return true;
 }
 
-bool UTTrait::AddConsideration(const UTConsideration& NewCons)
+bool UTTrait::AddBias(const UTBias& NewBias)
 {
-	if (NewCons.Key.empty() || Considerations.contains(NewCons.Key))
+	if (NewBias.RequiredTag.empty())
 	{
-		LOG_ERROR(std::format("[UTTrait] '{}' - Invalid Consideration! Check Key: '{}'", GetKey(), NewCons.Key))
+		LOG_ERROR(std::format("[UTTrait] '{}' - Bias must have a required tag", GetKey()))
 		return false;
 	}
-	Considerations[NewCons.Key] = NewCons;
+
+	Biases.push_back(NewBias);
 	return true;
 }

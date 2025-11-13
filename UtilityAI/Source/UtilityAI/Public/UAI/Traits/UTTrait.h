@@ -1,8 +1,8 @@
 #pragma once
 #include <Core/UTObject.h>
-#include <set>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <UTAction.h>
 #include <UTEffect.h>
 #include <UTGoal.h>
@@ -11,12 +11,16 @@
 using namespace UTCore;
 
 namespace UAI
-{ 
-// Traits add their effects and considerations to goals and actions with the required tags
+{
+struct UTBias
+{
+	std::string RequiredTag;
+	float WeightMultiplier = 1.5f;
+};
+
 struct UTTrait: public UTObject
 {
-	std::set<std::string> OwnedTags;
-	std::set<std::string> RequiredTags;
+	std::unordered_set<std::string> OwnedTags;
 
 	bool AppliesTo(const UTGoal& Goal) const;
 	bool AppliesTo(const UTAction& Action) const;
@@ -24,29 +28,13 @@ struct UTTrait: public UTObject
 	void ApplyToAction(UTAction& Action) const;
 
 	bool AddEffect(const UTEffect& NewEffect);
-	bool AddConsideration(const UTConsideration& NewCons);
+	bool AddBias(const UTBias& NewBias);
 
-	const std::unordered_map<std::string, UTConsideration>& GetConsiderations() const { return Considerations; }
+	const std::vector<UTBias>& GetBiases() const { return Biases; }
 	const std::unordered_map<std::string, UTEffect>& GetEffects() const { return Effects; }
 
 private:
-	std::unordered_map<std::string, UTConsideration> Considerations;
+	std::vector<UTBias> Biases;
 	std::unordered_map<std::string, UTEffect> Effects;
 };
-
-inline void ApplyTraits(UTAction& Action, const std::vector<UTTrait>& Traits)
-{
-	for (const auto& Trait : Traits)
-	{
-		Trait.ApplyToAction(Action);
-	}
-}
-
-inline void ApplyTraits(UTGoal& Goal, const std::vector<UTTrait>& Traits)
-{
-	for (const auto& Trait : Traits)
-	{
-		Trait.ApplyToGoal(Goal);
-	}
-}
 }

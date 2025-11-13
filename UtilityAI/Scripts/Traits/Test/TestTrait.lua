@@ -5,10 +5,10 @@ Trait.Name = "Trait.Greedy"
 Trait.OwnedTags = { "Generic", "Wealth" }
 Trait.RequiredTags = { "Wealth" }
 
-Trait.Considerations = {
+Trait.Biases = {
 	{
-		Key = "Need.Wealth",
-		Data = { Weight = 2 }
+		RequiredTag = "Wealth",
+		WeightMultiplier = 2.0
 	}
 }
 

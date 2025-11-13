@@ -57,7 +57,7 @@ float UTConsideration::EvalRawScore(const UTAgentContext& Context, const UTEvalu
 
 		if (RawScore < 0 || RawScore > 1)
 		{
-			LOG_WARN(std::format("(Consideration: {}) RawScoreFn should return a normalized value. Result: {}", Key, RawScore))
+			LOG_WARN(std::format("[UTConsideration] (Consideration: {}) RawScoreFn should return a normalized value. Result: {}", Key, RawScore))
 		}
 
 		return std::clamp(RawScore, 0.f, 1.f);
@@ -73,7 +73,7 @@ float UTConsideration::EvalScoreCurve(float X) const
 
 		if (CurveScore < 0 || CurveScore > 1)
 		{
-			LOG_WARN(std::format("(Consideration: {}) ScoreCurveFn should return a normalized value. Result: {}", Key, CurveScore))
+			LOG_WARN(std::format("[UTConsideration] (Consideration: {}) ScoreCurveFn should return a normalized value. Result: {}", Key, CurveScore))
 		}
 
 		return std::clamp(CurveScore, 0.f, 1.f);

@@ -1,8 +1,8 @@
 #pragma once
 #include <Core/UTObject.h>
-#include <set>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <UTAgentContext.h>
 #include <UTEffect.h>
 #include <UTScorer.h>
@@ -14,7 +14,7 @@ namespace UAI
 class UTAction : public UTObject
 {
 public:
-	std::set<std::string> OwnedTags;
+	std::unordered_set<std::string> OwnedTags;
 	UTScorer Scorer;
 
 	UTAction();

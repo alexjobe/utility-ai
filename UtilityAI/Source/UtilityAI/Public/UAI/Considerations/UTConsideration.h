@@ -3,6 +3,7 @@
 #include "UTAgentContext.h"
 #include <functional>
 #include <string>
+#include <unordered_set>
 
 namespace UAI
 {
@@ -25,6 +26,8 @@ struct UTConsideration
 {
 	std::string Key;
 	UTEvaluationData Data;
+
+	std::unordered_set<std::string> OwnedTags;
 
 	void SetRawScoreFnKey(const std::string& InKey);
 	void SetScoreCurveFnKey(const std::string& InKey);

@@ -7,7 +7,7 @@
 
 using namespace UAI;
 
-bool UTScorer::AddConsideration(const UTConsideration& NewCons)
+bool UTScorer::AddConsideration(const UTConsideration& InNewCons)
 {
 	if (Owner == nullptr)
 	{
@@ -15,27 +15,25 @@ bool UTScorer::AddConsideration(const UTConsideration& NewCons)
 		return false;
 	}
 
-	if (NewCons.Key.empty())
+	if (InNewCons.Key.empty())
 	{
-		LOG_ERROR(std::format("[UTScorer] '{}' -- Invalid Consideration! Check Key: '{}'", Owner->GetName(), NewCons.Key))
+		LOG_ERROR(std::format("[UTScorer] '{}' -- Invalid Consideration! Check Key: '{}'", Owner->GetName(), InNewCons.Key))
 		return false;
 	}
 
-	auto It = Considerations.find(NewCons.Key);
+	auto It = Considerations.find(InNewCons.Key);
 	if (It != Considerations.end())
 	{
-		// Merge into existing consideration
-		It->second.Data.Weight = (It->second.Data.Weight + NewCons.Data.Weight) * 0.5f; // Average
-		const std::string ScoreCurveFnKey = NewCons.GetScoreCurveFnKey();
-		if (!ScoreCurveFnKey.empty() && NewCons.Data.Priority >= It->second.Data.Priority)
-		{
-			It->second.SetScoreCurveFnKey(ScoreCurveFnKey);
-			It->second.Data.Priority = NewCons.Data.Priority;
-		}
+		LOG_ERROR(std::format("[UTScorer] '{}' -- Cannot add duplicate Consideration: '{}'", Owner->GetName(), InNewCons.Key))
+		return false;
 	}
-	else
+
+	Considerations[InNewCons.Key] = InNewCons;
+
+	// Build TagIndex for fast filtering
+	for (const auto& Tag : InNewCons.OwnedTags)
 	{
-		Considerations[NewCons.Key] = NewCons;
+		ConsTagIndex[Tag].push_back(InNewCons.Key);
 	}
 
 	return true;
@@ -105,4 +103,26 @@ bool UTScorer::PreconditionCheck(const UTAgentContext& InContext) const
 		return (*PreconditionFn)(InContext);
 	}
 	return true;
+}
+
+std::vector<UTConsideration*> UTScorer::GetConsiderationsWithTag(const std::string& InTag)
+{
+	std::vector<UTConsideration*> Result;
+
+	auto TagIt = ConsTagIndex.find(InTag);
+	if(TagIt == ConsTagIndex.end()) return Result;
+
+	for (const auto& ConsKey : TagIt->second)
+	{
+		if (auto ConsIt = Considerations.find(ConsKey); ConsIt != Considerations.end())
+		{
+			Result.push_back(&ConsIt->second);
+		}
+		else
+		{
+			LOG_ERROR(std::format("[UTScorer] '{}' -- Tag '{}' maps to invalid key '{}'!", Owner->GetName(), InTag, ConsKey))
+		}
+	}
+
+	return Result;
 }

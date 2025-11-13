@@ -69,6 +69,8 @@ UTConsideration UTLuaLoader::LoadConsideration(const sol::table& Table, UTValida
 	UTConsideration Consideration;
 	LOAD_FIELD(Consideration, Key, Table, Result, true);
 
+	LoadTags(Table, "OwnedTags", Result, [&](const std::string& Tag) { Consideration.OwnedTags.insert(Tag); });
+
 	if (const auto RawScoreFnKey = ValidateField<std::string>(Table, "RawScoreFnKey", Result))
 	{
 		Consideration.SetRawScoreFnKey(*RawScoreFnKey);
@@ -115,6 +117,14 @@ UTEffect UTLuaLoader::LoadEffect(const sol::table& Table, UTValidationResult& Re
 	}
 
 	return Effect;
+}
+
+UAI::UTBias UTLuaLoader::LoadBias(const sol::table& Table, UTValidationResult& Result)
+{
+	UTBias Bias;
+	LOAD_FIELD(Bias, RequiredTag, Table, Result, true);
+	LOAD_FIELD(Bias, WeightMultiplier, Table, Result, false);
+	return Bias;
 }
 
 void UTLuaLoader::ActionLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
@@ -170,9 +180,8 @@ void UTLuaLoader::TraitLoader(const sol::table& Table, const std::string& Catego
 	Trait->SetName(*Name);
 
 	LoadTags(Table, "OwnedTags", Result, [&](const std::string& Tag) { Trait->OwnedTags.insert(Tag); });
-	LoadTags(Table, "RequiredTags", Result, [&](const std::string& Tag) { Trait->RequiredTags.insert(Tag); });
+	LoadBiases(Table, Result, [&](const UTBias& Bias) { Trait->AddBias(Bias); });
 	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Trait->AddEffect(Effect); });
-	LoadConsiderations(Table, Result, [&](const UTConsideration& Cons) { Trait->AddConsideration(Cons); });
 
 	UTObjectRegistry<UTTrait>::Instance().Register(std::move(Trait), Category);
 	LOG_INFO(std::format("[UTLuaLoader] Loaded Trait: '{}' (Category: {})", *Name, Category))
