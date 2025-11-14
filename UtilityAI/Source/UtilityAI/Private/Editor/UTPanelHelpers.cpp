@@ -8,16 +8,20 @@ void UTEditor::RenderConsideration(const UTConsideration& Consideration)
 	if (ImGui::TreeNode(Consideration.Key.c_str()))
 	{
 		RenderEvaluationData(Consideration.Data);
-		if (ImGui::TreeNode("OwnedTags"))
+
+		if (ImGui::TreeNode("Biases"))
 		{
-			for (auto& Tag : Consideration.OwnedTags)
+			for (auto& Bias : Consideration.GetBiases())
 			{
-				ImGui::BulletText("%s", Tag.c_str());
+				RenderBias(Bias);
 			}
 			ImGui::TreePop();
 		}
+
+		ImGui::BulletText("BiasedWeight: %f", Consideration.GetBiasedWeight());
 		ImGui::BulletText("RawScoreFn: %s", Consideration.GetRawScoreFnKey().c_str());
 		ImGui::BulletText("ScoreCurveFn: %s", Consideration.GetScoreCurveFnKey().c_str());
+
 		ImGui::TreePop();
 	}
 }
@@ -43,7 +47,7 @@ void UTEditor::RenderEvaluationData(const UTEvaluationData& Data)
 		ImGui::BulletText("Raw: %f", Data.Raw);
 		ImGui::BulletText("MinRaw: %f", Data.MinRaw);
 		ImGui::BulletText("MaxRaw: %f", Data.MaxRaw);
-		ImGui::BulletText("Weight: %f", Data.Weight);
+		ImGui::BulletText("BaseWeight: %f", Data.BaseWeight);
 		ImGui::BulletText("Priority: %d", Data.Priority);
 		ImGui::TreePop();
 	}
@@ -181,7 +185,8 @@ void UTEditor::RenderBias(const UTBias& Bias)
 {
 	if (ImGui::TreeNode("Bias"))
 	{
-		ImGui::BulletText("RequiredTag: %s", Bias.RequiredTag.c_str());
+		ImGui::BulletText("Source: %s", Bias.Source.c_str());
+		ImGui::BulletText("Target: %s", Bias.Target.c_str());
 		ImGui::BulletText("WeightMultiplier: %f", Bias.WeightMultiplier);
 		ImGui::TreePop();
 	}

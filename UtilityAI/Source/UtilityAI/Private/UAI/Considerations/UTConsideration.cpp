@@ -27,7 +27,7 @@ void UTEvaluationData::DebugPrint()
 	LOG_INFO(std::format("Raw: {}", Raw))
 	LOG_INFO(std::format("MinRaw: {}", MinRaw))
 	LOG_INFO(std::format("MaxRaw: {}", MaxRaw))
-	LOG_INFO(std::format("Weight: {}", Weight))
+	LOG_INFO(std::format("BaseWeight: {}", BaseWeight))
 	LOG_INFO(std::format("Priority: {}", Priority))
 }
 
@@ -46,6 +46,7 @@ void UTConsideration::DebugPrint()
 	LOG_INFO(std::format("Key: {}", Key))
 	LOG_INFO(std::format("RawScoreFn: {}", RawScoreFnKey))
 	LOG_INFO(std::format("ScoreCurveFn: {}", ScoreCurveFnKey))
+	LOG_INFO(std::format("BiasedWeight: {}", GetBiasedWeight()))
 	Data.DebugPrint();
 }
 
@@ -79,4 +80,23 @@ float UTConsideration::EvalScoreCurve(float X) const
 		return std::clamp(CurveScore, 0.f, 1.f);
 	}
 	return 0.0f;
+}
+
+void UTConsideration::AddBias(const UTBias& InBias)
+{
+	Biases.push_back(InBias);
+
+	float WeightMultiplier = 0.f;
+	for (const UTBias& Bias : Biases)
+	{
+		// Average of all biases
+		WeightMultiplier += Bias.WeightMultiplier;
+	}
+	WeightMultiplier /= Biases.size();
+	BiasedWeight = WeightMultiplier * Data.BaseWeight;
+}
+
+float UTConsideration::GetBiasedWeight() const
+{
+	return Biases.empty() ? Data.BaseWeight : BiasedWeight;
 }

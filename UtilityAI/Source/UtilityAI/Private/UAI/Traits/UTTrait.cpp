@@ -3,53 +3,33 @@
 
 using namespace UAI;
 
-bool UTTrait::AppliesTo(const UTGoal& Goal) const
-{
-	for (auto& Bias : Biases)
-	{
-		if (Goal.OwnedTags.contains(Bias.RequiredTag)) return true;
-	}
-	return false;
-}
-
-bool UTTrait::AppliesTo(const UTAction& Action) const
-{
-	for (auto& Bias : Biases)
-	{
-		if (Action.OwnedTags.contains(Bias.RequiredTag)) return true;
-	}
-	return false;
-}
-
 void UTTrait::ApplyToGoal(UTGoal& Goal) const
 {
-	if (!AppliesTo(Goal)) return;
 	for (auto& Bias : Biases)
 	{
-		std::vector<UTConsideration*> FoundCons = Goal.Scorer.GetConsiderationsWithTag(Bias.RequiredTag);
+		std::vector<UTConsideration*> FoundCons = Goal.Scorer.GetConsiderationsByTarget(Bias.Target);
 		for (UTConsideration* Cons : FoundCons)
 		{
-			Cons->Data.Weight *= Bias.WeightMultiplier;
+			Cons->AddBias(Bias);
 		}
 	}
 }
 
 void UTTrait::ApplyToAction(UTAction& Action) const
 {
-	if (!AppliesTo(Action)) return;
 	for (auto& Bias : Biases)
 	{
-		std::vector<UTConsideration*> FoundCons = Action.Scorer.GetConsiderationsWithTag(Bias.RequiredTag);
+		std::vector<UTConsideration*> FoundCons = Action.Scorer.GetConsiderationsByTarget(Bias.Target);
 		for (UTConsideration* Cons : FoundCons)
 		{
-			Cons->Data.Weight *= Bias.WeightMultiplier;
+			Cons->AddBias(Bias);
 		}
 	}
 
-	for (const auto& [_, Effect] : Effects)
+	/*for (const auto& [_, Effect] : Effects)
 	{
 		Action.AddEffect(Effect);
-	}
+	}*/
 }
 
 bool UTTrait::AddEffect(const UTEffect& NewEffect)
@@ -65,12 +45,14 @@ bool UTTrait::AddEffect(const UTEffect& NewEffect)
 
 bool UTTrait::AddBias(const UTBias& NewBias)
 {
-	if (NewBias.RequiredTag.empty())
+	if (NewBias.Target.empty())
 	{
-		LOG_ERROR(std::format("[UTTrait] '{}' - Bias must have a required tag", GetKey()))
+		LOG_ERROR(std::format("[UTTrait] '{}' - Bias must have a target", GetKey()))
 		return false;
 	}
 
 	Biases.push_back(NewBias);
+	Biases.back().Source = GetName();
+
 	return true;
 }

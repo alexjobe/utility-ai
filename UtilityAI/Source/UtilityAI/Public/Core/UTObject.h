@@ -1,11 +1,14 @@
 #pragma once
 #include <string>
+#include <unordered_set>
 
 namespace UTCore
 {
 class UTObject
 {
 public:
+	std::unordered_set<std::string> OwnedTags;
+
 	explicit UTObject();
 	UTObject(const UTObject& Other);
 	UTObject(UTObject&& Other) noexcept;

@@ -11,7 +11,6 @@ namespace UAI
 class UTGoal : public UTObject
 {
 public:
-	std::unordered_set<std::string> OwnedTags;
 	std::unordered_set<std::string> RequiredTags; // Only actions with the required tags will be considered
 	UTScorer Scorer;
 

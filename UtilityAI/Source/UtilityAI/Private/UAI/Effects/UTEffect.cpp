@@ -38,7 +38,7 @@ void UTEffect::Apply(UTAgentContext& InContext) const
 UTConsideration UTEffect::AsConsideration() const
 {
 	UTConsideration Consideration;
-	Consideration.Key = ConsiderationKey;
+	Consideration.Key = Key;
 	Consideration.Data = Data;
 	Consideration.SetRawScoreFnKey(RawScoreFnKey);
 	Consideration.SetScoreCurveFnKey(ScoreCurveFnKey);

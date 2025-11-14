@@ -55,11 +55,11 @@ void UTLuaLoader::RegisterLuaTypes(sol::state& Lua)
 UTEvaluationData UTLuaLoader::LoadEvaluationData(const sol::table& Table, UTValidationResult& Result)
 {
 	UTEvaluationData Data;
-	LOAD_FIELD(Data, Target, Table, Result, false);
+	LOAD_FIELD(Data, Target, Table, Result, true);
 	LOAD_FIELD(Data, Raw, Table, Result, false);
 	LOAD_FIELD(Data, MinRaw, Table, Result, false);
 	LOAD_FIELD(Data, MaxRaw, Table, Result, false);
-	LOAD_FIELD(Data, Weight, Table, Result, false);
+	LOAD_FIELD(Data, BaseWeight, Table, Result, false);
 	LOAD_FIELD(Data, Priority, Table, Result, false);
 	return Data;
 }
@@ -68,8 +68,6 @@ UTConsideration UTLuaLoader::LoadConsideration(const sol::table& Table, UTValida
 {
 	UTConsideration Consideration;
 	LOAD_FIELD(Consideration, Key, Table, Result, true);
-
-	LoadTags(Table, "OwnedTags", Result, [&](const std::string& Tag) { Consideration.OwnedTags.insert(Tag); });
 
 	if (const auto RawScoreFnKey = ValidateField<std::string>(Table, "RawScoreFnKey", Result))
 	{
@@ -93,7 +91,6 @@ UTEffect UTLuaLoader::LoadEffect(const sol::table& Table, UTValidationResult& Re
 {
 	UTEffect Effect;
 	LOAD_FIELD(Effect, Key, Table, Result, true);
-	LOAD_FIELD(Effect, ConsiderationKey, Table, Result, false);
 	LOAD_FIELD(Effect, bIsConsideration, Table, Result, false);
 
 	if (const auto RawScoreFnKey = ValidateField<std::string>(Table, "RawScoreFnKey", Result))
@@ -122,7 +119,7 @@ UTEffect UTLuaLoader::LoadEffect(const sol::table& Table, UTValidationResult& Re
 UAI::UTBias UTLuaLoader::LoadBias(const sol::table& Table, UTValidationResult& Result)
 {
 	UTBias Bias;
-	LOAD_FIELD(Bias, RequiredTag, Table, Result, true);
+	LOAD_FIELD(Bias, Target, Table, Result, true);
 	LOAD_FIELD(Bias, WeightMultiplier, Table, Result, false);
 	return Bias;
 }

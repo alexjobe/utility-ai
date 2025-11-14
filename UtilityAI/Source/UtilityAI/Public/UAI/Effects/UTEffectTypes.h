@@ -37,7 +37,6 @@ inline UTEffect NeedEffect(const UTEvaluationData& Data)
 {
 	UTEffect NewEffect;
 	NewEffect.Key = "Effect." + Data.Target;
-	NewEffect.ConsiderationKey = "Need." + Data.Target;
 	NewEffect.bIsConsideration = true;
 	NewEffect.SetRawScoreFnKey("ScoreNeedChange");
 	NewEffect.SetEffectFnKey("ApplyNeedChange");

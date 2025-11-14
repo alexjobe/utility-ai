@@ -3,11 +3,10 @@ local Trait = {}
 Trait.Name = "Trait.Greedy"
 
 Trait.OwnedTags = { "Generic", "Wealth" }
-Trait.RequiredTags = { "Wealth" }
 
 Trait.Biases = {
 	{
-		RequiredTag = "Wealth",
+		Target = "Wealth",
 		WeightMultiplier = 2.0
 	}
 }

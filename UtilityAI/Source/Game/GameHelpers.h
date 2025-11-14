@@ -15,7 +15,7 @@ namespace Game
 		Data.Raw = Magnitude;
 		Data.MinRaw = MIN_NEED;
 		Data.MaxRaw = MAX_NEED;
-		Data.Weight = Weight;
+		Data.BaseWeight = Weight;
 		return UAI::NeedEffect(Data);
 	}
 
@@ -25,7 +25,7 @@ namespace Game
 		Data.Target = ToString(Need);
 		Data.MinRaw = MIN_NEED;
 		Data.MaxRaw = MAX_NEED;
-		Data.Weight = Weight;
+		Data.BaseWeight = Weight;
 		return UAI::NeedConsideration(Data);
 	}
 

@@ -31,7 +31,7 @@ void UTAction::GenerateConsiderations()
 	{
 		if (Effect.bIsConsideration && Scorer.AddConsideration(Effect.AsConsideration()))
 		{
-			LOG_INFO(std::format("[UTAction] '{}' - '{}' added Consideration: '{}'", GetName(), Effect.Key, Effect.ConsiderationKey))
+			LOG_INFO(std::format("[UTAction] '{}' - '{}' added as Consideration", GetName(), Effect.Key))
 		}
 	}
 }

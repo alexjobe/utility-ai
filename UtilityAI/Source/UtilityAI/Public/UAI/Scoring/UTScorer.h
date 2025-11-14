@@ -31,12 +31,12 @@ public:
 	// Preconditions are quick "is this even possible?"
 	bool PreconditionCheck(const UTAgentContext& InContext) const;
 
-	std::vector<UTConsideration*> GetConsiderationsWithTag(const std::string& InTag);
+	std::vector<UTConsideration*> GetConsiderationsByTarget(const std::string& InTarget);
 
 private:
 	const UTObject* Owner = nullptr;
 	std::unordered_map<std::string, UTConsideration> Considerations;
-	std::unordered_map<std::string, std::vector<std::string>> ConsTagIndex;
+	std::unordered_map<std::string, std::vector<std::string>> TargetIndex;
 
 	std::string PreconditionFnKey;
 	const PreconditionFnType* PreconditionFn = nullptr;

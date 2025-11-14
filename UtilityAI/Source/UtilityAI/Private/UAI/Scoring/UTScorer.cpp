@@ -21,6 +21,12 @@ bool UTScorer::AddConsideration(const UTConsideration& InNewCons)
 		return false;
 	}
 
+	if (InNewCons.Data.Target.empty())
+	{
+		LOG_ERROR(std::format("[UTScorer] '{}' -- Consideration '{}' has no target", Owner->GetName(), InNewCons.Key))
+		return false;
+	}
+
 	auto It = Considerations.find(InNewCons.Key);
 	if (It != Considerations.end())
 	{
@@ -30,11 +36,8 @@ bool UTScorer::AddConsideration(const UTConsideration& InNewCons)
 
 	Considerations[InNewCons.Key] = InNewCons;
 
-	// Build TagIndex for fast filtering
-	for (const auto& Tag : InNewCons.OwnedTags)
-	{
-		ConsTagIndex[Tag].push_back(InNewCons.Key);
-	}
+	// Build TargetIndex for fast filtering
+	TargetIndex[InNewCons.Data.Target].push_back(InNewCons.Key);
 
 	return true;
 }
@@ -59,12 +62,13 @@ float UTScorer::Score(const UTAgentContext& Context) const
 	float WeightSum = 0.0f;
 	for (const auto& [_, Cons] : Considerations)
 	{
-		if (Cons.Data.Weight < 0.0f)
+		const float Weight = Cons.GetBiasedWeight();
+		if (Weight < 0.0f)
 		{
 			LOG_WARN(std::format("[UTScorer] '{}' -- Negative weight on '{}'; clamping to zero.", Owner->GetName(), Cons.Key));
 		}
 
-		WeightSum += std::max(0.0f, Cons.Data.Weight);
+		WeightSum += std::max(0.0f, Weight);
 	}
 
 	if (WeightSum <= 0.0f)
@@ -74,14 +78,15 @@ float UTScorer::Score(const UTAgentContext& Context) const
 	}
 
 	float WeightedLogSum = 0.0f;
-	for (const auto& [Key, Consideration] : Considerations)
+	for (const auto& [Key, Cons] : Considerations)
 	{
-		const float ConScore = std::clamp(Consideration.Score(Context), 0.001f, 1.0f); // avoid log(0)
-		const float WeightedLog = Consideration.Data.Weight * std::log(ConScore);
+		const float Weight = Cons.GetBiasedWeight();
+		const float ConScore = std::clamp(Cons.Score(Context), 0.001f, 1.0f); // avoid log(0)
+		const float WeightedLog = Weight * std::log(ConScore);
 		WeightedLogSum += WeightedLog;
 
-		const float Contribution = std::pow(ConScore, Consideration.Data.Weight / WeightSum);
-		LOG_INFO(std::format("[UTScorer] '{}' -- ['{}' | Score: {} | Weight: {} | Contrib: {}]", Owner->GetName(), Consideration.Key, ConScore, Consideration.Data.Weight, Contribution))
+		const float Contribution = std::pow(ConScore, Weight / WeightSum);
+		LOG_INFO(std::format("[UTScorer] '{}' -- ['{}' | Score: {} | Weight: {} | Contrib: {}]", Owner->GetName(), Key, ConScore, Weight, Contribution))
 	}
 
 	const float FinalScore = std::exp(WeightedLogSum / WeightSum);
@@ -105,14 +110,14 @@ bool UTScorer::PreconditionCheck(const UTAgentContext& InContext) const
 	return true;
 }
 
-std::vector<UTConsideration*> UTScorer::GetConsiderationsWithTag(const std::string& InTag)
+std::vector<UTConsideration*> UTScorer::GetConsiderationsByTarget(const std::string& InTarget)
 {
 	std::vector<UTConsideration*> Result;
 
-	auto TagIt = ConsTagIndex.find(InTag);
-	if(TagIt == ConsTagIndex.end()) return Result;
+	auto TargetIt = TargetIndex.find(InTarget);
+	if(TargetIt == TargetIndex.end()) return Result;
 
-	for (const auto& ConsKey : TagIt->second)
+	for (const auto& ConsKey : TargetIt->second)
 	{
 		if (auto ConsIt = Considerations.find(ConsKey); ConsIt != Considerations.end())
 		{
@@ -120,7 +125,7 @@ std::vector<UTConsideration*> UTScorer::GetConsiderationsWithTag(const std::stri
 		}
 		else
 		{
-			LOG_ERROR(std::format("[UTScorer] '{}' -- Tag '{}' maps to invalid key '{}'!", Owner->GetName(), InTag, ConsKey))
+			LOG_ERROR(std::format("[UTScorer] '{}' -- Tag '{}' maps to invalid key '{}'!", Owner->GetName(), InTarget, ConsKey))
 		}
 	}
 

@@ -14,7 +14,6 @@ class UTEffect
 {
 public:
 	std::string Key;
-	std::string ConsiderationKey;
 	UTEvaluationData Data;
 	bool bIsConsideration = false;
 

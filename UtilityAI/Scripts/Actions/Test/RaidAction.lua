@@ -23,12 +23,12 @@ Action.OwnedTags = { "Wealth", "Aggressive", "Generic" }
 Action.Considerations = {
     {
         Key = "SuccessChance",
-        Data = { Weight=1.5 },
+        Data = { BaseWeight=1.5 },
         RawScoreFnKey = "SuccessChanceScore"
     },
     {
         Key = "TimeCost",
-        Data = { Raw=4, MinRaw=1, MaxRaw=5, Weight=0.5 },
+        Data = { Target="TimeCost", Raw=4, MinRaw=1, MaxRaw=5, BaseWeight=0.5 },
         ScoreCurveFnKey = "TimeScoreCurve"
     }
 }
