@@ -5,7 +5,6 @@
 #include <string>
 #include <UTConsideration.h>
 #include <UTEffect.h>
-#include <UTTrait.h>
 
 using namespace UAI;
 using namespace UTLuaUtils;
@@ -17,22 +16,23 @@ namespace UTLuaLoader
 	void RegisterCurveFunction(const std::string& Key, sol::function Fn);
 	void RegisterLuaTypes(sol::state& Lua);
 
-	UTEvaluationData LoadEvaluationData(const sol::table& Table, UTValidationResult& Result);
-	UTConsideration LoadConsideration(const sol::table& Table, UTValidationResult& Result);
-	UTEffect LoadEffect(const sol::table& Table, UTValidationResult& Result);
-	UTBias LoadBias(const sol::table& Table, UTValidationResult& Result);
+	UTEvaluationData LoadEvaluationData(const sol::table& Table, UTScriptResult& Result);
+	UTConsideration LoadConsideration(const sol::table& Table, UTScriptResult& Result);
+	UTEffect LoadEffect(const sol::table& Table, UTScriptResult& Result);
+	UTBias LoadBias(const sol::table& Table, UTScriptResult& Result);
 
-	#define LoaderArgs const sol::table& Table, const std::string& Category, UTValidationResult& Result
+	#define LoaderArgs const sol::table& Table, UTScriptResult& Result
 	using LoaderFn = std::function<void(LoaderArgs)>;
 	void ActionLoader(LoaderArgs);
 	void GoalLoader(LoaderArgs);
 	void TraitLoader(LoaderArgs);
 
-	std::optional<sol::table> LoadLuaTable(const std::filesystem::path& File, sol::state& Lua, UTValidationResult& Result);
-	void LoadScriptsRecursive(const std::string& BaseDir, sol::state& Lua, UTValidationResult& Result, LoaderFn Loader);
+	void LoadAllScripts(sol::state& Lua);
+	bool LoadScriptsRecursive(const std::string& BaseDir, sol::state& Lua, std::vector<UTScriptResult>& Results, LoaderFn Loader);
+	std::optional<sol::table> LoadLuaTable(sol::state& Lua, UTScriptResult& Result);
 
 	template <typename AddFn>
-	void LoadConsiderations(const sol::table& Table, UTValidationResult& Result, AddFn Add)
+	void LoadConsiderations(const sol::table& Table, UTScriptResult& Result, AddFn Add)
 	{
 		if (const auto Considerations = ValidateField<sol::table>(Table, "Considerations", Result))
 		{
@@ -55,7 +55,7 @@ namespace UTLuaLoader
 	}
 
 	template <typename AddFn>
-	void LoadEffects(const sol::table& Table, UTValidationResult& Result, AddFn Add)
+	void LoadEffects(const sol::table& Table, UTScriptResult& Result, AddFn Add)
 	{
 		if (const auto Effects = ValidateField<sol::table>(Table, "Effects", Result))
 		{
@@ -78,7 +78,7 @@ namespace UTLuaLoader
 	}
 
 	template <typename AddFn>
-	void LoadBiases(const sol::table& Table, UTValidationResult& Result, AddFn Add)
+	void LoadBiases(const sol::table& Table, UTScriptResult& Result, AddFn Add)
 	{
 		if (const auto Biases = ValidateField<sol::table>(Table, "Biases", Result))
 		{
@@ -101,7 +101,7 @@ namespace UTLuaLoader
 	}
 
 	template <typename AddFn>
-	void LoadTags(const sol::table& Table, const std::string& Field, UTValidationResult& Result, AddFn Add)
+	void LoadTags(const sol::table& Table, const std::string& Field, UTScriptResult& Result, AddFn Add)
 	{
 		if (const auto Tags = ValidateField<sol::table>(Table, Field, Result))
 		{

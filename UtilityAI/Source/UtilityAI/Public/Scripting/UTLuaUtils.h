@@ -9,31 +9,50 @@
 
 namespace UTLuaUtils
 {
-	struct UTValidationResult
+	struct UTScriptResult
 	{
 		bool bValid = true;
 		std::vector<std::string> Errors;
+
+		std::string FilePath;
+		std::string FileName;
+		std::string Category;
 
 		void AddError(const std::string& Msg)
 		{
 			bValid = false;
 			Errors.push_back(Msg);
 		}
+
+		void Log() const
+		{
+			for (const auto& Err : Errors)
+			{
+				if (!FileName.empty())
+				{
+					LOG_ERROR(std::format("[ScriptError] '{}' -- {}", FileName, Err))
+				}
+				else
+				{
+					LOG_ERROR(Err)
+				}
+			}
+		}
 	};
 
 	template<typename T>
-	std::optional<T> ValidateField(const sol::table& Table, const std::string& Field, UTValidationResult& Result, bool bRequired = false)
+	std::optional<T> ValidateField(const sol::table& Table, const std::string& Field, UTScriptResult& Result, bool bRequired = false)
 	{
 		sol::object Obj = Table.get<sol::object>(Field);
 
 		if (bRequired && !Obj.valid())
 		{
-			Result.AddError("Missing required field: " + Field);
+			Result.AddError(std::format("Missing required field: '{}'", Field));
 			return std::nullopt;
 		}
 		if (Obj.valid() && Obj.get_type() != sol::type_of<T>())
 		{
-			Result.AddError("Field '" + Field + "' has wrong type");
+			Result.AddError(std::format("Field has wrong type: '{}'", Field));
 			return std::nullopt;
 		}
 		return Obj.valid() ? std::optional<T>(Obj.as<T>()) : std::nullopt;
@@ -45,7 +64,7 @@ namespace UTLuaUtils
 		MemberT ObjT::* Member,
 		const sol::table& Table,
 		const std::string& Field,
-		UTValidationResult& Result,
+		UTScriptResult& Result,
 		bool bRequired = false)
 	{
 		if (const auto Value = ValidateField<MemberT>(Table, Field, Result, bRequired))
@@ -89,13 +108,13 @@ namespace UTLuaUtils
 	}
 
 	template<typename Sig>
-	std::optional<std::function<Sig>> ValidateFunction(const sol::table& Table, const std::string& Field, UTValidationResult& Result, bool bRequired = false)
+	std::optional<std::function<Sig>> ValidateFunction(const sol::table& Table, const std::string& Field, UTScriptResult& Result, bool bRequired = false)
 	{
 		sol::object Obj = Table.get<sol::object>(Field);
 
 		if (bRequired && !Obj.valid()) 
 		{
-			Result.AddError("Missing required function field: " + Field);
+			Result.AddError(std::format("Missing required function field: '{}'", Field));
 			return std::nullopt;
 		}
 		if (!Obj.valid()) 
@@ -104,7 +123,7 @@ namespace UTLuaUtils
 		}
 		if (Obj.get_type() != sol::type::function) 
 		{
-			Result.AddError("Field '" + Field + "' has wrong type (expected function)");
+			Result.AddError(std::format("Field has wrong type (expected function): '{}'", Field));
 			return std::nullopt;
 		}
 
@@ -119,7 +138,7 @@ namespace UTLuaUtils
 		std::function<FnSig> ObjT::* Member,
 		const sol::table& Table,
 		const std::string& Field,
-		UTValidationResult& Result,
+		UTScriptResult& Result,
 		bool bRequired = false)
 	{
 		if (const auto Fn = ValidateFunction<FnSig>(Table, Field, Result, bRequired)) 

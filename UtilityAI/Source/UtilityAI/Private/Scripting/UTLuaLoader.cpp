@@ -52,7 +52,7 @@ void UTLuaLoader::RegisterLuaTypes(sol::state& Lua)
 	Lua.set_function("_RegisterCurveFunction", &UTLuaLoader::RegisterCurveFunction);
 }
 
-UTEvaluationData UTLuaLoader::LoadEvaluationData(const sol::table& Table, UTValidationResult& Result)
+UTEvaluationData UTLuaLoader::LoadEvaluationData(const sol::table& Table, UTScriptResult& Result)
 {
 	UTEvaluationData Data;
 	LOAD_FIELD(Data, Target, Table, Result, true);
@@ -64,7 +64,7 @@ UTEvaluationData UTLuaLoader::LoadEvaluationData(const sol::table& Table, UTVali
 	return Data;
 }
 
-UTConsideration UTLuaLoader::LoadConsideration(const sol::table& Table, UTValidationResult& Result)
+UTConsideration UTLuaLoader::LoadConsideration(const sol::table& Table, UTScriptResult& Result)
 {
 	UTConsideration Consideration;
 	LOAD_FIELD(Consideration, Key, Table, Result, true);
@@ -87,7 +87,7 @@ UTConsideration UTLuaLoader::LoadConsideration(const sol::table& Table, UTValida
 	return Consideration;
 }
 
-UTEffect UTLuaLoader::LoadEffect(const sol::table& Table, UTValidationResult& Result)
+UTEffect UTLuaLoader::LoadEffect(const sol::table& Table, UTScriptResult& Result)
 {
 	UTEffect Effect;
 	LOAD_FIELD(Effect, Key, Table, Result, true);
@@ -116,7 +116,7 @@ UTEffect UTLuaLoader::LoadEffect(const sol::table& Table, UTValidationResult& Re
 	return Effect;
 }
 
-UAI::UTBias UTLuaLoader::LoadBias(const sol::table& Table, UTValidationResult& Result)
+UAI::UTBias UTLuaLoader::LoadBias(const sol::table& Table, UTScriptResult& Result)
 {
 	UTBias Bias;
 	LOAD_FIELD(Bias, Target, Table, Result, true);
@@ -124,7 +124,7 @@ UAI::UTBias UTLuaLoader::LoadBias(const sol::table& Table, UTValidationResult& R
 	return Bias;
 }
 
-void UTLuaLoader::ActionLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
+void UTLuaLoader::ActionLoader(const sol::table& Table, UTScriptResult& Result)
 {
 	const auto Name = ValidateField<std::string>(Table, "Name", Result, true);
 	if(!Name) return;
@@ -143,11 +143,11 @@ void UTLuaLoader::ActionLoader(const sol::table& Table, const std::string& Categ
 
 	Action->GenerateConsiderations();
 
-	UTObjectRegistry<UTAction>::Instance().Register(std::move(Action), Category);
-	LOG_INFO(std::format("[UTLuaLoader] Loaded Action: '{}' (Category: {})", *Name, Category))
+	UTObjectRegistry<UTAction>::Instance().Register(std::move(Action), Result.Category);
+	LOG_INFO(std::format("[UTLuaLoader] Loaded Action: '{}' (Category: {})", *Name, Result.Category))
 }
 
-void UTLuaLoader::GoalLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
+void UTLuaLoader::GoalLoader(const sol::table& Table, UTScriptResult& Result)
 {
 	const auto Name = ValidateField<std::string>(Table, "Name", Result, true);
 	if (!Name) return;
@@ -164,11 +164,11 @@ void UTLuaLoader::GoalLoader(const sol::table& Table, const std::string& Categor
 		Goal->Scorer.SetPreconditionFnKey(*PreconditionFnKey);
 	}
 
-	UTObjectRegistry<UTGoal>::Instance().Register(std::move(Goal), Category);
-	LOG_INFO(std::format("[UTLuaLoader] Loaded Goal: '{}' (Category: {})", *Name, Category))
+	UTObjectRegistry<UTGoal>::Instance().Register(std::move(Goal), Result.Category);
+	LOG_INFO(std::format("[UTLuaLoader] Loaded Goal: '{}' (Category: {})", *Name, Result.Category))
 }
 
-void UTLuaLoader::TraitLoader(const sol::table& Table, const std::string& Category, UTValidationResult& Result)
+void UTLuaLoader::TraitLoader(const sol::table& Table, UTScriptResult& Result)
 {
 	const auto Name = ValidateField<std::string>(Table, "Name", Result, true);
 	if(!Name) return;
@@ -180,22 +180,78 @@ void UTLuaLoader::TraitLoader(const sol::table& Table, const std::string& Catego
 	LoadBiases(Table, Result, [&](const UTBias& Bias) { Trait->AddBias(Bias); });
 	LoadEffects(Table, Result, [&](const UTEffect& Effect) { Trait->AddEffect(Effect); });
 
-	UTObjectRegistry<UTTrait>::Instance().Register(std::move(Trait), Category);
-	LOG_INFO(std::format("[UTLuaLoader] Loaded Trait: '{}' (Category: {})", *Name, Category))
+	UTObjectRegistry<UTTrait>::Instance().Register(std::move(Trait), Result.Category);
+	LOG_INFO(std::format("[UTLuaLoader] Loaded Trait: '{}' (Category: {})", *Name, Result.Category))
+}
+
+void UTLuaLoader::LoadAllScripts(sol::state& Lua)
+{
+	std::vector<UTScriptResult> Results;
+	bool bSuccess = true;
+	bSuccess &= UTLuaLoader::LoadScriptsRecursive("Scripts/Actions", Lua, Results, UTLuaLoader::ActionLoader);
+	bSuccess &= UTLuaLoader::LoadScriptsRecursive("Scripts/Goals", Lua, Results, UTLuaLoader::GoalLoader);
+	bSuccess &= UTLuaLoader::LoadScriptsRecursive("Scripts/Traits", Lua, Results, UTLuaLoader::TraitLoader);
+	if (!bSuccess)
+	{
+		for (const auto& Result : Results)
+		{
+			Result.Log();
+		}
+	}
+}
+
+bool UTLuaLoader::LoadScriptsRecursive(
+	const std::string& BaseDir,
+	sol::state& Lua,
+	std::vector<UTScriptResult>& Results,
+	LoaderFn Loader)
+{
+	bool bSuccess = true;
+	try
+	{
+		for (auto& Entry : std::filesystem::recursive_directory_iterator(BaseDir))
+		{
+			if (!Entry.is_regular_file() || Entry.path().extension() != ".lua") continue;
+
+			UTScriptResult Result;
+
+			Result.FilePath = Entry.path().string();
+			Result.FileName = Entry.path().filename().string();
+
+			// Category = relative folder from BaseDir
+			std::filesystem::path Relative = std::filesystem::relative(Entry.path().parent_path(), BaseDir);
+			Result.Category = Relative.empty() ? "Uncategorized" : Relative.string();
+
+			if (auto Table = LoadLuaTable(Lua, Result))
+			{
+				Loader(*Table, Result);
+			}
+
+			bSuccess &= Result.bValid;
+			Results.push_back(Result);
+		}
+	}
+	catch (const std::exception& Error)
+	{
+		UTScriptResult Result;
+		Result.AddError(std::format("Filesystem Error: {}", Error.what()));
+		Results.push_back(Result);
+		bSuccess = false;
+	}
+
+	return bSuccess;
 }
 
 std::optional<sol::table> UTLuaLoader::LoadLuaTable(
-	const std::filesystem::path& File,
 	sol::state& Lua,
-	UTValidationResult& Result)
+	UTScriptResult& Result)
 {
 	try
 	{
-		sol::load_result Script = Lua.load_file(File.string());
+		sol::load_result Script = Lua.load_file(Result.FilePath);
 		if (!Script.valid())
 		{
-			Result.AddError(std::format("Failed to load script: {} Error: {}",
-				File.string(), Script.get<sol::error>().what()));
+			Result.AddError(std::format("Failed to load script. Error: {}", Script.get<sol::error>().what()));
 			return std::nullopt;
 		}
 
@@ -203,15 +259,13 @@ std::optional<sol::table> UTLuaLoader::LoadLuaTable(
 		if (!ScriptResult.valid())
 		{
 			sol::error Err = ScriptResult;
-			Result.AddError(std::format("Failed to execute script: {} Error: {}",
-				File.string(), Err.what()));
+			Result.AddError(std::format("Failed to execute script. Error: {}", Err.what()));
 			return std::nullopt;
 		}
 
 		if (ScriptResult.get_type() != sol::type::table)
 		{
-			Result.AddError(std::format("Script did not return a table: {}",
-				File.string()));
+			Result.AddError("Script did not return a table");
 			return std::nullopt;
 		}
 
@@ -219,36 +273,7 @@ std::optional<sol::table> UTLuaLoader::LoadLuaTable(
 	}
 	catch (const std::exception& Error)
 	{
-		Result.AddError(std::format("Exception loading script: {} Error: {}",
-			File.string(), Error.what()));
+		Result.AddError(std::format("Exception loading script. Error: {}", Error.what()));
 		return std::nullopt;
-	}
-}
-
-void UTLuaLoader::LoadScriptsRecursive(
-	const std::string& BaseDir,
-	sol::state& Lua,
-	UTValidationResult& Result,
-	LoaderFn Loader)
-{
-	try
-	{
-		for (auto& Entry : std::filesystem::recursive_directory_iterator(BaseDir))
-		{
-			if (!Entry.is_regular_file() || Entry.path().extension() != ".lua") continue;
-
-			// Category = relative folder from BaseDir
-			std::filesystem::path Relative = std::filesystem::relative(Entry.path().parent_path(), BaseDir);
-			std::string Category = Relative.empty() ? "Uncategorized" : Relative.string();
-
-			if (auto Table = LoadLuaTable(Entry.path(), Lua, Result))
-			{
-				Loader(*Table, Category, Result);
-			}
-		}
-	}
-	catch (const std::exception& Error)
-	{
-		Result.AddError(std::format("Filesystem Error: {}", Error.what()));
 	}
 }

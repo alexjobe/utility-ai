@@ -33,17 +33,7 @@ int main()
 	UTLuaLoader::RegisterLuaTypes(Lua);
 	Game::RegisterLuaTypes(Lua);
 
-	UTValidationResult Result;
-	UTLuaLoader::LoadScriptsRecursive("Scripts/Actions", Lua, Result, UTLuaLoader::ActionLoader);
-	UTLuaLoader::LoadScriptsRecursive("Scripts/Goals", Lua, Result, UTLuaLoader::GoalLoader);
-	UTLuaLoader::LoadScriptsRecursive("Scripts/Traits", Lua, Result, UTLuaLoader::TraitLoader);
-	if (!Result.bValid)
-	{
-		for (const auto& Error : Result.Errors)
-		{
-			LOG_ERROR(Error)
-		}
-	}
+	UTLuaLoader::LoadAllScripts(Lua);
 
 	UTAgentContext MyContext;
 	if (GCharacter* MyCharacter = GWorld::Instance().AddCharacter(GCharacter("Bilbo")))
